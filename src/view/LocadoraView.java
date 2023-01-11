@@ -39,7 +39,7 @@ public class LocadoraView {
             try {
                 switch (option) {
                     case Constantes.ADICIONAR_CARRO -> adicionarCarro(informacoesCarro());
-//                    case Constantes.LISTAR_PRODUTO -> controller.listarProduto();
+                    case Constantes.EDITAR_CARRO -> consultaCarro();
 //                    case Constantes.EDITAR_PRODUTO -> System.out.println();
 //                    case Constantes.REMOVER_PRODUTO -> controller.removerProduto();
 //                    case Constantes.BUSCA_POR_NOME -> controller.buscarPorNome(nomeBusca());
@@ -58,22 +58,9 @@ public class LocadoraView {
     public CarroDTO informacoesCarro(){
         System.out.println("Qual a placa do carro: ");
         String placaCarro = scan.nextLine();
-        System.out.println("Qual o modelo do carro: ");
-        String modeloCarro = scan.nextLine();
-        System.out.println("Qual a potencia do carro: ");
-        Double potenciaCarro = scan.nextDouble();
-        scan.nextLine();
-        System.out.println("Qual o tipo do carro? Carro, moto ou Caminhao");
-        String tipoCarro = TipoVeiculo.obterTipoVeiculo(scan.nextLine());
-
-        CarroDTO novoCarroDTO = new CarroDTO();
-        novoCarroDTO.setPlaca(placaCarro);
-        novoCarroDTO.setModelo(modeloCarro);
-        novoCarroDTO.setPotencia(potenciaCarro);
-        novoCarroDTO.setTipo(tipoCarro);
 
 
-        return novoCarroDTO;
+        return dadosCarroEditar(placaCarro);
     }
 
     public String obterPlacaEditar(){
@@ -84,19 +71,27 @@ public class LocadoraView {
 
     public void consultaCarro(){
         controller.consultaCarro(obterPlacaEditar());
-        confirmacaoEditarCarro();
     }
 
-    public String confirmacaoEditarCarro(){
-        System.out.println("Deseja editar esse Carro? 'Y' para sim e 'N' para nao. ");
-        return scan.nextLine();
-    }
+    // Códigos comentados não estão funcionando.
 
-    public String editarCarro(){
-        String placaDoCarroParaEditar = obterPlacaEditar();
-        System.out.println("Qual o modelo do carro: ");
+//    public void confirmacaoEditarCarro(){
+//        System.out.println("Deseja editar esse Carro? 'Y' para sim e 'N' para nao. ");
+//        String resposta = scan.nextLine();
+//        controller.confirmacaoEditarCarro(resposta);
+//    }
+//
+//    public String editarCarro(){
+//        String placaDoCarroParaEditar = obterPlacaEditar();
+//        controller.editarCarroPorPlaca(dadosCarroEditar(placaDoCarroParaEditar));
+//        return "Carro editado com sucesso.";
+//
+//    }
+
+    private CarroDTO dadosCarroEditar(String placaDoCarroParaEditar) {
+        System.out.println("Qual o modelo do veiculo: ");
         String modeloCarro = scan.nextLine();
-        System.out.println("Qual a potencia do carro: ");
+        System.out.println("Qual a potencia do veiculo: ");
         Double potenciaCarro = scan.nextDouble();
         scan.nextLine();
         System.out.println("Qual o tipo do carro? Carro, moto ou Caminhao");
@@ -107,14 +102,8 @@ public class LocadoraView {
         novoCarroDTO.setModelo(modeloCarro);
         novoCarroDTO.setPotencia(potenciaCarro);
         novoCarroDTO.setTipo(tipoCarro);
-        controller.editarCarroPorPlaca(novoCarroDTO);
-
-        return "Carro editado com sucesso.";
-
-
+        return novoCarroDTO;
     }
-
-
 
 
     public void adicionarCarro(CarroDTO novoCarroDTO){

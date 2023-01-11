@@ -32,8 +32,8 @@ public enum TipoVeiculo {
         this.nome = nome;
     }
 
-    public static String obterTipoVeiculo(String id) {
-        switch (id) {
+    public static String obterTipoVeiculo(String nome) {
+        switch (nome) {
             case Constantes.TIPO_CARRO -> {
                 return CARRO.getNome();
             }

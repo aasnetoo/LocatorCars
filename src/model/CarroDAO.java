@@ -17,11 +17,11 @@ public class CarroDAO  {
     }
 
     public void incluir(CarroDTO carroDTO) {
-        String query = "INSERT into carros (placa, modelo, potencia) values('" + carroDTO.getPlaca() + "', '"
+        String query = "INSERT into carros (placa, modelo, potencia, tipo) values('" + carroDTO.getPlaca() + "', '"
                 + carroDTO.getModelo() + "', "
-                + carroDTO.getPotencia() + ", ''"
+                + carroDTO.getPotencia() + ", '"
                 + carroDTO.getTipo()
-                + "'')";
+                + "')";
         try {
             Statement stm = instance.getConnection().createStatement();
             stm.executeUpdate(query);
@@ -32,13 +32,13 @@ public class CarroDAO  {
     }
 
     public void consulta(String placa) {
-        String consulta = "SELECT * FROM PESSOA WHERE NOME like '"+placa+"'";
+        String consulta = "SELECT * FROM carros WHERE placa like '"+placa+"'";
         try {
             Statement stm = instance.getConnection().createStatement();
             ResultSet resultado = stm.executeQuery(consulta);
 
             while (resultado.next()) {
-                System.out.print(resultado.getString("nome"));
+                System.out.print(resultado.getString("placa"));
                 System.out.print(" - " + resultado.getString("modelo"));
                 System.out.print(" - " + resultado.getString("potencia") + "\n");
                 System.out.print(" - " + resultado.getString("tipo") + "\n");
@@ -60,6 +60,7 @@ public class CarroDAO  {
                 carroDTO.setPlaca(rs.getString("placa"));
                 carroDTO.setModelo(rs.getString("modelo"));
                 carroDTO.setPotencia(rs.getDouble("potencia"));
+                carroDTO.setTipo(rs.getString("tipo"));
                 listaCarros.add(carroDTO);
 
             }

@@ -16,7 +16,7 @@ public class LocadoraController {
 
     Mensagens mensagens = new Mensagens();
 
-    LocadoraView view = new LocadoraView();
+
 
     public LocadoraController() throws SQLException {
     }
@@ -34,17 +34,17 @@ public class LocadoraController {
         carroDAO.consulta(placa);
     }
 
-    public void confirmacaoEditarCarro (String resposta){
-        switch(resposta){
-            case Constantes.RESP_SIM -> view.editarCarro();
-            case Constantes.RESP_NAO -> mensagens.voltandoMenu();
-            default -> throw new EntradaInvalidaOuInsuficienteException("Entrada inválida!");
-        }
-    }
-
-    public void editarCarroPorPlaca(CarroDTO carroDTO){
-        carroDAO.atualizarPorPlaca(carroDTO);
-    }
+//    public void confirmacaoEditarCarro (String resposta){
+//        switch(resposta){
+//            case Constantes.RESP_SIM -> view.editarCarro();
+//            case Constantes.RESP_NAO -> mensagens.voltandoMenu();
+//            default -> throw new EntradaInvalidaOuInsuficienteException("Entrada inválida!");
+//        }
+//    }
+//
+//    public void editarCarroPorPlaca(CarroDTO carroDTO){
+//        carroDAO.atualizarPorPlaca(carroDTO);
+//    }
 
 
 

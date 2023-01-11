@@ -46,11 +46,11 @@ public class Carro {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Carro carro = (Carro) o;
-        return Objects.equals(placa, carro.placa) && Objects.equals(modelo, carro.modelo) && Objects.equals(potencia, carro.potencia);
+        return Objects.equals(placa, carro.placa) && Objects.equals(modelo, carro.modelo) && Objects.equals(potencia, carro.potencia) && Objects.equals(tipo, carro.tipo);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(placa, modelo, potencia);
+        return Objects.hash(placa, modelo, potencia, tipo);
     }
 }

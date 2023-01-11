@@ -16,7 +16,7 @@ public class Conexao {
     public Conexao() {
         try {
             String usuario = "postgres";
-            String senha = "waer9a0s";
+            String senha = "abc123";
             String ipDoBanco = "localhost:5432";
             String nomeDoBanco = "produtos";
             String stringDeConexao = "jdbc:postgresql://" + ipDoBanco + "/" + nomeDoBanco;

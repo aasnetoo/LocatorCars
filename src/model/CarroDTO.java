@@ -13,6 +13,19 @@ public class CarroDTO {
         return tipo;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CarroDTO carroDTO = (CarroDTO) o;
+        return Objects.equals(placa, carroDTO.placa) && Objects.equals(modelo, carroDTO.modelo) && Objects.equals(potencia, carroDTO.potencia) && Objects.equals(tipo, carroDTO.tipo);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(placa, modelo, potencia, tipo);
+    }
+
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
