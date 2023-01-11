@@ -50,6 +50,16 @@ public class Carro {
     }
 
     @Override
+    public String toString() {
+        return "Carro{" +
+                "placa='" + placa + '\'' +
+                ", modelo='" + modelo + '\'' +
+                ", potencia=" + potencia +
+                ", tipo='" + tipo + '\'' +
+                '}';
+    }
+
+    @Override
     public int hashCode() {
         return Objects.hash(placa, modelo, potencia, tipo);
     }

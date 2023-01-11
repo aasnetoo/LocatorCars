@@ -1,7 +1,8 @@
 package database;
 
-import java.sql.*;
 import util.Mensagens;
+
+import java.sql.*;
 
 public class Conexao {
 

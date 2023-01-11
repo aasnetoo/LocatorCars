@@ -48,7 +48,7 @@ public class CarroDAO  {
             }
         }
 
-    public List<CarroDTO> listaCarros(){
+    public List<CarroDTO> listaCarrosDTO(){
         List<CarroDTO> listaCarros = new ArrayList<>();
         try{
             String sql = "SELECT * FROM carros";
@@ -62,6 +62,28 @@ public class CarroDAO  {
                 carroDTO.setPotencia(rs.getDouble("potencia"));
                 carroDTO.setTipo(rs.getString("tipo"));
                 listaCarros.add(carroDTO);
+
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return listaCarros;
+    }
+
+    public List<Carro> listaCarros(){
+        List<Carro> listaCarros = new ArrayList<>();
+        try{
+            String sql = "SELECT * FROM carros";
+            PreparedStatement stm = instance.getConnection().prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+
+            while (rs.next()){
+                Carro carro = new Carro();
+                carro.setPlaca(rs.getString("placa"));
+                carro.setModelo(rs.getString("modelo"));
+                carro.setPotencia(rs.getDouble("potencia"));
+                carro.setTipo(rs.getString("tipo"));
+                listaCarros.add(carro);
 
             }
         } catch (SQLException e) {

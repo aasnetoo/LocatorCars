@@ -12,6 +12,7 @@ public class Constantes {
 
     public static final String ADICIONAR_CARRO = "1";
     public static final String EDITAR_CARRO = "2";
+    public static final String LISTAR_CARRO = "3";
     public static final String SAIR_PROGRAMA = "6";
 
     //Constantes do Controller

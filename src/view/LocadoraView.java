@@ -1,14 +1,18 @@
 package view;
 
 import controller.LocadoraController;
+import exception.EntradaInvalidaOuInsuficienteException;
+import exception.ListaVaziaException;
 import model.Carro;
 import model.CarroDTO;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Scanner;
 
 import model.TipoVeiculo;
 import util.Constantes;
+import util.Mensagens;
 
 import static java.lang.System.exit;
 
@@ -17,15 +21,17 @@ public class LocadoraView {
     Scanner scan = new Scanner(System.in);
 
     LocadoraController controller = new LocadoraController();
+    Mensagens mensagens = new Mensagens();
+
 
     public LocadoraView() throws SQLException {
     }
 
     public String opcaoMenu() {
         System.out.println("---------- MENU ----------");
-        System.out.println("1 - Adicionar Produto");
-        System.out.println("2 - Listar");
-        System.out.println("3 - Editar Produto");
+        System.out.println("1 - Adicionar Veiculo");
+        System.out.println("2 - Editar Veiculo");
+        System.out.println("3 - Listar Veiculo");
         System.out.println("4 - Remover um produto");
         System.out.println("5 - Buscar por nome");
         System.out.println("6 - Sair do Programa");
@@ -40,7 +46,7 @@ public class LocadoraView {
                 switch (option) {
                     case Constantes.ADICIONAR_CARRO -> adicionarCarro(informacoesCarro());
                     case Constantes.EDITAR_CARRO -> consultaCarro();
-//                    case Constantes.EDITAR_PRODUTO -> System.out.println();
+                    case Constantes.LISTAR_CARRO -> listarPorModelo();
 //                    case Constantes.REMOVER_PRODUTO -> controller.removerProduto();
 //                    case Constantes.BUSCA_POR_NOME -> controller.buscarPorNome(nomeBusca());
                     case Constantes.SAIR_PROGRAMA -> {
@@ -56,11 +62,21 @@ public class LocadoraView {
     }
 
     public CarroDTO informacoesCarro(){
-        System.out.println("Qual a placa do carro: ");
+        System.out.println("Qual a placa do veículo: ");
         String placaCarro = scan.nextLine();
 
 
         return dadosCarroEditar(placaCarro);
+    }
+
+    public void listarPorModelo(){
+        System.out.println("Digite o nome ou parte dele do modelo veiculo: ");
+        String modeloBuscar = scan.nextLine();
+        List<Carro> modelosEncontrados = controller.ConsultaPorModelo(modeloBuscar);
+        if (modelosEncontrados.isEmpty()){
+            throw new ListaVaziaException("Não foi encontrado nenhum veículo");
+        }
+        modelosEncontrados.forEach(System.out::println);
     }
 
     public String obterPlacaEditar(){
@@ -69,24 +85,34 @@ public class LocadoraView {
         return scan.nextLine();
     }
 
-    public void consultaCarro(){
-        controller.consultaCarro(obterPlacaEditar());
+    public void verificarEditarCarro (String resposta){
+        switch(resposta){
+            case Constantes.RESP_SIM -> editarCarro();
+            case Constantes.RESP_NAO -> mensagens.voltandoMenu();
+            default -> throw new EntradaInvalidaOuInsuficienteException("Entrada inválida!");
+        }
     }
 
-    // Códigos comentados não estão funcionando.
 
-//    public void confirmacaoEditarCarro(){
-//        System.out.println("Deseja editar esse Carro? 'Y' para sim e 'N' para nao. ");
-//        String resposta = scan.nextLine();
-//        controller.confirmacaoEditarCarro(resposta);
-//    }
-//
-//    public String editarCarro(){
-//        String placaDoCarroParaEditar = obterPlacaEditar();
-//        controller.editarCarroPorPlaca(dadosCarroEditar(placaDoCarroParaEditar));
-//        return "Carro editado com sucesso.";
-//
-//    }
+
+    public void consultaCarro(){
+        controller.consultaCarro(obterPlacaEditar());
+        confirmacaoEditarCarro();
+    }
+
+
+    public void confirmacaoEditarCarro(){
+        System.out.println("Deseja editar esse Carro? 'Y' para sim e 'N' para nao. ");
+        String resposta = scan.nextLine();
+        verificarEditarCarro(resposta);
+    }
+
+    public String editarCarro(){
+        String placaDoCarroParaEditar = obterPlacaEditar();
+        controller.editarCarroPorPlaca(dadosCarroEditar(placaDoCarroParaEditar));
+        return "Carro editado com sucesso.";
+
+    }
 
     private CarroDTO dadosCarroEditar(String placaDoCarroParaEditar) {
         System.out.println("Qual o modelo do veiculo: ");
