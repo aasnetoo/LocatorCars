@@ -1,9 +1,7 @@
 package controller;
 
-import exception.CarroExisteException;
-import model.Carro;
-import model.CarroDAO;
-import model.CarroDTO;
+import exception.VeiculoExisteException;
+import model.*;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -11,38 +9,38 @@ import java.util.List;
 
 public class LocadoraController {
 
-    CarroDAO carroDAO = new CarroDAO();
+    VeiculoDAO veiculoDAO = new VeiculoDAO();
 
 
     public LocadoraController() throws SQLException {
     }
 
-    public void adicionarCarro (CarroDTO carroDTO){
-        boolean carroExiste = carroDAO.listaCarrosDTO().stream().anyMatch(carro -> carro.equals(carroDTO));
+    public void adicionarVeiculo (VeiculoDTO veiculoDTO){
+        boolean carroExiste = veiculoDAO.listaCarrosDTO().stream().anyMatch(veiculo -> veiculo.equals(veiculoDTO));
 
         if (carroExiste){
-            throw new CarroExisteException();
+            throw new VeiculoExisteException();
         }
-        carroDAO.incluir(carroDTO);
+        veiculoDAO.incluir(veiculoDTO);
     }
 
-    public void consultaCarro(String placa){
-        carroDAO.consulta(placa);
+    public void consultaVeiculo(String placa){
+        veiculoDAO.consulta(placa);
     }
 
-    public List<Carro> ConsultaPorModelo(String modelo){
-        List<Carro> carrosFiltrados = new ArrayList<>();
-        for (int i = 0; i < carroDAO.listaCarros().size(); i++) {
-            if (carroDAO.listaCarros().get(i).getModelo().contains(modelo)){
-                carrosFiltrados.add(carroDAO.listaCarros().get(i));
+    public List<Veiculo> ConsultaPorModelo(String modelo){
+        List<Veiculo> veiculosFiltrados = new ArrayList<>();
+        for (int i = 0; i < veiculoDAO.listaVeiculos().size(); i++) {
+            if (veiculoDAO.listaVeiculos().get(i).getModelo().contains(modelo)){
+                veiculosFiltrados.add(veiculoDAO.listaVeiculos().get(i));
             }
         }
-        return carrosFiltrados;
+        return veiculosFiltrados;
     }
 
 
-    public void editarCarroPorPlaca(CarroDTO carroDTO){
-        carroDAO.atualizarPorPlaca(carroDTO);
+    public void editarCarroPorPlaca(VeiculoDTO veiculoDTO){
+        veiculoDAO.atualizarPorPlaca(veiculoDTO);
     }
 
 

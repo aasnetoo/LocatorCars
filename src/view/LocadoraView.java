@@ -3,14 +3,12 @@ package view;
 import controller.LocadoraController;
 import exception.EntradaInvalidaOuInsuficienteException;
 import exception.ListaVaziaException;
-import model.Carro;
-import model.CarroDTO;
+import model.*;
 
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
-import model.TipoVeiculo;
 import util.Constantes;
 import util.Mensagens;
 
@@ -44,7 +42,7 @@ public class LocadoraView {
             String option = opcaoMenu();
             try {
                 switch (option) {
-                    case Constantes.ADICIONAR_CARRO -> adicionarCarro(informacoesCarro());
+                    case Constantes.ADICIONAR_CARRO -> adicionarVeiculo(informacoesCarro());
                     case Constantes.EDITAR_CARRO -> consultaCarro();
                     case Constantes.LISTAR_CARRO -> listarPorModelo();
 //                    case Constantes.REMOVER_PRODUTO -> controller.removerProduto();
@@ -61,18 +59,16 @@ public class LocadoraView {
         }
     }
 
-    public CarroDTO informacoesCarro(){
+    public VeiculoDTO informacoesCarro(){
         System.out.println("Qual a placa do veículo: ");
         String placaCarro = scan.nextLine();
-
-
         return dadosCarroEditar(placaCarro);
     }
 
     public void listarPorModelo(){
         System.out.println("Digite o nome ou parte dele do modelo veiculo: ");
         String modeloBuscar = scan.nextLine();
-        List<Carro> modelosEncontrados = controller.ConsultaPorModelo(modeloBuscar);
+        List<Veiculo> modelosEncontrados = controller.ConsultaPorModelo(modeloBuscar);
         if (modelosEncontrados.isEmpty()){
             throw new ListaVaziaException("Não foi encontrado nenhum veículo");
         }
@@ -81,12 +77,11 @@ public class LocadoraView {
 
     public String obterPlacaEditar(){
         System.out.println("Digite a placa do carro que deseja alterar os seus dados: ");
-
         return scan.nextLine();
     }
 
     public void verificarEditarCarro (String resposta){
-        switch(resposta){
+        switch(resposta.toLowerCase()){
             case Constantes.RESP_SIM -> editarCarro();
             case Constantes.RESP_NAO -> mensagens.voltandoMenu();
             default -> throw new EntradaInvalidaOuInsuficienteException("Entrada inválida!");
@@ -96,7 +91,7 @@ public class LocadoraView {
 
 
     public void consultaCarro(){
-        controller.consultaCarro(obterPlacaEditar());
+        controller.consultaVeiculo(obterPlacaEditar());
         confirmacaoEditarCarro();
     }
 
@@ -114,7 +109,7 @@ public class LocadoraView {
 
     }
 
-    private CarroDTO dadosCarroEditar(String placaDoCarroParaEditar) {
+    private VeiculoDTO dadosCarroEditar(String placaDoCarroParaEditar) {
         System.out.println("Qual o modelo do veiculo: ");
         String modeloCarro = scan.nextLine();
         System.out.println("Qual a potencia do veiculo: ");
@@ -123,21 +118,18 @@ public class LocadoraView {
         System.out.println("Qual o tipo do carro? Carro, moto ou Caminhao");
         String tipoCarro = TipoVeiculo.obterTipoVeiculo(scan.nextLine());
 
-        CarroDTO novoCarroDTO = new CarroDTO();
-        novoCarroDTO.setPlaca(placaDoCarroParaEditar);
-        novoCarroDTO.setModelo(modeloCarro);
-        novoCarroDTO.setPotencia(potenciaCarro);
-        novoCarroDTO.setTipo(tipoCarro);
-        return novoCarroDTO;
+        VeiculoDTO novoVeiculoDTO = new VeiculoDTO();
+        novoVeiculoDTO.setPlaca(placaDoCarroParaEditar);
+        novoVeiculoDTO.setModelo(modeloCarro);
+        novoVeiculoDTO.setPotencia(potenciaCarro);
+        novoVeiculoDTO.setTipo(tipoCarro);
+        return novoVeiculoDTO;
     }
 
-
-    public void adicionarCarro(CarroDTO novoCarroDTO){
-        controller.adicionarCarro(novoCarroDTO);
+    public void adicionarVeiculo(VeiculoDTO novoVeiculoDTO){
+        controller.adicionarVeiculo(novoVeiculoDTO);
 
     }
-
-
-
+    
 
 }

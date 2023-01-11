@@ -17,8 +17,8 @@ public class Constantes {
 
     //Constantes do Controller
 
-    public static final String RESP_SIM = "Y";
-    public static final String RESP_NAO = "N";
+    public static final String RESP_SIM = "y";
+    public static final String RESP_NAO = "n";
 
 
 }
