@@ -37,6 +37,15 @@ public class CarroDTO {
         this.modelo = modelo;
     }
 
+    @Override
+    public String toString() {
+        return "CarroDTO{" +
+                "placa='" + placa + '\'' +
+                ", modelo='" + modelo + '\'' +
+                ", potencia=" + potencia +
+                '}';
+    }
+
     public Double getPotencia() {
         return potencia;
     }
