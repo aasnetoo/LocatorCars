@@ -1,10 +1,13 @@
 package view;
 
 import controller.LocadoraController;
+import model.Carro;
 import model.CarroDTO;
 
 import java.sql.SQLException;
 import java.util.Scanner;
+
+import model.TipoVeiculo;
 import util.Constantes;
 
 import static java.lang.System.exit;
@@ -60,15 +63,58 @@ public class LocadoraView {
         System.out.println("Qual a potencia do carro: ");
         Double potenciaCarro = scan.nextDouble();
         scan.nextLine();
+        System.out.println("Qual o tipo do carro? Carro, moto ou Caminhao");
+        String tipoCarro = TipoVeiculo.obterTipoVeiculo(scan.nextLine());
 
         CarroDTO novoCarroDTO = new CarroDTO();
         novoCarroDTO.setPlaca(placaCarro);
         novoCarroDTO.setModelo(modeloCarro);
         novoCarroDTO.setPotencia(potenciaCarro);
+        novoCarroDTO.setTipo(tipoCarro);
 
 
         return novoCarroDTO;
     }
+
+    public String obterPlacaEditar(){
+        System.out.println("Digite a placa do carro que deseja alterar os seus dados: ");
+
+        return scan.nextLine();
+    }
+
+    public void consultaCarro(){
+        controller.consultaCarro(obterPlacaEditar());
+        confirmacaoEditarCarro();
+    }
+
+    public String confirmacaoEditarCarro(){
+        System.out.println("Deseja editar esse Carro? 'Y' para sim e 'N' para nao. ");
+        return scan.nextLine();
+    }
+
+    public String editarCarro(){
+        String placaDoCarroParaEditar = obterPlacaEditar();
+        System.out.println("Qual o modelo do carro: ");
+        String modeloCarro = scan.nextLine();
+        System.out.println("Qual a potencia do carro: ");
+        Double potenciaCarro = scan.nextDouble();
+        scan.nextLine();
+        System.out.println("Qual o tipo do carro? Carro, moto ou Caminhao");
+        String tipoCarro = TipoVeiculo.obterTipoVeiculo(scan.nextLine());
+
+        CarroDTO novoCarroDTO = new CarroDTO();
+        novoCarroDTO.setPlaca(placaDoCarroParaEditar);
+        novoCarroDTO.setModelo(modeloCarro);
+        novoCarroDTO.setPotencia(potenciaCarro);
+        novoCarroDTO.setTipo(tipoCarro);
+        controller.editarCarroPorPlaca(novoCarroDTO);
+
+        return "Carro editado com sucesso.";
+
+
+    }
+
+
 
 
     public void adicionarCarro(CarroDTO novoCarroDTO){

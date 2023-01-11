@@ -13,4 +13,10 @@ public class Constantes {
     public static final String ADICIONAR_CARRO = "1";
     public static final String SAIR_PROGRAMA = "6";
 
+    //Constantes do Controller
+
+    public static final String RESP_SIM = "Y";
+    public static final String RESP_NAO = "N";
+
+
 }

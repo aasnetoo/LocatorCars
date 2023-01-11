@@ -19,8 +19,9 @@ public class CarroDAO  {
     public void incluir(CarroDTO carroDTO) {
         String query = "INSERT into carros (placa, modelo, potencia) values('" + carroDTO.getPlaca() + "', '"
                 + carroDTO.getModelo() + "', "
-                + carroDTO.getPotencia()
-                + ")";
+                + carroDTO.getPotencia() + ", ''"
+                + carroDTO.getTipo()
+                + "'')";
         try {
             Statement stm = instance.getConnection().createStatement();
             stm.executeUpdate(query);
@@ -29,6 +30,23 @@ public class CarroDAO  {
             System.out.println("Nao conseguiu executar o DML\n" + query);
         }
     }
+
+    public void consulta(String placa) {
+        String consulta = "SELECT * FROM PESSOA WHERE NOME like '"+placa+"'";
+        try {
+            Statement stm = instance.getConnection().createStatement();
+            ResultSet resultado = stm.executeQuery(consulta);
+
+            while (resultado.next()) {
+                System.out.print(resultado.getString("nome"));
+                System.out.print(" - " + resultado.getString("modelo"));
+                System.out.print(" - " + resultado.getString("potencia") + "\n");
+                System.out.print(" - " + resultado.getString("tipo") + "\n");
+            }
+            }catch(SQLException ex){
+                System.out.println("Não conseguiu consultar os dados do Carro.");
+            }
+        }
 
     public List<CarroDTO> listaCarros(){
         List<CarroDTO> listaCarros = new ArrayList<>();
@@ -49,6 +67,25 @@ public class CarroDAO  {
             throw new RuntimeException(e);
         }
         return listaCarros;
+    }
+
+    public void atualizarPorPlaca(CarroDTO carroDTO) {
+        try {
+
+            String sql = "UPDATE carros " +
+                    " SET modelo = '"+carroDTO.getModelo()+"', " +
+                    " potencia = "+carroDTO.getPotencia()+"," +
+                    " tipo = '"+carroDTO.getTipo()+"' " +
+                    " WHERE placa = '"+carroDTO.getPlaca()+"' ";
+
+           PreparedStatement statement = instance.getConnection().prepareStatement(sql);
+           statement.execute();
+
+
+        } catch(Exception e) {
+            throw new RuntimeException(e);
+
+        }
     }
 
 //    public void atualizarCarro(CarroDTO carroDTO){
@@ -77,9 +114,6 @@ public class CarroDAO  {
 //            throw new PersistenciaExcpetion(e.getMessage(), e);
 //        }
 //    }
-
-
-
 
 
 

@@ -7,6 +7,15 @@ public class Carro {
     private String placa;
     private String modelo;
     private Double potencia;
+    private String tipo;
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
 
     public String getPlaca() {
         return placa;

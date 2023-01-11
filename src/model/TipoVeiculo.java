@@ -32,16 +32,16 @@ public enum TipoVeiculo {
         this.nome = nome;
     }
 
-    public static TipoVeiculo obterTipoVeiculo(String id) {
+    public static String obterTipoVeiculo(String id) {
         switch (id) {
             case Constantes.TIPO_CARRO -> {
-                return CARRO;
+                return CARRO.getNome();
             }
             case Constantes.TIPO_MOTO -> {
-                return MOTO;
+                return MOTO.getNome();
             }
             case Constantes.TIPO_CAMINHAO -> {
-                return CAMINHAO;
+                return CAMINHAO.getNome();
             }
             default -> throw new EntradaInvalidaOuInsuficienteException("Entrada inválida!");
         }

@@ -8,4 +8,8 @@ public class Mensagens {
     public void MsgErroBancoDeDados(){
         System.out.println("Erro: Não conseguiu conectar no BD.");
     }
+
+    public void voltandoMenu(){
+        System.out.println("Voltando ao menu...");
+    }
 }
