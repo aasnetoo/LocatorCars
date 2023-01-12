@@ -130,6 +130,6 @@ public class LocadoraView {
         controller.adicionarVeiculo(novoVeiculoDTO);
 
     }
-    
+
 
 }
