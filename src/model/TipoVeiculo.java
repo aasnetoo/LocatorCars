@@ -2,26 +2,16 @@ package model;
 
 import exception.EntradaInvalidaOuInsuficienteException;
 import util.Constantes;
-public enum TipoVeiculo {
+public enum TipoVeiculo implements ITabelaPreco {
 
-    CARRO("Carro", "1"),
-    MOTO("Moto", "2"),
-    CAMINHAO("Caminhao", "3");
+    CARRO("Carro"),
+    MOTO("Moto"),
+    CAMINHAO("Caminhao");
 
     public String nome;
-    public String id;
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    TipoVeiculo(String nome, String id) {
+    TipoVeiculo(String nome) {
         this.nome = nome;
-        this.id = id;
     }
 
     public String getNome() {
@@ -47,7 +37,19 @@ public enum TipoVeiculo {
         }
     }
 
-
-
-
+    @Override
+    public double calculaValor(String tipo) {
+        switch (tipo){
+            case Constantes.TIPO_CARRO -> {
+                return Constantes.VALOR_CARRO;
+            }
+            case Constantes.TIPO_MOTO -> {
+                return Constantes.VALOR_MOTO;
+            }
+            case Constantes.TIPO_CAMINHAO -> {
+                return Constantes.VALOR_CAMINHAO;
+            }
+            default -> throw new EntradaInvalidaOuInsuficienteException("Entrada inválida!");
+        }
+    }
 }

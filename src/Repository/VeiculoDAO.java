@@ -1,6 +1,8 @@
-package model;
+package Repository;
 
 import database.Conexao;
+import model.Veiculo;
+import model.VeiculoDTO;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,7 +11,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VeiculoDAO {
+public class VeiculoDAO implements IGenericoRepository<VeiculoDTO>{
 
     Conexao instance = Conexao.getInstance();
 
@@ -17,6 +19,7 @@ public class VeiculoDAO {
     public VeiculoDAO() throws SQLException {
     }
 
+    @Override
     public void incluir(VeiculoDTO veiculoDTO) {
         String query = "INSERT into carros (placa, modelo, potencia, tipo) values('" + veiculoDTO.getPlaca() + "', '"
                 + veiculoDTO.getModelo() + "', "
@@ -32,6 +35,7 @@ public class VeiculoDAO {
         }
     }
 
+    @Override
     public void consulta(String placa) {
         String consulta = "SELECT * FROM carros WHERE placa like '"+placa+"'";
         try {
@@ -49,7 +53,13 @@ public class VeiculoDAO {
         }
     }
 
-    public List<VeiculoDTO> listaCarrosDTO(){
+    @Override
+    public void deletar(VeiculoDTO object) {
+
+    }
+
+    @Override
+    public List<VeiculoDTO> listarTodos(){
         List<VeiculoDTO> listaCarros = new ArrayList<>();
         try{
             String sql = "SELECT * FROM carros";

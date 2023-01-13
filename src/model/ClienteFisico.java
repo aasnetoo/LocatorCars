@@ -1,21 +1,16 @@
 package model;
 
-public class ClienteFisico extends Pessoa {
-
-    private String cpf;
-
-    public String getCpf() {
-        return cpf;
+public class ClienteFisico extends Cliente implements ITabelaDesconto {
+    public ClienteFisico(String nome) {
+        this.nome = nome;
     }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
     @Override
-    public String toString() {
-        return "ClienteFisico{" +
-                "cpf='" + cpf + '\'' +
-                '}';
+    public Double valorDesconto(int dias) {
+        if (dias>5){
+            return 0.05;
+        }else{
+            return 0.0;
+        }
     }
+
 }
