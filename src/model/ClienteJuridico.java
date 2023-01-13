@@ -1,21 +1,17 @@
 package model;
 
-public class ClienteJuridico extends Pessoa{
+public class ClienteJuridico extends Cliente implements ITabelaDesconto{
 
-    private String cnpj;
-
-    public String getCnpj() {
-        return cnpj;
+    public ClienteJuridico(String nome) {
+        this.nome = nome;
     }
-
-    public void setCnpj(String cnpj) {
-        this.cnpj = cnpj;
-    }
-
     @Override
-    public String toString() {
-        return "ClienteJuridico{" +
-                "cnpj='" + cnpj + '\'' +
-                '}';
+    public Double valorDesconto(int dias) {
+        if (dias>3){
+            return 0.10;
+        }else{
+            return 0.0;
+        }
     }
+
 }

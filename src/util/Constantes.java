@@ -15,6 +15,14 @@ public class Constantes {
     public static final String LISTAR_CARRO = "3";
     public static final String SAIR_PROGRAMA = "6";
 
+    public static final String CLIENTE_FISICO = "f";
+    public static final String CLIENTE_JURIDICO = "j";
+    public static final double VALOR_CARRO = 150.0;
+    public static final double VALOR_MOTO = 100.0;
+    public static final double VALOR_CAMINHAO = 200.0;
+
+
+
     //Constantes do Controller
 
     public static final String RESP_SIM = "y";
