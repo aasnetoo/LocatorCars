@@ -13,7 +13,6 @@ public class LocadoraController {
 
     VeiculoDAO veiculoDAO = new VeiculoDAO();
     FactoryCliente factoryCliente = new FactoryCliente();
-    PrecoDevolucao precoDevolucao = new PrecoDevolucao();
 
 
     public LocadoraController() throws SQLException {
@@ -43,23 +42,25 @@ public class LocadoraController {
     }
 
 
+
     public void editarCarroPorPlaca(VeiculoDTO veiculoDTO){
         veiculoDAO.atualizarPorPlaca(veiculoDTO);
     }
 
-    public double valorDevolucao(String tipoCliente, String nome, VeiculoDTO veiculoDTO, int dias){
+    // Fica faltando só mudar a disponibilidade do veiculo dps que devolver, quase OK
+    public double valorDevolucao(String nome, VeiculoDTO veiculoDTO, int dias, String tipoCliente){
         double precoFinal = 0.0;
         Cliente cliente = factoryCliente.getCliente(nome,tipoCliente);
-        if (cliente.tipoCliente.equalsIgnoreCase(Constantes.CLIENTE_FISICO)){
-            precoFinal = precoDevolucao.calculaDevolucao(veiculoDTO, dias);
-        }
-        if (cliente.tipoCliente.equalsIgnoreCase(Constantes.CLIENTE_JURIDICO)){
-            precoFinal = precoDevolucao.calculaDevolucao(veiculoDTO, dias);
-        }
+        double desconto = cliente.valorDesconto(dias);
+        double valorSemDesconto = (TipoVeiculo.calculaValor(veiculoDTO.getTipo())*dias);
+        precoFinal = valorSemDesconto - (valorSemDesconto*desconto);
+
         return precoFinal;
     }
 
-
+    public VeiculoDTO obterVeiculoPorPlaca(String placa){
+        return veiculoDAO.pegarVeiculoPorPlaca(placa);
+    }
 
 
 

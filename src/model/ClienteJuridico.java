@@ -1,6 +1,6 @@
 package model;
 
-public class ClienteJuridico extends Cliente implements ITabelaDesconto{
+public class ClienteJuridico extends Cliente{
 
     public ClienteJuridico(String nome) {
         this.nome = nome;

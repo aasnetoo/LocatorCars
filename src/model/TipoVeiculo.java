@@ -2,7 +2,7 @@ package model;
 
 import exception.EntradaInvalidaOuInsuficienteException;
 import util.Constantes;
-public enum TipoVeiculo implements ITabelaPreco {
+public enum TipoVeiculo {
 
     CARRO("Carro"),
     MOTO("Moto"),
@@ -37,8 +37,7 @@ public enum TipoVeiculo implements ITabelaPreco {
         }
     }
 
-    @Override
-    public double calculaValor(String tipo) {
+    public static double calculaValor(String tipo) {
         switch (tipo){
             case Constantes.TIPO_CARRO -> {
                 return Constantes.VALOR_CARRO;
