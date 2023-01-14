@@ -31,7 +31,7 @@ public class LocadoraView {
         System.out.println("2 - Editar Veiculo");
         System.out.println("3 - Listar Veiculo");
         System.out.println("4 - Remover um produto");
-        System.out.println("5 - Buscar por nome");
+        System.out.println("5 - Devolver Veiculo - TESTE");
         System.out.println("6 - Sair do Programa");
 
         return scan.nextLine();
@@ -46,7 +46,7 @@ public class LocadoraView {
                     case Constantes.EDITAR_CARRO -> consultaCarro();
                     case Constantes.LISTAR_CARRO -> listarPorModelo();
 //                    case Constantes.REMOVER_PRODUTO -> controller.removerProduto();
-//                    case Constantes.BUSCA_POR_NOME -> controller.buscarPorNome(nomeBusca());
+                    case Constantes.DEVOLVER_VEICULO -> devolverVeiculo();
                     case Constantes.SAIR_PROGRAMA -> {
                         continueMenu = false;
 //                        controller.sairPrograma();
@@ -129,6 +129,23 @@ public class LocadoraView {
     public void adicionarVeiculo(VeiculoDTO novoVeiculoDTO){
         controller.adicionarVeiculo(novoVeiculoDTO);
 
+    }
+
+    //Método de teste - quando as outras classes foram implementadas irá ter mudança, mas o metodo tá calculando certo
+    //e pegando os valores corretos.
+    public void devolverVeiculo(){
+        System.out.println("Qual o tipo de Cliente? Digite 'J' para Cliente Juridico e 'F' para Cliente Fisico");
+        String tipoCliente = scan.nextLine();
+        System.out.println("Qual o nome do cliente? ");
+        String nomeCliente = scan.nextLine();
+        System.out.println("Quantos dias ficou com o veiculo? ");
+        int diasVeiculo = scan.nextInt();
+        scan.nextLine();
+        System.out.println("Digite a placa do veiculo que você alugou? ");
+        String placaVeiculo = scan.nextLine();
+        VeiculoDTO veiculoADevolver = controller.obterVeiculoPorPlaca(placaVeiculo);
+        double valorTotal = controller.valorDevolucao(nomeCliente,veiculoADevolver,diasVeiculo,tipoCliente);
+        System.out.println(valorTotal);
     }
 
 
