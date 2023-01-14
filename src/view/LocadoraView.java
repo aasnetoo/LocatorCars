@@ -119,7 +119,7 @@ public class LocadoraView {
         System.out.println("Qual a potencia do veiculo: ");
         Double potenciaCarro = scan.nextDouble();
         scan.nextLine();
-        System.out.println("Qual o tipo do carro? Carro, moto ou Caminhao");
+        System.out.println("Qual o tipo do carro? Carro, Moto ou Caminhao");
         String tipoCarro = TipoVeiculo.obterTipoVeiculo(scan.nextLine());
 
         VeiculoDTO novoVeiculoDTO = new VeiculoDTO();
@@ -138,7 +138,7 @@ public class LocadoraView {
     //Método de teste - quando as outras classes foram implementadas irá ter mudança, mas o metodo tá calculando certo
     //e pegando os valores corretos.
     public void devolverVeiculo(){
-        System.out.println("Qual o tipo de Cliente? Digite 'J' para Cliente Juridico e 'F' para Cliente Fisico");
+        System.out.println("Qual o tipo de Cliente? Digite 'PJ' para Cliente Juridico e 'PF' para Cliente Fisico");
         String tipoCliente = scan.nextLine();
         System.out.println("Qual o nome do cliente? ");
         String nomeCliente = scan.nextLine();
@@ -159,16 +159,6 @@ public class LocadoraView {
         String documentoCliente = scan.nextLine();
         return dadosClienteEditar(documentoCliente);
     }
-
-//    public void listarPorNomeCliente(){
-//        System.out.println("Digite o nome completo do cliente ou parte dele: ");
-//        String nomeClienteBuscar = scan.nextLine();
-//        List<Cliente> clientesEncontrados = controller.ConsultaPorModelo(nomeClienteBuscar);
-//        if (modelosEncontrados.isEmpty()){
-//            throw new ListaVaziaException("Não foi encontrado nenhum veículo");
-//        }
-//        modelosEncontrados.forEach(System.out::println);
-//    }
 
     public String obterDocumentoEditar(){
         System.out.println("Digite o documento do cliente que deseja alterar os seus dados: ");
