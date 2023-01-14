@@ -47,7 +47,7 @@ public class LocadoraController {
         veiculoDAO.atualizarPorPlaca(veiculoDTO);
     }
 
-    // Fica faltando só mudar a disponibilidade do veiculo dps que devolver.
+    // Fica faltando só mudar a disponibilidade do veiculo dps que devolver, quase OK
     public double valorDevolucao(String nome, VeiculoDTO veiculoDTO, int dias, String tipoCliente){
         double precoFinal = 0.0;
         Cliente cliente = factoryCliente.getCliente(nome,tipoCliente);
