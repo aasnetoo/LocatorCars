@@ -185,7 +185,7 @@ public class LocadoraView {
 
     public void consultaCliente(){
         controller.consultarCliente(obterDocumentoEditar());
-        confirmacaoEditarCarro();
+        confirmacaoEditarCliente();
     }
 
 

@@ -2,8 +2,6 @@ package Repository;
 
 import database.Conexao;
 import model.ClienteDTO;
-import model.Veiculo;
-import model.VeiculoDTO;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,10 +20,10 @@ public class ClienteDAO implements IGenericoRepository<ClienteDTO> {
 
     @Override
     public void incluir(ClienteDTO clienteDTO) {
-        String query = "INSERT into clientes (nome, telefone, documento, tipoCliente) values('"
+        String query = "INSERT into clientes (nome, telefone, documento, tipo) values('"
                 + clienteDTO.getNome() + "', '"
-                + clienteDTO.getTelefone() + "', "
-                + clienteDTO.getDocumento() + ", '"
+                + clienteDTO.getTelefone() + "', '"
+                + clienteDTO.getDocumento() + "', '"
                 + clienteDTO.getTipoCliente()
                 + "')";
         try {
@@ -47,33 +45,13 @@ public class ClienteDAO implements IGenericoRepository<ClienteDTO> {
             while (resultado.next()) {
                 System.out.print(resultado.getString("nome"));
                 System.out.print(" - " + resultado.getString("telefone"));
-                System.out.print(" - " + resultado.getString("documento") + "\n");
-                System.out.print(" - " + resultado.getString("tipoCliente") + "\n");
+                System.out.print(" - " + resultado.getString("documento"));
+                System.out.print(" - " + resultado.getString("tipo") + "\n");
             }
         }catch(SQLException ex){
             System.out.println("Não conseguiu consultar os dados do cliente.");
         }
     }
-
-//    public VeiculoDTO pegarVeiculoPorPlaca(String placa){
-//        String consulta = "SELECT * FROM carros WHERE placa like '"+placa+"'";
-//        VeiculoDTO veiculoDTO = new VeiculoDTO();
-//        try {
-//            Statement stm = instance.getConnection().createStatement();
-//            ResultSet resultado = stm.executeQuery(consulta);
-//            while(resultado.next()) {
-//
-//                veiculoDTO.setPlaca(resultado.getString("placa"));
-//                veiculoDTO.setModelo(resultado.getString("modelo"));
-//                veiculoDTO.setPotencia(resultado.getDouble("potencia"));
-//                veiculoDTO.setTipo(resultado.getString("tipo"));
-//            }
-//
-//        }catch(SQLException ex){
-//            System.out.println("Não conseguiu consultar os dados do Veiculo.");
-//        }
-//        return veiculoDTO;
-//    }
 
     @Override
     public void deletar(ClienteDTO object) {
@@ -93,7 +71,7 @@ public class ClienteDAO implements IGenericoRepository<ClienteDTO> {
                 clienteDTO.setNome(rs.getString("nome"));
                 clienteDTO.setTelefone(rs.getString("telefone"));
                 clienteDTO.setDocumento(rs.getString("documento"));
-                clienteDTO.setTipoCliente(rs.getString("tipoCliente"));
+                clienteDTO.setTipoCliente(rs.getString("tipo"));
                 listaClientes.add(clienteDTO);
 
             }
@@ -102,35 +80,13 @@ public class ClienteDAO implements IGenericoRepository<ClienteDTO> {
         }
         return listaClientes;
     }
-//
-//    public List<Veiculo> listaVeiculos(){
-//        List<Veiculo> listaVeiculos = new ArrayList<>();
-//        try{
-//            String sql = "SELECT * FROM carros";
-//            PreparedStatement stm = instance.getConnection().prepareStatement(sql);
-//            ResultSet rs = stm.executeQuery();
-//
-//            while (rs.next()){
-//                Veiculo veiculo = new Veiculo();
-//                veiculo.setPlaca(rs.getString("placa"));
-//                veiculo.setModelo(rs.getString("modelo"));
-//                veiculo.setPotencia(rs.getDouble("potencia"));
-//                veiculo.setTipo(rs.getString("tipo"));
-//                listaVeiculos.add(veiculo);
-//
-//            }
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//        return listaVeiculos;
-//    }
 
     public void atualizarPorDocumento(ClienteDTO clienteDTO) {
         try {
             String sql = "UPDATE clientes " +
                     " SET nome = '"+clienteDTO.getNome()+"', " +
                     " telefone = "+clienteDTO.getTelefone()+"," +
-                    " tipoCliente = '"+clienteDTO.getTipoCliente()+"' " +
+                    " tipo = '"+clienteDTO.getTipoCliente()+"' " +
                     " WHERE documento = '"+clienteDTO.getDocumento()+"' ";
 
             PreparedStatement statement = instance.getConnection().prepareStatement(sql);
