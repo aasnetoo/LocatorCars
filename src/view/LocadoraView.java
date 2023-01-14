@@ -32,7 +32,9 @@ public class LocadoraView {
         System.out.println("3 - Listar Veiculo");
         System.out.println("4 - Remover um produto");
         System.out.println("5 - Devolver Veiculo - TESTE");
-        System.out.println("6 - Sair do Programa");
+        System.out.println("7 - Cadastrar novo cliente (PF/PJ)");
+        System.out.println("8 - Editar cliente (PF/PJ)");
+        System.out.println("14 - Sair do Programa");
 
         return scan.nextLine();
     }
@@ -47,6 +49,8 @@ public class LocadoraView {
                     case Constantes.LISTAR_CARRO -> listarPorModelo();
 //                    case Constantes.REMOVER_PRODUTO -> controller.removerProduto();
                     case Constantes.DEVOLVER_VEICULO -> devolverVeiculo();
+                    case Constantes.CADASTRAR_CLIENTE -> adicionarCliente(informacoesCliente());
+                    case Constantes.EDITAR_CLIENTE -> consultaCliente();
                     case Constantes.SAIR_PROGRAMA -> {
                         continueMenu = false;
 //                        controller.sairPrograma();
@@ -149,4 +153,75 @@ public class LocadoraView {
     }
 
 
+    /////// clientes
+    public ClienteDTO informacoesCliente(){
+        System.out.println("Qual é o numero do documento do cliente (apenas números): ");
+        String documentoCliente = scan.nextLine();
+        return dadosClienteEditar(documentoCliente);
+    }
+
+//    public void listarPorNomeCliente(){
+//        System.out.println("Digite o nome completo do cliente ou parte dele: ");
+//        String nomeClienteBuscar = scan.nextLine();
+//        List<Cliente> clientesEncontrados = controller.ConsultaPorModelo(nomeClienteBuscar);
+//        if (modelosEncontrados.isEmpty()){
+//            throw new ListaVaziaException("Não foi encontrado nenhum veículo");
+//        }
+//        modelosEncontrados.forEach(System.out::println);
+//    }
+
+    public String obterDocumentoEditar(){
+        System.out.println("Digite o documento do cliente que deseja alterar os seus dados: ");
+        return scan.nextLine();
+    }
+
+    public void verificarEditarCliente (String resposta){
+        switch(resposta.toLowerCase()){
+            case Constantes.RESP_SIM -> editarCliente();
+            case Constantes.RESP_NAO -> mensagens.voltandoMenu();
+            default -> throw new EntradaInvalidaOuInsuficienteException("Entrada inválida!");
+        }
+    }
+
+    public void consultaCliente(){
+        controller.consultarCliente(obterDocumentoEditar());
+        confirmacaoEditarCarro();
+    }
+
+
+    public void confirmacaoEditarCliente(){
+        System.out.println("Deseja editar este cliente? 'Y' para sim e 'N' para nao. ");
+        String resposta = scan.nextLine();
+        verificarEditarCliente(resposta);
+    }
+
+    public String editarCliente(){
+        String documentoDoClienteParaEditar = obterDocumentoEditar();
+        controller.editarClientePorDocumento(dadosClienteEditar(documentoDoClienteParaEditar));
+        return "Cliente editado com sucesso.";
+
+    }
+
+    private ClienteDTO dadosClienteEditar(String documentoDoClienteParaEditar) {
+        System.out.println("Qual o nome do cliente: ");
+        String nomeCliente = scan.nextLine();
+        System.out.println("Qual o telefone do cliente: ");
+        String telefoneCliente = scan.nextLine();
+        System.out.println("Qual o tipo de cliente? PF ou PJ");
+        String tipoCliente = TipoCliente.obterTipoCliente(scan.nextLine());
+
+        ClienteDTO novoClienteDTO = new ClienteDTO();
+        novoClienteDTO.setDocumento(documentoDoClienteParaEditar);
+        novoClienteDTO.setNome(nomeCliente);
+        novoClienteDTO.setTelefone(telefoneCliente);
+        novoClienteDTO.setTipoCliente(tipoCliente);
+        return novoClienteDTO;
+    }
+
+    public void adicionarCliente(ClienteDTO novoClienteDTO){
+        controller.adicionarCliente(novoClienteDTO);
+
+    }
+
+    /////// fim clientes
 }
