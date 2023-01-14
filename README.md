@@ -4,14 +4,14 @@
 Criar uma aplicação que gerencie o aluguel de veículos, onde cada item abaixo seja considerado:
 
 ### Itens obrigatórios
-- [ ] Cadastrar os veículos;
-- [ ] Alterar um veículo cadastrado;
-- [ ] Buscar um veículo por parte do nome;
+- [x] Cadastrar os veículos;
+- [x] Alterar um veículo cadastrado;
+- [x] Buscar um veículo por parte do nome;
 - [ ] Cadastrar a agência onde o veículo será alugado/devolvido;
 - [ ] Alterar a agência onde o veículo será alugado/devolvido;
 - [ ] Buscar uma agência por parte do nome ou do logradouro do endereço;
-- [ ] Cadastrar o cliente (pessoa fisica/juridica)
-- [ ] Alterar o cliente (pessoa fisica/juridica)
+- [x] Cadastrar o cliente (pessoa fisica/juridica)
+- [x] Alterar o cliente (pessoa fisica/juridica)
 - [ ] Alugar um veículo para pessoa fisica;
 - [ ] Alugar um veículo para pessoa juridica;
 - [ ] Devolver um veículo para pessoa fisica;
