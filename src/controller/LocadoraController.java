@@ -50,11 +50,15 @@ public class LocadoraController {
         veiculoDAO.atualizarPorPlaca(veiculoDTO);
     }
     public void adicionarAgencia(AgenciaDTO agenciaDTO) {
-        agenciaDAO.incluir("INSERT", agenciaDTO);
+        String paramsQuery = "INSERT|nome;logradouro|";
+        paramsQuery += agenciaDTO.getNome().toUpperCase();
+        paramsQuery += ";";
+        paramsQuery += agenciaDTO.getLogradouro().toUpperCase();
+        agenciaDAO.incluir(paramsQuery);
     }
 
     public void editarAgencia(String paramsQuery) {
-        agenciaDAO.incluir(paramsQuery, new AgenciaDTO("", ""));
+        agenciaDAO.incluir(paramsQuery);
     }
 
     public boolean consultarAgencia(String paramsQuery) {

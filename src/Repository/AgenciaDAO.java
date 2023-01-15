@@ -20,7 +20,7 @@ public class AgenciaDAO {
     }
 
     // @Override
-    public void incluir(String paramsQuery, AgenciaDTO agenciaDTO) {
+    public void incluir(String paramsQuery) {
         /**
             @param paramsQuery
             Primeira Coluna: INSERT ou UPDATE
@@ -34,7 +34,7 @@ public class AgenciaDAO {
             Ex2: UPDATE|nome;logradouro|fulano;Rua10|7
             sql query -> UPDATE agencias SET nome='fulano',logradouro='Rua10' WHERE id_agencia=7
 
-            Ex3: INSERT
+            Ex3: INSERT|nome;logradouro|fulano;Rua12
             sql query -> INSERT INTO agencias (nome, logradouro) VALUES('fulano','Rua12');
         */
 
@@ -42,10 +42,14 @@ public class AgenciaDAO {
 
         String sqlQuery;
         if (params.get(0).equals("INSERT")) {
+
+            List<String> data = List.of(params.get(2).split(";"));
+
             sqlQuery = "INSERT INTO agencias (nome, logradouro) VALUES('"
-                + agenciaDTO.getNome().toUpperCase() + "', '"
-                + agenciaDTO.getLogradouro().toUpperCase()
+                + data.get(0).toUpperCase() + "', '"
+                + data.get(1).toUpperCase()
                 + "')";
+
         } else {
             sqlQuery = "UPDATE agencias SET ";
 
@@ -58,8 +62,6 @@ public class AgenciaDAO {
             }
             sqlQuery += " WHERE id_agencia="+ params.get(3);
         }
-
-        System.out.println(sqlQuery);
 
         try {
 
@@ -90,7 +92,7 @@ public class AgenciaDAO {
             String searchQuery = params[1];
             sqlQuery += " WHERE " + coluna + "=" + searchQuery;
         }
-        System.out.println(sqlQuery);
+
         try {
 
             Statement stm = instance.getConnection().createStatement();
