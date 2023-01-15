@@ -1,9 +1,11 @@
 package controller;
 
+import Repository.AgenciaDAO;
 import Repository.VeiculoDAO;
 import exception.VeiculoExisteException;
 import model.*;
 import util.Constantes;
+import util.TablePrinter;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -12,6 +14,7 @@ import java.util.List;
 public class LocadoraController {
 
     VeiculoDAO veiculoDAO = new VeiculoDAO();
+    AgenciaDAO agenciaDAO = new AgenciaDAO();
     FactoryCliente factoryCliente = new FactoryCliente();
 
 
@@ -46,7 +49,38 @@ public class LocadoraController {
     public void editarCarroPorPlaca(VeiculoDTO veiculoDTO){
         veiculoDAO.atualizarPorPlaca(veiculoDTO);
     }
+    public void adicionarAgencia(AgenciaDTO agenciaDTO) {
+        agenciaDAO.incluir("INSERT", agenciaDTO);
+    }
 
+    public void editarAgencia(String paramsQuery) {
+        agenciaDAO.incluir(paramsQuery, new AgenciaDTO("", ""));
+    }
+
+    public boolean consultarAgencia(String paramsQuery) {
+
+        // Obtém as agências presentes no Banco de Dados
+        List<AgenciaDTO> listAgenciaDTO = new ArrayList<>();
+        listAgenciaDTO = agenciaDAO.consulta(paramsQuery);
+        System.out.println(listAgenciaDTO);
+        // Imprime no console as Agências
+        TablePrinter tablePrinter = new TablePrinter();
+        tablePrinter.agenciaTablePrinter(listAgenciaDTO);
+
+        return !(listAgenciaDTO.size() == 0);
+    }
+    public void deletarAgencia(String paramsQuery) {
+        agenciaDAO.deletar(paramsQuery);
+    }
+
+    public boolean verificaExistenciaAgenciaPorId(int idAgencia) {
+
+        List<AgenciaDTO> listAgenciaDTO = new ArrayList<>();
+        String query = "id_agencia|" + idAgencia;
+        listAgenciaDTO = agenciaDAO.consulta(query);
+
+        return listAgenciaDTO.size() == 1;
+    }
     // Fica faltando só mudar a disponibilidade do veiculo dps que devolver, quase OK
     public double valorDevolucao(String nome, VeiculoDTO veiculoDTO, int dias, String tipoCliente){
         double precoFinal = 0.0;

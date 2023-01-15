@@ -25,6 +25,7 @@ public class Conexao {
             conn = DriverManager.getConnection(stringDeConexao, usuario, senha);
             System.out.println("Conectou no banco de dados.");
         } catch (SQLException | ClassNotFoundException ex) {
+            System.out.println(ex);
             mensagens.MsgErroBancoDeDados();
         }
     }
