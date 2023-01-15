@@ -158,7 +158,37 @@ public class LocadoraView {
     }
 
     private void buscarAgencia() {
-        controller.consultarAgencia("");
+
+        System.out.println("Insira a opção desejada:");
+        System.out.println("1. Consultar agências por nome");
+        System.out.println("2. Consultar agências por logradouro");
+        System.out.println("3. Listar todas as agências");
+
+        boolean loop = true;
+        while (loop) {
+            String choice = scan.nextLine();
+            switch (choice) {
+                case "1" -> {
+                    System.out.println("Digite o novo nome:");
+                    String nomeAgencia = scan.nextLine();
+                    String paramsQuery = "nome|" + nomeAgencia;
+                    controller.consultarAgencia(paramsQuery);
+                    loop = false;
+                }
+                case "2" -> {
+                    System.out.println("Digite o logradouro :");
+                    String logradouro = scan.nextLine();
+                    String paramsQuery = "logradouro|" + logradouro;
+                    controller.consultarAgencia(paramsQuery);
+                    loop = false;
+                }
+                case "3" -> {
+                    controller.consultarAgencia("");
+                    loop = false;
+                }
+                default -> System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "Digite opção válida" + ConsoleColors.RESET);
+            }
+        }
     }
 
     public String obterPlacaEditar(){

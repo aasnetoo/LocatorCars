@@ -83,14 +83,14 @@ public class AgenciaDAO {
     // @Override
     public List<AgenciaDTO> consulta(String paramsQuery) {
         
-        String[] params = paramsQuery.split("\\|");
+        List<String> params = List.of(paramsQuery.split("\\|"));
         String sqlQuery = "SELECT * FROM agencias";
         List<AgenciaDTO> listAgenciaDTO = new ArrayList<>();
         
-        if (params.length > 1) {
-            String coluna = params[0];
-            String searchQuery = params[1];
-            sqlQuery += " WHERE " + coluna + "=" + searchQuery;
+        if (params.size() > 1) {
+            String coluna = params.get(0);
+            String searchQuery = params.get(1);
+            sqlQuery += " WHERE " + coluna + " ILIKE '%" + searchQuery + "%'";
         }
 
         try {

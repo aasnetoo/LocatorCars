@@ -66,7 +66,6 @@ public class LocadoraController {
         // Obtém as agências presentes no Banco de Dados
         List<AgenciaDTO> listAgenciaDTO = new ArrayList<>();
         listAgenciaDTO = agenciaDAO.consulta(paramsQuery);
-        System.out.println(listAgenciaDTO);
         // Imprime no console as Agências
         TablePrinter tablePrinter = new TablePrinter();
         tablePrinter.agenciaTablePrinter(listAgenciaDTO);
