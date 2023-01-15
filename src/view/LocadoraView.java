@@ -94,9 +94,9 @@ public class LocadoraView {
 
     private void cadastrarAgencia() {
         System.out.println("Digite o nome da agência: ");
-        String nomeAgencia = scan.nextLine();
+        String nomeAgencia = scan.nextLine().toUpperCase();
         System.out.println("Digite o endereço da agência: ");
-        String enderecoAgencia = scan.nextLine();
+        String enderecoAgencia = scan.nextLine().toUpperCase();
         AgenciaDTO agenciaDTO = new AgenciaDTO(nomeAgencia, enderecoAgencia);
         controller.adicionarAgencia(agenciaDTO);
         System.out.println("Agencia cadastrada com sucesso!");
@@ -136,23 +136,23 @@ public class LocadoraView {
                 switch (choice) {
                     case "1" -> {
                         System.out.println("Digite o novo nome:");
-                        String nomeAgencia = scan.nextLine();
+                        String nomeAgencia = scan.nextLine().toUpperCase();
                         String paramsQuery = "UPDATE|nome|" + nomeAgencia + "|" + idAgencia;
                         controller.editarAgencia(paramsQuery);
                         loop = false;
                     }
                     case "2" -> {
                         System.out.println("Digite o novo logradouro :");
-                        String logradouro = scan.nextLine();
+                        String logradouro = scan.nextLine().toUpperCase();
                         String paramsQuery = "UPDATE|logradouro|" + logradouro + "|" + idAgencia;
                         controller.editarAgencia(paramsQuery);
                         loop = false;
                     }
                     case "3" -> {
                         System.out.println("Digite o novo nome:");
-                        String nomeAgencia = scan.nextLine();
+                        String nomeAgencia = scan.nextLine().toUpperCase();
                         System.out.println("Digite o novo logradouro :");
-                        String logradouro = scan.nextLine();
+                        String logradouro = scan.nextLine().toUpperCase();
                         String paramsQuery = "UPDATE|nome;logradouro|" + nomeAgencia + ";" + logradouro + "|" + idAgencia;
                         controller.editarAgencia(paramsQuery);
                         loop = false;
@@ -180,14 +180,14 @@ public class LocadoraView {
             switch (choice) {
                 case "1" -> {
                     System.out.println("Digite o novo nome:");
-                    String nomeAgencia = scan.nextLine();
+                    String nomeAgencia = scan.nextLine().toUpperCase();
                     String paramsQuery = "nome|" + nomeAgencia;
                     controller.consultarAgencia(paramsQuery);
                     loop = false;
                 }
                 case "2" -> {
                     System.out.println("Digite o logradouro :");
-                    String logradouro = scan.nextLine();
+                    String logradouro = scan.nextLine().toUpperCase();
                     String paramsQuery = "logradouro|" + logradouro;
                     controller.consultarAgencia(paramsQuery);
                     loop = false;

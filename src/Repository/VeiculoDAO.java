@@ -19,14 +19,13 @@ public class VeiculoDAO implements IGenericoRepository<VeiculoDTO>{
     public VeiculoDAO() throws SQLException {
     }
 
-    @Override
     public void incluir(VeiculoDTO veiculoDTO) {
-        String query = "INSERT into carros (placa, modelo, potencia, tipo) values('" + veiculoDTO.getPlaca() + "', '"
-                + veiculoDTO.getModelo() + "', "
-                + veiculoDTO.getPotencia() + ", '"
-                + veiculoDTO.getTipo()
+        String query = "INSERT into veiculos (placa, modelo, potencia, tipo, disponivel) values('" + veiculoDTO.getPlaca() + "', '"
+                + veiculoDTO.getModelo() + "', '"
+                + veiculoDTO.getPotencia() + "', '"
+                + veiculoDTO.getTipo() + "', '"
+                + veiculoDTO.isDisponivel()
                 + "')";
-        System.out.println(query);
         try {
             Statement stm = instance.getConnection().createStatement();
             stm.executeUpdate(query);
@@ -38,7 +37,7 @@ public class VeiculoDAO implements IGenericoRepository<VeiculoDTO>{
 
     @Override
     public void consulta(String placa) {
-        String consulta = "SELECT * FROM carros WHERE placa like '"+placa+"'";
+        String consulta = "SELECT * FROM veiculos WHERE placa like '"+placa+"'";
         try {
             Statement stm = instance.getConnection().createStatement();
             ResultSet resultado = stm.executeQuery(consulta);
@@ -48,6 +47,8 @@ public class VeiculoDAO implements IGenericoRepository<VeiculoDTO>{
                 System.out.print(" - " + resultado.getString("modelo"));
                 System.out.print(" - " + resultado.getString("potencia") + "\n");
                 System.out.print(" - " + resultado.getString("tipo") + "\n");
+                System.out.print(" - " + resultado.getString("disponivel") + "\n");
+
             }
         }catch(SQLException ex){
             System.out.println("Não conseguiu consultar os dados do Veiculo.");
@@ -55,7 +56,7 @@ public class VeiculoDAO implements IGenericoRepository<VeiculoDTO>{
     }
 
     public VeiculoDTO pegarVeiculoPorPlaca(String placa){
-        String consulta = "SELECT * FROM carros WHERE placa like '"+placa+"'";
+        String consulta = "SELECT * FROM veiculos WHERE placa like '"+placa+"'";
         VeiculoDTO veiculoDTO = new VeiculoDTO();
         try {
             Statement stm = instance.getConnection().createStatement();
@@ -66,6 +67,8 @@ public class VeiculoDAO implements IGenericoRepository<VeiculoDTO>{
                 veiculoDTO.setModelo(resultado.getString("modelo"));
                 veiculoDTO.setPotencia(resultado.getDouble("potencia"));
                 veiculoDTO.setTipo(resultado.getString("tipo"));
+                veiculoDTO.setTipo(resultado.getString("disponivel"));
+
             }
 
         }catch(SQLException ex){
@@ -73,7 +76,6 @@ public class VeiculoDAO implements IGenericoRepository<VeiculoDTO>{
         }
         return veiculoDTO;
     }
-
     @Override
     public void deletar(VeiculoDTO object) {
 
@@ -83,7 +85,7 @@ public class VeiculoDAO implements IGenericoRepository<VeiculoDTO>{
     public List<VeiculoDTO> listarTodos(){
         List<VeiculoDTO> listaCarros = new ArrayList<>();
         try{
-            String sql = "SELECT * FROM carros";
+            String sql = "SELECT * FROM veiculos";
             PreparedStatement stm = instance.getConnection().prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
 
@@ -93,6 +95,8 @@ public class VeiculoDAO implements IGenericoRepository<VeiculoDTO>{
                 veiculoDTO.setModelo(rs.getString("modelo"));
                 veiculoDTO.setPotencia(rs.getDouble("potencia"));
                 veiculoDTO.setTipo(rs.getString("tipo"));
+                veiculoDTO.setDisponivel(rs.getBoolean("disponivel"));
+
                 listaCarros.add(veiculoDTO);
 
             }
@@ -105,7 +109,7 @@ public class VeiculoDAO implements IGenericoRepository<VeiculoDTO>{
     public List<Veiculo> listaVeiculos(){
         List<Veiculo> listaVeiculos = new ArrayList<>();
         try{
-            String sql = "SELECT * FROM carros";
+            String sql = "SELECT * FROM veiculos";
             PreparedStatement stm = instance.getConnection().prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
 
@@ -115,6 +119,8 @@ public class VeiculoDAO implements IGenericoRepository<VeiculoDTO>{
                 veiculo.setModelo(rs.getString("modelo"));
                 veiculo.setPotencia(rs.getDouble("potencia"));
                 veiculo.setTipo(rs.getString("tipo"));
+                veiculo.setTipo(rs.getString("disponivel"));
+
                 listaVeiculos.add(veiculo);
 
             }
