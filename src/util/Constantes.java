@@ -17,10 +17,11 @@ public class Constantes {
     public static final String ALTERAR_AGENCIA = "5";
     public static final String BUSCAR_AGENCIA = "6";
     public static final String DEVOLVER_VEICULO = "7";
-    public static final String SAIR_PROGRAMA = "8";
-
-    public static final String CLIENTE_FISICO = "f";
-    public static final String CLIENTE_JURIDICO = "j";
+    public static final String CADASTRAR_CLIENTE = "8";
+    public static final String EDITAR_CLIENTE = "9";
+    public static final String SAIR_PROGRAMA = "10";
+    public static final String CLIENTE_FISICO = "PF";
+    public static final String CLIENTE_JURIDICO = "PJ";
     public static final double VALOR_CARRO = 150.0;
     public static final double VALOR_MOTO = 100.0;
     public static final double VALOR_CAMINHAO = 200.0;

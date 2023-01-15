@@ -1,7 +1,9 @@
 package controller;
 
 import Repository.AgenciaDAO;
+import Repository.ClienteDAO;
 import Repository.VeiculoDAO;
+import exception.ClienteExisteException;
 import exception.VeiculoExisteException;
 import model.*;
 import util.Constantes;
@@ -15,6 +17,7 @@ public class LocadoraController {
 
     VeiculoDAO veiculoDAO = new VeiculoDAO();
     AgenciaDAO agenciaDAO = new AgenciaDAO();
+    ClienteDAO clienteDAO = new ClienteDAO();
     FactoryCliente factoryCliente = new FactoryCliente();
 
 
@@ -85,9 +88,9 @@ public class LocadoraController {
         return listAgenciaDTO.size() == 1;
     }
     // Fica faltando só mudar a disponibilidade do veiculo dps que devolver, quase OK
-    public double valorDevolucao(String nome, VeiculoDTO veiculoDTO, int dias, String tipoCliente){
+    public double valorDevolucao(String documento, VeiculoDTO veiculoDTO, int dias, String tipoCliente){
         double precoFinal = 0.0;
-        Cliente cliente = factoryCliente.getCliente(nome,tipoCliente);
+        Cliente cliente = factoryCliente.getCliente(documento,tipoCliente);
         double desconto = cliente.valorDesconto(dias);
         double valorSemDesconto = (TipoVeiculo.calculaValor(veiculoDTO.getTipo())*dias);
         precoFinal = valorSemDesconto - (valorSemDesconto*desconto);
@@ -100,7 +103,25 @@ public class LocadoraController {
     }
 
 
+    /////////////cliente
+    public void adicionarCliente (ClienteDTO clienteDTO){
+        boolean clienteExiste = clienteDAO.listarTodos().stream().anyMatch(cliente -> cliente.equals(clienteDTO));
 
+        if (clienteExiste){
+            throw new ClienteExisteException();
+        }
+        clienteDAO.incluir(clienteDTO);
+    }
+
+    public void consultarCliente(String documento){
+        clienteDAO.consulta(documento);
+    }
+
+
+    public void editarClientePorDocumento(ClienteDTO clienteDTO){
+        clienteDAO.atualizarPorDocumento(clienteDTO);
+    }
+    //fim cliente
 
 
 }

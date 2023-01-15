@@ -34,9 +34,12 @@ public class LocadoraView {
         System.out.println("4 - Cadastrar Agência");
         System.out.println("5 - Alterar Agência");
         System.out.println("6 - Buscar Agência");
-        System.out.println("7 - Remover um produto");
+        // System.out.println("7 - Remover um produto");
+        System.out.println("7 - Devolver Veiculo - TESTE");
+        System.out.println("8 - Cadastrar novo cliente (PF/PJ)");
+        System.out.println("9 - Editar cliente (PF/PJ)");
         // System.out.println("8 - Devolver Veiculo - TESTE");
-        System.out.println("8 - Sair do Programa");
+        System.out.println("10 - Sair do Programa");
 
         return scan.nextLine();
     }
@@ -54,6 +57,8 @@ public class LocadoraView {
                     case Constantes.BUSCAR_AGENCIA -> buscarAgencia();
 //                    case Constantes.REMOVER_PRODUTO -> controller.removerProduto();
                     case Constantes.DEVOLVER_VEICULO -> devolverVeiculo();
+                    case Constantes.CADASTRAR_CLIENTE -> adicionarCliente(informacoesCliente());
+                    case Constantes.EDITAR_CLIENTE -> consultaCliente();
                     case Constantes.SAIR_PROGRAMA -> {
                         continueMenu = false;
 //                        controller.sairPrograma();
@@ -231,7 +236,7 @@ public class LocadoraView {
         System.out.println("Qual a potencia do veiculo: ");
         Double potenciaCarro = scan.nextDouble();
         scan.nextLine();
-        System.out.println("Qual o tipo do carro? Carro, moto ou Caminhao");
+        System.out.println("Qual o tipo do carro? Carro, Moto ou Caminhao");
         String tipoCarro = TipoVeiculo.obterTipoVeiculo(scan.nextLine());
 
         VeiculoDTO novoVeiculoDTO = new VeiculoDTO();
@@ -250,7 +255,7 @@ public class LocadoraView {
     //Método de teste - quando as outras classes foram implementadas irá ter mudança, mas o metodo tá calculando certo
     //e pegando os valores corretos.
     public void devolverVeiculo(){
-        System.out.println("Qual o tipo de Cliente? Digite 'J' para Cliente Juridico e 'F' para Cliente Fisico");
+        System.out.println("Qual o tipo de Cliente? Digite 'PJ' para Cliente Juridico e 'PF' para Cliente Fisico");
         String tipoCliente = scan.nextLine();
         System.out.println("Qual o nome do cliente? ");
         String nomeCliente = scan.nextLine();
@@ -265,4 +270,65 @@ public class LocadoraView {
     }
 
 
+    /////// clientes
+    public ClienteDTO informacoesCliente(){
+        System.out.println("Qual é o numero do documento do cliente (apenas números): ");
+        String documentoCliente = scan.nextLine();
+        return dadosClienteEditar(documentoCliente);
+    }
+
+    public String obterDocumentoEditar(){
+        System.out.println("Digite o documento do cliente que deseja alterar os seus dados: ");
+        return scan.nextLine();
+    }
+
+    public void verificarEditarCliente (String resposta){
+        switch(resposta.toLowerCase()){
+            case Constantes.RESP_SIM -> editarCliente();
+            case Constantes.RESP_NAO -> mensagens.voltandoMenu();
+            default -> throw new EntradaInvalidaOuInsuficienteException("Entrada inválida!");
+        }
+    }
+
+    public void consultaCliente(){
+        controller.consultarCliente(obterDocumentoEditar());
+        confirmacaoEditarCliente();
+    }
+
+
+    public void confirmacaoEditarCliente(){
+        System.out.println("Deseja editar este cliente? 'Y' para sim e 'N' para nao. ");
+        String resposta = scan.nextLine();
+        verificarEditarCliente(resposta);
+    }
+
+    public String editarCliente(){
+        String documentoDoClienteParaEditar = obterDocumentoEditar();
+        controller.editarClientePorDocumento(dadosClienteEditar(documentoDoClienteParaEditar));
+        return "Cliente editado com sucesso.";
+
+    }
+
+    private ClienteDTO dadosClienteEditar(String documentoDoClienteParaEditar) {
+        System.out.println("Qual o nome do cliente: ");
+        String nomeCliente = scan.nextLine();
+        System.out.println("Qual o telefone do cliente: ");
+        String telefoneCliente = scan.nextLine();
+        System.out.println("Qual o tipo de cliente? PF ou PJ");
+        String tipoCliente = TipoCliente.obterTipoCliente(scan.nextLine());
+
+        ClienteDTO novoClienteDTO = new ClienteDTO();
+        novoClienteDTO.setDocumento(documentoDoClienteParaEditar);
+        novoClienteDTO.setNome(nomeCliente);
+        novoClienteDTO.setTelefone(telefoneCliente);
+        novoClienteDTO.setTipoCliente(tipoCliente);
+        return novoClienteDTO;
+    }
+
+    public void adicionarCliente(ClienteDTO novoClienteDTO){
+        controller.adicionarCliente(novoClienteDTO);
+
+    }
+
+    /////// fim clientes
 }
