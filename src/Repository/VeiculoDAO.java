@@ -26,6 +26,7 @@ public class VeiculoDAO implements IGenericoRepository<VeiculoDTO>{
                 + veiculoDTO.getPotencia() + ", '"
                 + veiculoDTO.getTipo()
                 + "')";
+        System.out.println(query);
         try {
             Statement stm = instance.getConnection().createStatement();
             stm.executeUpdate(query);

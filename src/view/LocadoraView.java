@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
+import util.ConsoleColors;
 import util.Constantes;
 import util.Mensagens;
 
@@ -30,11 +31,15 @@ public class LocadoraView {
         System.out.println("1 - Adicionar Veiculo");
         System.out.println("2 - Editar Veiculo");
         System.out.println("3 - Listar Veiculo");
-        System.out.println("4 - Remover um produto");
-        System.out.println("5 - Devolver Veiculo - TESTE");
-        System.out.println("7 - Cadastrar novo cliente (PF/PJ)");
-        System.out.println("8 - Editar cliente (PF/PJ)");
-        System.out.println("14 - Sair do Programa");
+        System.out.println("4 - Cadastrar Agência");
+        System.out.println("5 - Alterar Agência");
+        System.out.println("6 - Buscar Agência");
+        // System.out.println("7 - Remover um produto");
+        System.out.println("7 - Devolver Veiculo - TESTE");
+        System.out.println("8 - Cadastrar novo cliente (PF/PJ)");
+        System.out.println("9 - Editar cliente (PF/PJ)");
+        // System.out.println("8 - Devolver Veiculo - TESTE");
+        System.out.println("10 - Sair do Programa");
 
         return scan.nextLine();
     }
@@ -47,6 +52,9 @@ public class LocadoraView {
                     case Constantes.ADICIONAR_CARRO -> adicionarVeiculo(informacoesCarro());
                     case Constantes.EDITAR_CARRO -> consultaCarro();
                     case Constantes.LISTAR_CARRO -> listarPorModelo();
+                    case Constantes.CADASTRAR_AGENCIA -> cadastrarAgencia();
+                    case Constantes.ALTERAR_AGENCIA -> alterarAgencia();
+                    case Constantes.BUSCAR_AGENCIA -> buscarAgencia();
 //                    case Constantes.REMOVER_PRODUTO -> controller.removerProduto();
                     case Constantes.DEVOLVER_VEICULO -> devolverVeiculo();
                     case Constantes.CADASTRAR_CLIENTE -> adicionarCliente(informacoesCliente());
@@ -77,6 +85,115 @@ public class LocadoraView {
             throw new ListaVaziaException("Não foi encontrado nenhum veículo");
         }
         modelosEncontrados.forEach(System.out::println);
+    }
+
+    private void cadastrarAgencia() {
+        System.out.println("Digite o nome da agência: ");
+        String nomeAgencia = scan.nextLine();
+        System.out.println("Digite o endereço da agência: ");
+        String enderecoAgencia = scan.nextLine();
+        AgenciaDTO agenciaDTO = new AgenciaDTO(nomeAgencia, enderecoAgencia);
+        controller.adicionarAgencia(agenciaDTO);
+        System.out.println("Agencia cadastrada com sucesso!");
+    }
+
+    private void alterarAgencia() {
+
+        // Verifica se existe alguma agência cadastrada no banco de dados
+        boolean existeAgencia = controller.consultarAgencia("");
+
+        if (existeAgencia) {
+            int idAgencia;
+            boolean idExiste = false;
+            do {
+                System.out.println("Por favor digite o ID da Agência que gostaria de alterar: ");
+                while (!scan.hasNextDouble()) {
+                    System.out.print("Por favor digite um ID válido ");
+                    scan.next();
+                }
+                idAgencia = scan.nextInt();
+                if(idAgencia < 0) System.out.println("Por Favor digite um ID válido");
+                idExiste = controller.verificaExistenciaAgenciaPorId(idAgencia);
+                if (idAgencia > 0 && !idExiste) System.out.println("Não foi encontrado o ID inserido, tente novamente.");
+            } while (idAgencia < 0 || !idExiste);
+
+            scan.nextLine();
+
+            System.out.println("Deseja alterar ou deletar a agência selecionada?");
+            System.out.println("1 - Alterar o nome");
+            System.out.println("2 - Alterar o logradouro");
+            System.out.println("3 - Alterar ambos");
+            System.out.println("4 - Deletar a agência");
+
+            boolean loop = true;
+            while (loop) {
+                String choice = scan.nextLine();
+                switch (choice) {
+                    case "1" -> {
+                        System.out.println("Digite o novo nome:");
+                        String nomeAgencia = scan.nextLine();
+                        String paramsQuery = "UPDATE|nome|" + nomeAgencia + "|" + idAgencia;
+                        controller.editarAgencia(paramsQuery);
+                        loop = false;
+                    }
+                    case "2" -> {
+                        System.out.println("Digite o novo logradouro :");
+                        String logradouro = scan.nextLine();
+                        String paramsQuery = "UPDATE|logradouro|" + logradouro + "|" + idAgencia;
+                        controller.editarAgencia(paramsQuery);
+                        loop = false;
+                    }
+                    case "3" -> {
+                        System.out.println("Digite o novo nome:");
+                        String nomeAgencia = scan.nextLine();
+                        System.out.println("Digite o novo logradouro :");
+                        String logradouro = scan.nextLine();
+                        String paramsQuery = "UPDATE|nome;logradouro|" + nomeAgencia + ";" + logradouro + "|" + idAgencia;
+                        controller.editarAgencia(paramsQuery);
+                        loop = false;
+                    }
+                    case "4" -> {
+                        controller.deletarAgencia(String.valueOf(idAgencia));
+                        loop = false;
+                    }
+                    default -> System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "Digite opção válida" + ConsoleColors.RESET);
+                }
+            }
+        }
+    }
+
+    private void buscarAgencia() {
+
+        System.out.println("Insira a opção desejada:");
+        System.out.println("1. Consultar agências por nome");
+        System.out.println("2. Consultar agências por logradouro");
+        System.out.println("3. Listar todas as agências");
+
+        boolean loop = true;
+        while (loop) {
+            String choice = scan.nextLine();
+            switch (choice) {
+                case "1" -> {
+                    System.out.println("Digite o novo nome:");
+                    String nomeAgencia = scan.nextLine();
+                    String paramsQuery = "nome|" + nomeAgencia;
+                    controller.consultarAgencia(paramsQuery);
+                    loop = false;
+                }
+                case "2" -> {
+                    System.out.println("Digite o logradouro :");
+                    String logradouro = scan.nextLine();
+                    String paramsQuery = "logradouro|" + logradouro;
+                    controller.consultarAgencia(paramsQuery);
+                    loop = false;
+                }
+                case "3" -> {
+                    controller.consultarAgencia("");
+                    loop = false;
+                }
+                default -> System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "Digite opção válida" + ConsoleColors.RESET);
+            }
+        }
     }
 
     public String obterPlacaEditar(){
