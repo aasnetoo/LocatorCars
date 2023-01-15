@@ -8,10 +8,7 @@ public class VeiculoDTO {
     private String modelo;
     private Double potencia;
     private String tipo;
-
-    public String getPlaca() {
-        return placa;
-    }
+    private boolean disponivel;
 
     @Override
     public boolean equals(Object o) {
@@ -24,6 +21,18 @@ public class VeiculoDTO {
     @Override
     public int hashCode() {
         return Objects.hash(placa, modelo, potencia, tipo);
+    }
+
+    public boolean isDisponivel() {
+        return disponivel;
+    }
+
+    public void setDisponivel(boolean disponivel) {
+        this.disponivel = disponivel;
+    }
+
+    public String getPlaca() {
+        return placa;
     }
 
     public void setPlaca(String placa) {

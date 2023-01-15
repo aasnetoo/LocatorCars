@@ -8,6 +8,7 @@ public class Veiculo {
     private String modelo;
     private Double potencia;
     private String tipo;
+    private boolean disponivel;
 
     public String getPlaca() {
         return placa;
@@ -37,6 +38,18 @@ public class Veiculo {
         return tipo;
     }
 
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public boolean isDisponivel() {
+        return disponivel;
+    }
+
+    public void setDisponivel(boolean disponivel) {
+        this.disponivel = disponivel;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -57,10 +70,7 @@ public class Veiculo {
                 ", modelo='" + modelo + '\'' +
                 ", potencia=" + potencia +
                 ", tipo='" + tipo + '\'' +
+                ", disponivel=" + disponivel +
                 '}';
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
     }
 }
