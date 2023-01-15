@@ -123,5 +123,9 @@ public class LocadoraController {
     }
     //fim cliente
 
+    ///////////Aluguel
+
+    ///////Fim Aluguel
+
 
 }

@@ -6,6 +6,9 @@ import exception.ListaVaziaException;
 import model.*;
 
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
@@ -34,12 +37,13 @@ public class LocadoraView {
         System.out.println("4 - Cadastrar Agência");
         System.out.println("5 - Alterar Agência");
         System.out.println("6 - Buscar Agência");
+        System.out.println("7 - Alugar Veículo");
         // System.out.println("7 - Remover um produto");
-        System.out.println("7 - Devolver Veiculo - TESTE");
-        System.out.println("8 - Cadastrar novo cliente (PF/PJ)");
-        System.out.println("9 - Editar cliente (PF/PJ)");
+        System.out.println("8 - Devolver Veiculo - TESTE");
+        System.out.println("9 - Cadastrar novo cliente (PF/PJ)");
+        System.out.println("10 - Editar cliente (PF/PJ)");
         // System.out.println("8 - Devolver Veiculo - TESTE");
-        System.out.println("10 - Sair do Programa");
+        System.out.println("14 - Sair do Programa");
 
         return scan.nextLine();
     }
@@ -55,6 +59,7 @@ public class LocadoraView {
                     case Constantes.CADASTRAR_AGENCIA -> cadastrarAgencia();
                     case Constantes.ALTERAR_AGENCIA -> alterarAgencia();
                     case Constantes.BUSCAR_AGENCIA -> buscarAgencia();
+                    case Constantes.ALUGAR_VEICULO -> alugarVeiculo();
 //                    case Constantes.REMOVER_PRODUTO -> controller.removerProduto();
                     case Constantes.DEVOLVER_VEICULO -> devolverVeiculo();
                     case Constantes.CADASTRAR_CLIENTE -> adicionarCliente(informacoesCliente());
@@ -73,13 +78,13 @@ public class LocadoraView {
 
     public VeiculoDTO informacoesCarro(){
         System.out.println("Qual a placa do veículo: ");
-        String placaCarro = scan.nextLine();
+        String placaCarro = scan.nextLine().toUpperCase();
         return dadosCarroEditar(placaCarro);
     }
 
     public void listarPorModelo(){
         System.out.println("Digite o nome ou parte dele do modelo veiculo: ");
-        String modeloBuscar = scan.nextLine();
+        String modeloBuscar = scan.nextLine().toUpperCase();
         List<Veiculo> modelosEncontrados = controller.ConsultaPorModelo(modeloBuscar);
         if (modelosEncontrados.isEmpty()){
             throw new ListaVaziaException("Não foi encontrado nenhum veículo");
@@ -198,17 +203,16 @@ public class LocadoraView {
 
     public String obterPlacaEditar(){
         System.out.println("Digite a placa do carro que deseja alterar os seus dados: ");
-        return scan.nextLine();
+        return scan.nextLine().toUpperCase();
     }
 
     public void verificarEditarCarro (String resposta){
-        switch(resposta.toLowerCase()){
+        switch(resposta.toUpperCase()){
             case Constantes.RESP_SIM -> editarCarro();
             case Constantes.RESP_NAO -> mensagens.voltandoMenu();
             default -> throw new EntradaInvalidaOuInsuficienteException("Entrada inválida!");
         }
     }
-
 
 
     public void consultaCarro(){
@@ -219,7 +223,7 @@ public class LocadoraView {
 
     public void confirmacaoEditarCarro(){
         System.out.println("Deseja editar esse Carro? 'Y' para sim e 'N' para nao. ");
-        String resposta = scan.nextLine();
+        String resposta = scan.nextLine().toUpperCase();
         verificarEditarCarro(resposta);
     }
 
@@ -232,18 +236,19 @@ public class LocadoraView {
 
     private VeiculoDTO dadosCarroEditar(String placaDoCarroParaEditar) {
         System.out.println("Qual o modelo do veiculo: ");
-        String modeloCarro = scan.nextLine();
+        String modeloCarro = scan.nextLine().toUpperCase();
         System.out.println("Qual a potencia do veiculo: ");
         Double potenciaCarro = scan.nextDouble();
         scan.nextLine();
         System.out.println("Qual o tipo do carro? Carro, Moto ou Caminhao");
-        String tipoCarro = TipoVeiculo.obterTipoVeiculo(scan.nextLine());
+        String tipoCarro = TipoVeiculo.obterTipoVeiculo(scan.nextLine().toUpperCase());
 
         VeiculoDTO novoVeiculoDTO = new VeiculoDTO();
         novoVeiculoDTO.setPlaca(placaDoCarroParaEditar);
         novoVeiculoDTO.setModelo(modeloCarro);
         novoVeiculoDTO.setPotencia(potenciaCarro);
         novoVeiculoDTO.setTipo(tipoCarro);
+        novoVeiculoDTO.setDisponivel(true);
         return novoVeiculoDTO;
     }
 
@@ -256,14 +261,14 @@ public class LocadoraView {
     //e pegando os valores corretos.
     public void devolverVeiculo(){
         System.out.println("Qual o tipo de Cliente? Digite 'PJ' para Cliente Juridico e 'PF' para Cliente Fisico");
-        String tipoCliente = scan.nextLine();
+        String tipoCliente = scan.nextLine().toUpperCase();
         System.out.println("Qual o nome do cliente? ");
-        String nomeCliente = scan.nextLine();
+        String nomeCliente = scan.nextLine().toUpperCase();
         System.out.println("Quantos dias ficou com o veiculo? ");
         int diasVeiculo = scan.nextInt();
         scan.nextLine();
         System.out.println("Digite a placa do veiculo que você alugou? ");
-        String placaVeiculo = scan.nextLine();
+        String placaVeiculo = scan.nextLine().toUpperCase();
         VeiculoDTO veiculoADevolver = controller.obterVeiculoPorPlaca(placaVeiculo);
         double valorTotal = controller.valorDevolucao(nomeCliente,veiculoADevolver,diasVeiculo,tipoCliente);
         System.out.println(valorTotal);
@@ -283,7 +288,7 @@ public class LocadoraView {
     }
 
     public void verificarEditarCliente (String resposta){
-        switch(resposta.toLowerCase()){
+        switch(resposta.toUpperCase()){
             case Constantes.RESP_SIM -> editarCliente();
             case Constantes.RESP_NAO -> mensagens.voltandoMenu();
             default -> throw new EntradaInvalidaOuInsuficienteException("Entrada inválida!");
@@ -298,7 +303,7 @@ public class LocadoraView {
 
     public void confirmacaoEditarCliente(){
         System.out.println("Deseja editar este cliente? 'Y' para sim e 'N' para nao. ");
-        String resposta = scan.nextLine();
+        String resposta = scan.nextLine().toUpperCase();
         verificarEditarCliente(resposta);
     }
 
@@ -311,11 +316,11 @@ public class LocadoraView {
 
     private ClienteDTO dadosClienteEditar(String documentoDoClienteParaEditar) {
         System.out.println("Qual o nome do cliente: ");
-        String nomeCliente = scan.nextLine();
+        String nomeCliente = scan.nextLine().toUpperCase();
         System.out.println("Qual o telefone do cliente: ");
         String telefoneCliente = scan.nextLine();
         System.out.println("Qual o tipo de cliente? PF ou PJ");
-        String tipoCliente = TipoCliente.obterTipoCliente(scan.nextLine());
+        String tipoCliente = TipoCliente.obterTipoCliente(scan.nextLine().toUpperCase());
 
         ClienteDTO novoClienteDTO = new ClienteDTO();
         novoClienteDTO.setDocumento(documentoDoClienteParaEditar);
@@ -331,4 +336,115 @@ public class LocadoraView {
     }
 
     /////// fim clientes
+
+    //////////////Inicio Aluguel
+    public void alugarVeiculo(){
+        Cliente clieteParaAlugar = pegarCliente();
+        if (clieteParaAlugar == null){
+            System.out.println("Cliente não encontrado");
+            return;
+        }
+
+        VeiculoDTO veiculoParaAluguel = escolherVeiculo();
+        if(veiculoParaAluguel == null){
+            System.out.println("Veículo não encontrado");
+            return;
+        }
+
+        if(!verificarVeiculoDisponivel(veiculoParaAluguel)){
+            System.out.println("Veículo alugado no momento. Tente com outro veículo.");
+            return;
+        }
+
+        //Mon Jan 16 00:00:00 BRT 2023
+        System.out.println("Para o início da locação.");
+        Date dataInicio = escolherData();
+
+        System.out.println("Para a devolução do veículo.");
+        Date dataDevolucao = escolherData();
+        try{
+            if(!validacaoDatasLocacao(dataInicio, dataDevolucao)){
+                System.out.println("Informe datas válidas");
+                return;
+            }
+            //escolherHorarioLocacao(dataInicio);
+        }catch (Exception e){
+            System.out.println("Datas inválidas");
+        }
+
+    }
+
+    public boolean validacaoDatasLocacao(Date dataInicio, Date dataDevolucao){
+        Date dataAtual = new Date();
+        if(dataInicio.after(dataDevolucao)){
+            return false;
+        }
+        if(dataInicio.before(dataAtual)){
+            return false;
+        }
+        return true;
+    }
+
+    public boolean verificarVeiculoDisponivel(VeiculoDTO veiculoParaVerificacao){
+        return true;
+    }
+
+    public void escolherHorarioLocacao(Date dataInicioLocacao){
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        String dataLocacao = dataInicioLocacao.toString();
+        System.out.println("Informe o horário para locação no formato HH:mm:ss");
+        String horarioUsuario = scan.nextLine();
+        try {
+            Date horarioLocacao;
+            horarioLocacao = (Date) dataInicioLocacao.clone();
+            //horarioLocacao = Calendar.getInstance().getTime();
+            //horarioLocacao.setTime(sdf.parse(horarioUsuario));
+            horarioLocacao = sdf.parse(horarioUsuario);
+            System.out.println(horarioLocacao);
+        } catch (ParseException e) {
+            System.out.println("Informe um horário válido");
+            return;
+        }
+    }
+
+    public Date escolherData(){
+        System.out.println("Informe a data desejada no formato dd/MM/yyyy.");
+        String data = scan.nextLine();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            Date dataLocacao = sdf.parse(data);
+            return dataLocacao;
+        } catch (ParseException e) {
+            System.out.println("Digite um formato de data válido.");
+            return null;
+        }
+    }
+
+    public Cliente pegarCliente(){
+
+        System.out.println("Digite o documento de quem vai alugar o veículo (apenas números):");
+        try {
+            Integer documento = Integer.parseInt(scan.nextLine());
+            String documentoParaBusca = documento.toString();
+            //controller.consultarClientePorId(documentoParaBusca);
+            Cliente clienteTemporario = new ClienteFisico("123456");
+            return clienteTemporario;
+        }catch (IllegalArgumentException e){
+            System.out.println("Informe apenas números");
+            return null;
+        }
+    }
+
+    public VeiculoDTO escolherVeiculo(){
+        try{
+            listarPorModelo();
+            System.out.println("Informe a placa do veículo que deseja alugar.");
+            return controller.obterVeiculoPorPlaca(scan.nextLine().toUpperCase());
+        }catch (ListaVaziaException e){
+            System.out.println("Não possuímos esse veículo em nosso estoque.");
+            return null;
+        }
+    }
+
+    //////////////Fim Aluguel
 }
