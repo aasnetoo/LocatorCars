@@ -41,8 +41,8 @@ public class LocadoraView {
         System.out.println("7 - Alugar Veículo");
         // System.out.println("7 - Remover um produto");
         System.out.println("8 - Devolver Veiculo - TESTE");
-        System.out.println("9 - Cadastrar novo cliente (PF/PJ)");
-        System.out.println("10 - Editar cliente (PF/PJ)");
+        System.out.println("9 - Cadastrar novo cliente");
+        System.out.println("10 - Editar cliente");
         System.out.println("11 - Listar todos os Veiculos Disponiveis");
         // System.out.println("8 - Devolver Veiculo - TESTE");
         System.out.println("14 - Sair do Programa");
@@ -64,7 +64,7 @@ public class LocadoraView {
                     case Constantes.ALUGAR_VEICULO -> alugarVeiculo();
 //                    case Constantes.REMOVER_PRODUTO -> controller.removerProduto();
                     case Constantes.DEVOLVER_VEICULO -> devolverVeiculo();
-                    case Constantes.CADASTRAR_CLIENTE -> adicionarCliente(informacoesCliente());
+                    case Constantes.CADASTRAR_CLIENTE -> adicionarCliente();
                     case Constantes.EDITAR_CLIENTE -> consultaCliente();
                     case Constantes.LISTA_VEICULOS_DISPONIVEIS -> listarVeiculosDisponiveisParaAluguel();
                     case Constantes.SAIR_PROGRAMA -> {
@@ -283,7 +283,7 @@ public class LocadoraView {
 
     }
 
-    //Método de teste - quando as outras classes foram implementadas irá ter mudança, mas o metodo tá calculando certo
+    //Método de teste — quando as outras classes foram implementadas irá ter mudança, mas o metodo tá calculando certo
     //e pegando os valores corretos.
     public void devolverVeiculo(){
         System.out.println("Qual o tipo de Cliente? Digite 'PJ' para Cliente Juridico e 'PF' para Cliente Fisico");
@@ -304,55 +304,20 @@ public class LocadoraView {
         controller.veiculosDisponiveisParaAluguel().forEach(System.out::println);
     }
 
-
-    /////// clientes
-
     public ClienteDTO retornarCliente() {
         System.out.println("Digite o documento do cliente que deseja buscar: ");
         String documento = scan.nextLine();
-        ClienteDTO clienteDTO = controller.retornarCliente(documento);
-        return clienteDTO;
+        return controller.retornarCliente(documento);
     }
 
-    public ClienteDTO informacoesCliente(){
+    public void adicionarCliente(){
         System.out.println("Qual é o numero do documento do cliente (apenas números): ");
         String documentoCliente = scan.nextLine();
-        return dadosClienteEditar(documentoCliente);
+        ClienteDTO novoClienteDTO = dadosClienteAdicionarOuEditar(documentoCliente);
+        controller.adicionarCliente(novoClienteDTO);
     }
 
-    public String obterDocumentoEditar(){
-        System.out.println("Digite o documento do cliente que deseja alterar os seus dados: ");
-        return scan.nextLine();
-    }
-
-    public void verificarEditarCliente (String resposta){
-        switch(resposta.toUpperCase()){
-            case Constantes.RESP_SIM -> editarCliente();
-            case Constantes.RESP_NAO -> mensagens.voltandoMenu();
-            default -> throw new EntradaInvalidaOuInsuficienteException("Entrada inválida!");
-        }
-    }
-
-    public void consultaCliente(){
-        controller.consultarCliente(obterDocumentoEditar());
-        confirmacaoEditarCliente();
-    }
-
-
-    public void confirmacaoEditarCliente(){
-        System.out.println("Deseja editar este cliente? 'Y' para sim e 'N' para nao. ");
-        String resposta = scan.nextLine().toUpperCase();
-        verificarEditarCliente(resposta);
-    }
-
-    public String editarCliente(){
-        String documentoDoClienteParaEditar = obterDocumentoEditar();
-        controller.editarClientePorDocumento(dadosClienteEditar(documentoDoClienteParaEditar));
-        return "Cliente editado com sucesso.";
-
-    }
-
-    private ClienteDTO dadosClienteEditar(String documentoDoClienteParaEditar) {
+    private ClienteDTO dadosClienteAdicionarOuEditar(String documentoDoClienteParaEditar) {
         System.out.println("Qual o nome do cliente: ");
         String nomeCliente = scan.nextLine().toUpperCase();
         System.out.println("Qual o telefone do cliente: ");
@@ -368,12 +333,36 @@ public class LocadoraView {
         return novoClienteDTO;
     }
 
-    public void adicionarCliente(ClienteDTO novoClienteDTO){
-        controller.adicionarCliente(novoClienteDTO);
-
+    public void consultaCliente(){
+        controller.consultarCliente(obterDocumentoEditar());
+        confirmacaoEditarCliente();
     }
 
-    /////// fim clientes
+    public String obterDocumentoEditar(){
+        System.out.println("Digite o documento do cliente que deseja alterar os seus dados: ");
+        return scan.nextLine();
+    }
+
+    public void verificarEditarCliente (String resposta){
+        switch(resposta.toUpperCase()){
+            case Constantes.RESP_SIM -> editarCliente();
+            case Constantes.RESP_NAO -> mensagens.voltandoMenu();
+            default -> throw new EntradaInvalidaOuInsuficienteException("Entrada inválida!");
+        }
+    }
+
+    public void confirmacaoEditarCliente(){
+        System.out.println("Deseja editar este cliente? 'Y' para sim e 'N' para nao. ");
+        String resposta = scan.nextLine().toUpperCase();
+        verificarEditarCliente(resposta);
+    }
+
+    public void editarCliente(){
+        String documentoDoClienteParaEditar = obterDocumentoEditar();
+        controller.editarClientePorDocumento(dadosClienteAdicionarOuEditar(documentoDoClienteParaEditar));
+        System.out.println("Cliente editado com sucesso.");
+
+    }
 
     //////////////Inicio Aluguel
     public void alugarVeiculo(){
