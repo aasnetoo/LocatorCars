@@ -6,7 +6,7 @@ import util.Constantes;
 public class FactoryCliente {
 
     public Cliente getCliente(String documento, String tipoPessoa){
-        switch(tipoPessoa.toLowerCase()){
+        switch(tipoPessoa.toUpperCase()){
             case Constantes.CLIENTE_FISICO -> {
                 return new ClienteFisico(documento);
             }

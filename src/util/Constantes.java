@@ -20,9 +20,22 @@ public class Constantes {
     public static final String DEVOLVER_VEICULO = "8";
     public static final String CADASTRAR_CLIENTE = "9";
     public static final String EDITAR_CLIENTE = "10";
+    public static final String LISTA_VEICULOS_DISPONIVEIS = "11";
     public static final String SAIR_PROGRAMA = "14";
     public static final String CLIENTE_FISICO = "PF";
     public static final String CLIENTE_JURIDICO = "PJ";
+    public static final String ALTERAR_NOME_AGENCIA = "1";
+    public static final String ALTERAR_LOGRADOURO_AGENCIA = "2";
+    public static final String ALTERAR_NOME_E_LOGRADOURO_AGENCIA = "3";
+    public static final String DELETAR_AGENCIA = "4";
+
+    public static final String CONSULTAR_AGENCIA_POR_NOME = "1";
+    public static final String CONSULTAR_AGENCIA_POR_LOGRADOURO= "2";
+    public static final String LISTAR_TODAS_AGENCIAS= "3";
+
+
+
+
     public static final double VALOR_CARRO = 150.0;
     public static final double VALOR_MOTO = 100.0;
     public static final double VALOR_CAMINHAO = 200.0;

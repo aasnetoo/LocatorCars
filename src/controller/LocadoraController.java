@@ -51,6 +51,11 @@ public class LocadoraController {
     public void editarCarroPorPlaca(VeiculoDTO veiculoDTO){
         veiculoDAO.atualizarPorPlaca(veiculoDTO);
     }
+    public List<Veiculo> veiculosDisponiveisParaAluguel(){
+        return veiculoDAO.listaVeiculosDisponiveis();
+    }
+
+    // Agencia
     public void adicionarAgencia(AgenciaDTO agenciaDTO) {
         String paramsQuery = "INSERT|nome;logradouro|";
         paramsQuery += agenciaDTO.getNome().toUpperCase();
