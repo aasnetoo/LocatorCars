@@ -121,6 +121,11 @@ public class LocadoraController {
     public void editarClientePorDocumento(ClienteDTO clienteDTO){
         clienteDAO.atualizarPorDocumento(clienteDTO);
     }
+
+    public ClienteDTO retornarCliente(String documento){
+        return clienteDAO.retornarCliente(documento);
+    }
+
     //fim cliente
 
     ///////////Aluguel

@@ -276,6 +276,14 @@ public class LocadoraView {
 
 
     /////// clientes
+
+    public ClienteDTO retornarCliente() {
+        System.out.println("Digite o documento do cliente que deseja buscar: ");
+        String documento = scan.nextLine();
+        ClienteDTO clienteDTO = controller.retornarCliente(documento);
+        return clienteDTO;
+    }
+
     public ClienteDTO informacoesCliente(){
         System.out.println("Qual é o numero do documento do cliente (apenas números): ");
         String documentoCliente = scan.nextLine();
