@@ -14,7 +14,9 @@ public class AluguelDAO {
     }
 
     public void incluirAluguel(AluguelDTO aluguelDTO) {
-        String query = "INSERT into alugueis (id, cliente_nome, cliente_documento, veiculo_modelo, placa_veiculo, data_inicio, data_devolucao, horario_agendado, valor) values('"
+        String query = "INSERT into alugueis (id, cliente_nome, cliente_documento, veiculo_modelo, " +
+                "placa_veiculo, data_inicio, data_devolucao, horario_agendado, " +
+                "valor, tipo_cliente, agencia_retirada_nome, agencia_devolucao_nome) values('"
                 + aluguelDTO.getId() + "', '"
                 + aluguelDTO.getCliente().nome + "', '"
                 + aluguelDTO.getCliente().documento + "', '"
@@ -23,10 +25,10 @@ public class AluguelDAO {
                 + aluguelDTO.getDataInicio() + "', '"
                 + aluguelDTO.getDataDevolucao() + "', '"
                 + aluguelDTO.getHorarioAgendado() + "', '"
-                + aluguelDTO.getAgenciaRetirada() + "', '"
-                + aluguelDTO.getAgenciaDevolucao() + "', '"
                 + aluguelDTO.getValorAluguel() + "', '"
                 + aluguelDTO.getCliente().tipoCliente + "', '"
+                + aluguelDTO.getAgenciaRetirada() + "', '"
+                + aluguelDTO.getAgenciaDevolucao() + "', '"
                 + "')";
         try {
             Statement stm = instance.getConnection().createStatement();
