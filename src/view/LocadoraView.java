@@ -42,6 +42,7 @@ public class LocadoraView {
         System.out.println("8 - Devolver Veiculo - TESTE");
         System.out.println("9 - Cadastrar novo cliente (PF/PJ)");
         System.out.println("10 - Editar cliente (PF/PJ)");
+        System.out.println("11 - Listar todos os Veiculos Disponiveis");
         // System.out.println("8 - Devolver Veiculo - TESTE");
         System.out.println("14 - Sair do Programa");
 
@@ -64,6 +65,7 @@ public class LocadoraView {
                     case Constantes.DEVOLVER_VEICULO -> devolverVeiculo();
                     case Constantes.CADASTRAR_CLIENTE -> adicionarCliente(informacoesCliente());
                     case Constantes.EDITAR_CLIENTE -> consultaCliente();
+                    case Constantes.LISTA_VEICULOS_DISPONIVEIS -> listarVeiculosDisponiveisParaAluguel();
                     case Constantes.SAIR_PROGRAMA -> {
                         continueMenu = false;
 //                        controller.sairPrograma();
@@ -134,21 +136,21 @@ public class LocadoraView {
             while (loop) {
                 String choice = scan.nextLine();
                 switch (choice) {
-                    case "1" -> {
+                    case Constantes.ALTERAR_NOME_AGENCIA-> {
                         System.out.println("Digite o novo nome:");
                         String nomeAgencia = scan.nextLine().toUpperCase();
                         String paramsQuery = "UPDATE|nome|" + nomeAgencia + "|" + idAgencia;
                         controller.editarAgencia(paramsQuery);
                         loop = false;
                     }
-                    case "2" -> {
+                    case Constantes.ALTERAR_LOGRADOURO_AGENCIA -> {
                         System.out.println("Digite o novo logradouro :");
                         String logradouro = scan.nextLine().toUpperCase();
                         String paramsQuery = "UPDATE|logradouro|" + logradouro + "|" + idAgencia;
                         controller.editarAgencia(paramsQuery);
                         loop = false;
                     }
-                    case "3" -> {
+                    case Constantes.ALTERAR_NOME_E_LOGRADOURO_AGENCIA -> {
                         System.out.println("Digite o novo nome:");
                         String nomeAgencia = scan.nextLine().toUpperCase();
                         System.out.println("Digite o novo logradouro :");
@@ -157,7 +159,7 @@ public class LocadoraView {
                         controller.editarAgencia(paramsQuery);
                         loop = false;
                     }
-                    case "4" -> {
+                    case Constantes.DELETAR_AGENCIA -> {
                         controller.deletarAgencia(String.valueOf(idAgencia));
                         loop = false;
                     }
@@ -178,21 +180,21 @@ public class LocadoraView {
         while (loop) {
             String choice = scan.nextLine();
             switch (choice) {
-                case "1" -> {
+                case Constantes.CONSULTAR_AGENCIA_POR_NOME -> {
                     System.out.println("Digite o novo nome:");
                     String nomeAgencia = scan.nextLine().toUpperCase();
                     String paramsQuery = "nome|" + nomeAgencia;
                     controller.consultarAgencia(paramsQuery);
                     loop = false;
                 }
-                case "2" -> {
+                case Constantes.CONSULTAR_AGENCIA_POR_LOGRADOURO-> {
                     System.out.println("Digite o logradouro :");
                     String logradouro = scan.nextLine().toUpperCase();
                     String paramsQuery = "logradouro|" + logradouro;
                     controller.consultarAgencia(paramsQuery);
                     loop = false;
                 }
-                case "3" -> {
+                case Constantes.LISTAR_TODAS_AGENCIAS -> {
                     controller.consultarAgencia("");
                     loop = false;
                 }
@@ -272,6 +274,10 @@ public class LocadoraView {
         VeiculoDTO veiculoADevolver = controller.obterVeiculoPorPlaca(placaVeiculo);
         double valorTotal = controller.valorDevolucao(nomeCliente,veiculoADevolver,diasVeiculo,tipoCliente);
         System.out.println(valorTotal);
+    }
+
+    public void listarVeiculosDisponiveisParaAluguel(){
+        controller.veiculosDisponiveisParaAluguel().forEach(System.out::println);
     }
 
 

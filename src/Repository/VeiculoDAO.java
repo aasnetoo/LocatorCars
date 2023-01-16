@@ -76,6 +76,30 @@ public class VeiculoDAO implements IGenericoRepository<VeiculoDTO>{
         }
         return veiculoDTO;
     }
+
+    public List<Veiculo> listaVeiculosDisponiveis(){
+        String consulta = "SELECT * FROM veiculos WHERE disponivel";
+        List<Veiculo> veiculosDisponiveis = new ArrayList<>();
+        try {
+            Statement stm = instance.getConnection().createStatement();
+            ResultSet resultado = stm.executeQuery(consulta);
+            while(resultado.next()) {
+                Veiculo veiculoDisponivel = new Veiculo();
+                veiculoDisponivel.setPlaca(resultado.getString("placa"));
+                veiculoDisponivel.setModelo(resultado.getString("modelo"));
+                veiculoDisponivel.setPotencia(resultado.getDouble("potencia"));
+                veiculoDisponivel.setTipo(resultado.getString("tipo"));
+                veiculoDisponivel.setDisponivel(resultado.getBoolean("disponivel"));
+
+                veiculosDisponiveis.add(veiculoDisponivel);
+
+            }
+
+        }catch(SQLException ex){
+            System.out.println("Não conseguiu consultar os dados do Veiculo.");
+        }
+        return veiculosDisponiveis;
+    }
     @Override
     public void deletar(VeiculoDTO object) {
 
