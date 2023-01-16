@@ -205,7 +205,7 @@ public class LocadoraView {
             String choice = scan.nextLine();
             switch (choice) {
                 case Constantes.CONSULTAR_AGENCIA_POR_NOME -> {
-                    System.out.println("Digite o novo nome:");
+                    System.out.println("Digite o nome:");
                     String nomeAgencia = scan.nextLine().toUpperCase();
                     String paramsQuery = "ILIKE|nome|" + nomeAgencia;
                     controller.consultarAgencia(paramsQuery, true);

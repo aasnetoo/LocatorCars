@@ -8,6 +8,10 @@ public class AgenciaDTO {
     private String nome;
     private String logradouro;
 
+    public AgenciaDTO(String nome) {
+        this.nome = nome;
+    }
+
     public AgenciaDTO(String nome, String logradouro) {
         this.nome = nome;
         this.logradouro = logradouro;

@@ -7,6 +7,10 @@ public class Agencia {
     private String nome;
     private String logadouro;
 
+    public Agencia(String nome) {
+        this.nome = nome;
+    }
+
     public String getNome() {
         return nome;
     }
