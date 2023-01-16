@@ -4,9 +4,9 @@ import exception.EntradaInvalidaOuInsuficienteException;
 import util.Constantes;
 public enum TipoVeiculo {
 
-    CARRO("Carro"),
-    MOTO("Moto"),
-    CAMINHAO("Caminhao");
+    CARRO("CARRO"),
+    MOTO("MOTO"),
+    CAMINHAO("CAMINHAO");
 
     public String nome;
 

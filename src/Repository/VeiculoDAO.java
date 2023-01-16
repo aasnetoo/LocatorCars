@@ -67,7 +67,7 @@ public class VeiculoDAO implements IGenericoRepository<VeiculoDTO>{
                 veiculoDTO.setModelo(resultado.getString("modelo"));
                 veiculoDTO.setPotencia(resultado.getDouble("potencia"));
                 veiculoDTO.setTipo(resultado.getString("tipo"));
-                veiculoDTO.setTipo(resultado.getString("disponivel"));
+                veiculoDTO.setDisponivel(resultado.getBoolean("disponivel"));
 
             }
 
