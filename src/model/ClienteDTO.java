@@ -16,6 +16,28 @@ public class ClienteDTO {
         return Objects.equals(documento, that.documento) && Objects.equals(tipoCliente, that.tipoCliente);
     }
 
+    public Double valorDesconto(int dias, String tipoCliente) {
+
+        if(tipoCliente == "PF") {
+            if (dias>5){
+                return 0.05;
+            }else{
+                return 0.0;
+            }
+
+        } else if (tipoCliente == "PJ") {
+            if (dias>3){
+                return 0.10;
+            }else{
+                return 0.0;
+            }
+
+        } else {
+            System.out.println("Tipo de cliente não reconhecido");
+            return 0.0;
+        }
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(nome, telefone, documento, tipoCliente);

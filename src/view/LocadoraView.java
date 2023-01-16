@@ -1,5 +1,6 @@
 package view;
 
+import Repository.ClienteDAO;
 import controller.LocadoraController;
 import exception.EntradaInvalidaOuInsuficienteException;
 import exception.ListaVaziaException;
@@ -353,7 +354,7 @@ public class LocadoraView {
 
     //////////////Inicio Aluguel
     public void alugarVeiculo(){
-        Cliente clieteParaAlugar = pegarCliente();
+        ClienteDTO clieteParaAlugar = pegarCliente();
         if (clieteParaAlugar == null){
             System.out.println("Cliente não encontrado");
             return;
@@ -434,14 +435,13 @@ public class LocadoraView {
         }
     }
 
-    public Cliente pegarCliente(){
+    public ClienteDTO pegarCliente(){
 
         System.out.println("Digite o documento de quem vai alugar o veículo (apenas números):");
         try {
             Integer documento = Integer.parseInt(scan.nextLine());
             String documentoParaBusca = documento.toString();
-            //controller.consultarClientePorId(documentoParaBusca);
-            Cliente clienteTemporario = new ClienteFisico("123456");
+            ClienteDTO clienteTemporario = new ClienteDTO();
             return clienteTemporario;
         }catch (IllegalArgumentException e){
             System.out.println("Informe apenas números");

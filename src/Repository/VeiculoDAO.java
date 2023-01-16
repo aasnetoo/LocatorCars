@@ -156,7 +156,7 @@ public class VeiculoDAO implements IGenericoRepository<VeiculoDTO>{
 
     public void atualizarPorPlaca(VeiculoDTO veiculoDTO) {
         try {
-            String sql = "UPDATE carros " +
+            String sql = "UPDATE veiculos " +
                     " SET modelo = '"+veiculoDTO.getModelo()+"', " +
                     " potencia = "+veiculoDTO.getPotencia()+"," +
                     " tipo = '"+veiculoDTO.getTipo()+"' " +

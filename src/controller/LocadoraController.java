@@ -18,7 +18,6 @@ public class LocadoraController {
     VeiculoDAO veiculoDAO = new VeiculoDAO();
     AgenciaDAO agenciaDAO = new AgenciaDAO();
     ClienteDAO clienteDAO = new ClienteDAO();
-    FactoryCliente factoryCliente = new FactoryCliente();
 
 
     public LocadoraController() throws SQLException {
@@ -94,8 +93,8 @@ public class LocadoraController {
     // Fica faltando só mudar a disponibilidade do veiculo dps que devolver, quase OK
     public double valorDevolucao(String documento, VeiculoDTO veiculoDTO, int dias, String tipoCliente){
         double precoFinal = 0.0;
-        Cliente cliente = factoryCliente.getCliente(documento,tipoCliente);
-        double desconto = cliente.valorDesconto(dias);
+        ClienteDTO cliente = clienteDAO.retornarCliente(documento);
+        double desconto = cliente.valorDesconto(dias, cliente.getTipoCliente());
         double valorSemDesconto = (TipoVeiculo.calculaValor(veiculoDTO.getTipo())*dias);
         precoFinal = valorSemDesconto - (valorSemDesconto*desconto);
 

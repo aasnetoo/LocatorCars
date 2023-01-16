@@ -17,8 +17,8 @@ public enum TipoCliente {
         return tipoCliente;
     }
 
-    public static String obterTipoCliente(String nome) {
-        switch (nome) {
+    public static String obterTipoCliente(String documento) {
+        switch (documento) {
             case Constantes.CLIENTE_FISICO -> {
                 return PESSOA_FISICA.getTipo();
             }

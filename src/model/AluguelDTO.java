@@ -1,5 +1,7 @@
 package model;
 
+import Repository.ClienteDAO;
+
 import java.math.BigDecimal;
 import java.sql.Time;
 import java.util.Date;
@@ -8,7 +10,7 @@ import java.util.Objects;
 public class AluguelDTO {
 
     Long id;
-    Cliente cliente;
+    ClienteDTO cliente;
     Veiculo veiculo;
     Date dataInicio;
     Date dataDevolucao;
@@ -60,11 +62,11 @@ public class AluguelDTO {
         this.id = id;
     }
 
-    public Cliente getCliente() {
+    public ClienteDTO getCliente() {
         return cliente;
     }
 
-    public void setCliente(Cliente cliente) {
+    public void setCliente(ClienteDTO cliente) {
         this.cliente = cliente;
     }
 
