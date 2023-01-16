@@ -96,19 +96,31 @@ public class LocadoraView {
     }
 
     private void cadastrarAgencia() {
-        System.out.println("Digite o nome da agência: ");
-        String nomeAgencia = scan.nextLine().toUpperCase();
-        System.out.println("Digite o endereço da agência: ");
-        String enderecoAgencia = scan.nextLine().toUpperCase();
-        AgenciaDTO agenciaDTO = new AgenciaDTO(nomeAgencia, enderecoAgencia);
-        controller.adicionarAgencia(agenciaDTO);
+        boolean loop = true;
+        while (loop) {
+            System.out.println("Digite o nome da agência: ");
+            String nomeAgencia = scan.nextLine().toUpperCase();
+            System.out.println("Digite o endereço da agência: ");
+            String enderecoAgencia = scan.nextLine().toUpperCase();
+
+            AgenciaDTO agenciaDTO = new AgenciaDTO(nomeAgencia, enderecoAgencia);
+            boolean checkAgencia = controller.consultarAgencia("SEARCH|nome;logradouro|" + nomeAgencia + ";" + enderecoAgencia, false);
+
+            if (!checkAgencia) {
+                controller.adicionarAgencia(agenciaDTO);
+                loop = false;
+            } else {
+                System.out.println("Nome ou Logradouro já cadastrados, favor inserir um novo.");
+            }
+
+        }
         System.out.println("Agencia cadastrada com sucesso!");
     }
 
     private void alterarAgencia() {
 
         // Verifica se existe alguma agência cadastrada no banco de dados
-        boolean existeAgencia = controller.consultarAgencia("");
+        boolean existeAgencia = controller.consultarAgencia("", true);
 
         if (existeAgencia) {
             int idAgencia;
@@ -140,16 +152,27 @@ public class LocadoraView {
                     case Constantes.ALTERAR_NOME_AGENCIA-> {
                         System.out.println("Digite o novo nome:");
                         String nomeAgencia = scan.nextLine().toUpperCase();
-                        String paramsQuery = "UPDATE|nome|" + nomeAgencia + "|" + idAgencia;
-                        controller.editarAgencia(paramsQuery);
-                        loop = false;
+                        boolean checkNomeAgencia = controller.consultarAgencia("SEARCH|nome|" + nomeAgencia, false);
+                        if (!checkNomeAgencia) {
+                            String paramsQuery = "UPDATE|nome|" + nomeAgencia + "|" + idAgencia;
+                            controller.editarAgencia(paramsQuery);
+                            loop = false;
+                        } else {
+                            System.out.println("Nome já cadastrado, favor escolher outro.");
+                        }
                     }
                     case Constantes.ALTERAR_LOGRADOURO_AGENCIA -> {
                         System.out.println("Digite o novo logradouro :");
                         String logradouro = scan.nextLine().toUpperCase();
-                        String paramsQuery = "UPDATE|logradouro|" + logradouro + "|" + idAgencia;
-                        controller.editarAgencia(paramsQuery);
-                        loop = false;
+
+                        boolean checkLogradouroAgencia = controller.consultarAgencia("SEARCH|logradouro|" + logradouro, false);
+                        if (!checkLogradouroAgencia) {
+                            String paramsQuery = "UPDATE|logradouro|" + logradouro + "|" + idAgencia;
+                            controller.editarAgencia(paramsQuery);
+                            loop = false;
+                        } else {
+                            System.out.println("Logradouro já cadastrado, favor escolher outro.");
+                        }
                     }
                     case Constantes.ALTERAR_NOME_E_LOGRADOURO_AGENCIA -> {
                         System.out.println("Digite o novo nome:");
@@ -184,19 +207,19 @@ public class LocadoraView {
                 case Constantes.CONSULTAR_AGENCIA_POR_NOME -> {
                     System.out.println("Digite o novo nome:");
                     String nomeAgencia = scan.nextLine().toUpperCase();
-                    String paramsQuery = "nome|" + nomeAgencia;
-                    controller.consultarAgencia(paramsQuery);
+                    String paramsQuery = "ILIKE|nome|" + nomeAgencia;
+                    controller.consultarAgencia(paramsQuery, true);
                     loop = false;
                 }
                 case Constantes.CONSULTAR_AGENCIA_POR_LOGRADOURO-> {
                     System.out.println("Digite o logradouro :");
                     String logradouro = scan.nextLine().toUpperCase();
-                    String paramsQuery = "logradouro|" + logradouro;
-                    controller.consultarAgencia(paramsQuery);
+                    String paramsQuery = "ILIKE|logradouro|" + logradouro;
+                    controller.consultarAgencia(paramsQuery, true);
                     loop = false;
                 }
                 case Constantes.LISTAR_TODAS_AGENCIAS -> {
-                    controller.consultarAgencia("");
+                    controller.consultarAgencia("", true);
                     loop = false;
                 }
                 default -> System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "Digite opção válida" + ConsoleColors.RESET);

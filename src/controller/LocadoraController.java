@@ -67,14 +67,16 @@ public class LocadoraController {
         agenciaDAO.incluir(paramsQuery);
     }
 
-    public boolean consultarAgencia(String paramsQuery) {
+    public boolean consultarAgencia(String paramsQuery, boolean print) {
 
         // Obtém as agências presentes no Banco de Dados
         List<AgenciaDTO> listAgenciaDTO = new ArrayList<>();
         listAgenciaDTO = agenciaDAO.consulta(paramsQuery);
-        // Imprime no console as Agências
-        TablePrinter tablePrinter = new TablePrinter();
-        tablePrinter.agenciaTablePrinter(listAgenciaDTO);
+        if (print) {
+            // Imprime no console as Agências
+            TablePrinter tablePrinter = new TablePrinter();
+            tablePrinter.agenciaTablePrinter(listAgenciaDTO);
+        }
 
         return !(listAgenciaDTO.size() == 0);
     }

@@ -86,11 +86,17 @@ public class AgenciaDAO {
         List<String> params = List.of(paramsQuery.split("\\|"));
         String sqlQuery = "SELECT * FROM agencias";
         List<AgenciaDTO> listAgenciaDTO = new ArrayList<>();
-        
+
         if (params.size() > 1) {
-            String coluna = params.get(0);
-            String searchQuery = params.get(1);
-            sqlQuery += " WHERE " + coluna + " ILIKE '%" + searchQuery + "%'";
+            List<String> coluna = List.of(params.get(1).split(";"));
+            List<String> searchQuery = List.of(params.get(2).split(";"));
+            if (params.get(0).equals("ILIKE")) {
+                sqlQuery += " WHERE " + coluna.get(0) + " ILIKE '%" + searchQuery.get(0) + "%'";
+            }
+            if (params.get(0).equals("SEARCH")) {
+                sqlQuery += " WHERE " + coluna.get(0) + "='" + searchQuery.get(0) + "'";
+                if (coluna.size() > 1) sqlQuery += " OR " + coluna.get(1) + "='" + searchQuery.get(1) + "'";
+            }
         }
 
         try {

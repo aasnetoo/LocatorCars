@@ -7,8 +7,4 @@ public interface IGenericoRepository<E> {
     void consulta(String string);
     void deletar(E object);
     List<E> listarTodos();
-
-
-
-
 }
