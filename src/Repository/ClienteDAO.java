@@ -81,6 +81,26 @@ public class ClienteDAO implements IGenericoRepository<ClienteDTO> {
         return listaClientes;
     }
 
+    public ClienteDTO retornarCliente(String documento){
+        ClienteDTO clienteDTO = new ClienteDTO();
+        try{
+            String sql = "SELECT * FROM clientes WHERE documento like '"+documento+"'";
+            PreparedStatement stm = instance.getConnection().prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+
+            while (rs.next()){
+                clienteDTO.setNome(rs.getString("nome"));
+                clienteDTO.setTelefone(rs.getString("telefone"));
+                clienteDTO.setDocumento(rs.getString("documento"));
+                clienteDTO.setTipoCliente(rs.getString("tipo"));
+
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return clienteDTO;
+    }
+
     public void atualizarPorDocumento(ClienteDTO clienteDTO) {
         try {
             String sql = "UPDATE clientes " +
