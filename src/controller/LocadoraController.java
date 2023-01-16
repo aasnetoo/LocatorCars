@@ -48,7 +48,6 @@ public class LocadoraController {
     }
 
 
-
     public void editarCarroPorPlaca(VeiculoDTO veiculoDTO){
         veiculoDAO.atualizarPorPlaca(veiculoDTO);
     }

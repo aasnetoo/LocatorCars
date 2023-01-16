@@ -4,9 +4,9 @@ public class Constantes {
 
     //Constantes do veículo
 
-    public static final String TIPO_CARRO = "Carro";
-    public static final String TIPO_MOTO = "Moto";
-    public static final String TIPO_CAMINHAO = "Caminhao";
+    public static final String TIPO_CARRO = "CARRO";
+    public static final String TIPO_MOTO = "MOTO";
+    public static final String TIPO_CAMINHAO = "CAMINHAO";
 
     //Constantes do model
 
