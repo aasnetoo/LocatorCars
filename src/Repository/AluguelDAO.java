@@ -14,7 +14,7 @@ public class AluguelDAO {
     }
 
     public void incluirAluguel(AluguelDTO aluguelDTO) {
-        String query = "INSERT into alugueis (id, cliente_nome, cliente_documento, veiculo, placa_veiculo, data_inicio, data_devolucao, horario_agendado, valor) values('"
+        String query = "INSERT into alugueis (id, cliente_nome, cliente_documento, veiculo_modelo, placa_veiculo, data_inicio, data_devolucao, horario_agendado, valor) values('"
                 + aluguelDTO.getId() + "', '"
                 + aluguelDTO.getCliente().nome + "', '"
                 + aluguelDTO.getCliente().documento + "', '"
