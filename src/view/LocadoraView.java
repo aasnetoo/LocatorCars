@@ -54,8 +54,8 @@ public class LocadoraView {
             String option = opcaoMenu();
             try {
                 switch (option) {
-                    case Constantes.ADICIONAR_CARRO -> adicionarVeiculo(informacoesCarro());
-                    case Constantes.EDITAR_CARRO -> consultaCarro();
+                    case Constantes.ADICIONAR_CARRO -> adicionarVeiculo(informacoesVeiculo());
+                    case Constantes.EDITAR_CARRO -> consultaVeiculo();
                     case Constantes.LISTAR_CARRO -> listarPorModelo();
                     case Constantes.CADASTRAR_AGENCIA -> cadastrarAgencia();
                     case Constantes.ALTERAR_AGENCIA -> alterarAgencia();
@@ -78,10 +78,10 @@ public class LocadoraView {
         }
     }
 
-    public VeiculoDTO informacoesCarro(){
+    public VeiculoDTO informacoesVeiculo(){
         System.out.println("Qual a placa do veículo: ");
         String placaCarro = scan.nextLine().toUpperCase();
-        return dadosCarroEditar(placaCarro);
+        return dadosVeiculoEditar(placaCarro);
     }
 
     public void listarPorModelo(){
@@ -208,35 +208,35 @@ public class LocadoraView {
         return scan.nextLine().toUpperCase();
     }
 
-    public void verificarEditarCarro (String resposta){
+    public void verificarEditarVeiculo (String resposta){
         switch(resposta.toUpperCase()){
-            case Constantes.RESP_SIM -> editarCarro();
+            case Constantes.RESP_SIM -> editarVeiculo();
             case Constantes.RESP_NAO -> mensagens.voltandoMenu();
             default -> throw new EntradaInvalidaOuInsuficienteException("Entrada inválida!");
         }
     }
 
 
-    public void consultaCarro(){
+    public void consultaVeiculo(){
         controller.consultaVeiculo(obterPlacaEditar());
-        confirmacaoEditarCarro();
+        confirmacaoEditarVeiculo();
     }
 
 
-    public void confirmacaoEditarCarro(){
+    public void confirmacaoEditarVeiculo(){
         System.out.println("Deseja editar esse Carro? 'Y' para sim e 'N' para nao. ");
         String resposta = scan.nextLine().toUpperCase();
-        verificarEditarCarro(resposta);
+        verificarEditarVeiculo(resposta);
     }
 
-    public String editarCarro(){
+    public String editarVeiculo(){
         String placaDoCarroParaEditar = obterPlacaEditar();
-        controller.editarCarroPorPlaca(dadosCarroEditar(placaDoCarroParaEditar));
+        controller.editarCarroPorPlaca(dadosVeiculoEditar(placaDoCarroParaEditar));
         return "Carro editado com sucesso.";
 
     }
 
-    private VeiculoDTO dadosCarroEditar(String placaDoCarroParaEditar) {
+    private VeiculoDTO dadosVeiculoEditar(String placaDoCarroParaEditar) {
         System.out.println("Qual o modelo do veiculo: ");
         String modeloCarro = scan.nextLine().toUpperCase();
         System.out.println("Qual a potencia do veiculo: ");
@@ -262,15 +262,15 @@ public class LocadoraView {
     //Método de teste - quando as outras classes foram implementadas irá ter mudança, mas o metodo tá calculando certo
     //e pegando os valores corretos.
     public void devolverVeiculo(){
-        System.out.println("Qual o tipo de Cliente? Digite 'PJ' para Cliente Juridico e 'PF' para Cliente Fisico");
-        String tipoCliente = scan.nextLine().toUpperCase();
-        System.out.println("Qual o nome do cliente? ");
-        String nomeCliente = scan.nextLine().toUpperCase();
+        System.out.println("Digite o tipo do Cliente? PF ou PJ ");
+        String tipoCliente = scan.nextLine();
+        System.out.println("Digite o nome do cliente: ");
+        String nomeCliente = scan.nextLine();
         System.out.println("Quantos dias ficou com o veiculo? ");
         int diasVeiculo = scan.nextInt();
         scan.nextLine();
         System.out.println("Digite a placa do veiculo que você alugou? ");
-        String placaVeiculo = scan.nextLine().toUpperCase();
+        String placaVeiculo = scan.nextLine();
         VeiculoDTO veiculoADevolver = controller.obterVeiculoPorPlaca(placaVeiculo);
         double valorTotal = controller.valorDevolucao(nomeCliente,veiculoADevolver,diasVeiculo,tipoCliente);
         System.out.println(valorTotal);
