@@ -7,7 +7,7 @@ import java.util.Objects;
 public class Aluguel {
 
     Long id;
-    ClienteDTO cliente;
+    Cliente cliente;
     Veiculo veiculo;
     Date dataInicio;
     Date dataDevolucao;
@@ -23,11 +23,11 @@ public class Aluguel {
         this.id = id;
     }
 
-    public ClienteDTO getCliente() {
+    public Cliente getCliente() {
         return cliente;
     }
 
-    public void setCliente(ClienteDTO cliente) {
+    public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }
 

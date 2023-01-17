@@ -1,6 +1,5 @@
 package view;
 
-import Repository.ClienteDAO;
 import controller.LocadoraController;
 import exception.EntradaInvalidaOuInsuficienteException;
 import exception.ListaVaziaException;
@@ -304,20 +303,18 @@ public class LocadoraView {
         controller.veiculosDisponiveisParaAluguel().forEach(System.out::println);
     }
 
-    public ClienteDTO retornarCliente() {
-        System.out.println("Digite o documento do cliente que deseja buscar: ");
-        String documento = scan.nextLine();
-        return controller.retornarCliente(documento);
+    public Cliente retornarCliente() {
+//        Cliente cliente = controller.retornarCliente(obterDocumentoEditar());
+//        System.out.println(cliente.getNome());
+        return controller.retornarCliente(obterDocumentoEditar());
     }
 
     public void adicionarCliente(){
-        System.out.println("Qual é o numero do documento do cliente (apenas números): ");
-        String documentoCliente = scan.nextLine();
-        ClienteDTO novoClienteDTO = dadosClienteAdicionarOuEditar(documentoCliente);
-        controller.adicionarCliente(novoClienteDTO);
+        Cliente novoCliente = dadosClienteAdicionarOuEditar(obterDocumentoEditar());
+        controller.adicionarCliente(novoCliente);
     }
 
-    private ClienteDTO dadosClienteAdicionarOuEditar(String documentoDoClienteParaEditar) {
+    private Cliente dadosClienteAdicionarOuEditar(String documentoDoClienteParaEditar) {
         System.out.println("Qual o nome do cliente: ");
         String nomeCliente = scan.nextLine().toUpperCase();
         System.out.println("Qual o telefone do cliente: ");
@@ -325,12 +322,12 @@ public class LocadoraView {
         System.out.println("Qual o tipo de cliente? PF ou PJ");
         String tipoCliente = TipoCliente.obterTipoCliente(scan.nextLine().toUpperCase());
 
-        ClienteDTO novoClienteDTO = new ClienteDTO();
-        novoClienteDTO.setDocumento(documentoDoClienteParaEditar);
-        novoClienteDTO.setNome(nomeCliente);
-        novoClienteDTO.setTelefone(telefoneCliente);
-        novoClienteDTO.setTipoCliente(tipoCliente);
-        return novoClienteDTO;
+        Cliente novoCliente = new Cliente();
+        novoCliente.setDocumento(documentoDoClienteParaEditar);
+        novoCliente.setNome(nomeCliente);
+        novoCliente.setTelefone(telefoneCliente);
+        novoCliente.setTipoCliente(tipoCliente);
+        return novoCliente;
     }
 
     public void consultaCliente(){
@@ -339,8 +336,25 @@ public class LocadoraView {
     }
 
     public String obterDocumentoEditar(){
-        System.out.println("Digite o documento do cliente que deseja alterar os seus dados: ");
-        return scan.nextLine();
+
+        boolean entradaValida = false;
+
+        String documentoParaBuscar = null;
+
+        System.out.println("Digite o documento do cliente (apenas números): ");
+
+        while (!entradaValida) {
+            try {
+                int documentoCliente = Integer.parseInt(scan.nextLine());
+                documentoParaBuscar = Integer.toString(documentoCliente);
+                entradaValida = true;
+            }catch (IllegalArgumentException e){
+                System.out.println("Informe apenas números");
+                entradaValida = false;
+                documentoParaBuscar = "Docuemento invalido";
+            }
+        }
+        return documentoParaBuscar;
     }
 
     public void verificarEditarCliente (String resposta){
@@ -366,7 +380,7 @@ public class LocadoraView {
 
     //////////////Inicio Aluguel
     public void alugarVeiculo(){
-        ClienteDTO clieteParaAlugar = pegarCliente();
+        Cliente clieteParaAlugar = pegarCliente();
         if (clieteParaAlugar == null){
             System.out.println("Cliente não encontrado");
             return;
@@ -447,13 +461,13 @@ public class LocadoraView {
         }
     }
 
-    public ClienteDTO pegarCliente(){
+    public Cliente pegarCliente(){
 
         System.out.println("Digite o documento de quem vai alugar o veículo (apenas números):");
         try {
             Integer documento = Integer.parseInt(scan.nextLine());
             String documentoParaBusca = documento.toString();
-            ClienteDTO clienteTemporario = new ClienteDTO();
+            Cliente clienteTemporario = new Cliente();
             return clienteTemporario;
         }catch (IllegalArgumentException e){
             System.out.println("Informe apenas números");
