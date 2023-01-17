@@ -9,7 +9,7 @@ public class Cliente {
     public String documento;
     public String tipoCliente;
     @Override
-    public boolean                                                                              equals(Object o) {
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Cliente that = (Cliente) o;
