@@ -304,8 +304,8 @@ public class LocadoraView {
     }
 
     public Cliente retornarCliente() {
-//        ClienteDTO clienteDTO = controller.retornarCliente(obterDocumentoEditar());
-//        System.out.println(clienteDTO.getNome());
+//        Cliente cliente = controller.retornarCliente(obterDocumentoEditar());
+//        System.out.println(cliente.getNome());
         return controller.retornarCliente(obterDocumentoEditar());
     }
 
