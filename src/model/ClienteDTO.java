@@ -21,6 +21,16 @@ public class ClienteDTO {
         return Objects.hash(nome, telefone, documento, tipoCliente);
     }
 
+    @Override
+    public String toString() {
+        return "ClienteDTO{" +
+                "nome='" + nome + '\'' +
+                ", telefone='" + telefone + '\'' +
+                ", documento='" + documento + '\'' +
+                ", tipoCliente='" + tipoCliente + '\'' +
+                '}';
+    }
+
     public String getNome() {
         return nome;
     }

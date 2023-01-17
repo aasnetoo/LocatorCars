@@ -4,18 +4,24 @@ import java.math.BigDecimal;
 import java.sql.Time;
 import java.util.Date;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class AluguelDTO {
 
-    Long id;
-    Cliente cliente;
-    Veiculo veiculo;
+    private static final AtomicInteger count = new AtomicInteger(0);
+    int id;
+    ClienteDTO cliente;
+    VeiculoDTO veiculo;
     Date dataInicio;
     Date dataDevolucao;
     Time horarioAgendado;
     Agencia agenciaRetirada;
     Agencia agenciaDevolucao;
     BigDecimal valorAluguel;
+
+    public AluguelDTO(){
+        id = count.incrementAndGet();
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -52,27 +58,27 @@ public class AluguelDTO {
         this.horarioAgendado = horarioAgendado;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public Cliente getCliente() {
+    public ClienteDTO getCliente() {
         return cliente;
     }
 
-    public void setCliente(Cliente cliente) {
+    public void setCliente(ClienteDTO cliente) {
         this.cliente = cliente;
     }
 
-    public Veiculo getVeiculo() {
+    public VeiculoDTO getVeiculo() {
         return veiculo;
     }
 
-    public void setVeiculo(Veiculo veiculo) {
+    public void setVeiculo(VeiculoDTO veiculo) {
         this.veiculo = veiculo;
     }
 

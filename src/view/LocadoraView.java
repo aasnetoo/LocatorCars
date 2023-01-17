@@ -5,9 +5,13 @@ import exception.EntradaInvalidaOuInsuficienteException;
 import exception.ListaVaziaException;
 import model.*;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.chrono.ChronoLocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
@@ -277,9 +281,7 @@ public class LocadoraView {
 
     /////// clientes
 
-    public ClienteDTO retornarCliente() {
-        System.out.println("Digite o documento do cliente que deseja buscar: ");
-        String documento = scan.nextLine();
+    public ClienteDTO retornarCliente(String documento) {
         ClienteDTO clienteDTO = controller.retornarCliente(documento);
         return clienteDTO;
     }
@@ -347,11 +349,18 @@ public class LocadoraView {
 
     //////////////Inicio Aluguel
     public void alugarVeiculo(){
-        Cliente clieteParaAlugar = pegarCliente();
-        if (clieteParaAlugar == null){
+        AluguelDTO aluguelDTO = new AluguelDTO();
+        ClienteDTO clienteParaAlugar = new ClienteDTO();
+        clienteParaAlugar.setNome("Matheus");
+        clienteParaAlugar.setDocumento("123456");
+        clienteParaAlugar.setTelefone("61998408789");
+        clienteParaAlugar.setTipoCliente(Constantes.CLIENTE_FISICO);
+        /*ClienteDTO clienteParaAlugar = pegarCliente();
+        if (clienteParaAlugar == null){
             System.out.println("Cliente não encontrado");
             return;
-        }
+        }*/
+        System.out.println(clienteParaAlugar);
 
         VeiculoDTO veiculoParaAluguel = escolherVeiculo();
         if(veiculoParaAluguel == null){
@@ -380,6 +389,30 @@ public class LocadoraView {
             System.out.println("Datas inválidas");
         }
 
+        Agencia agenciaAluguel = escolherAgencia("Agencia A");
+
+        Agencia agenciaDevolucao = escolherAgencia("Agencia B");
+
+        aluguelDTO.setVeiculo(veiculoParaAluguel);
+        aluguelDTO.setAgenciaRetirada(agenciaAluguel);
+        aluguelDTO.setAgenciaDevolucao(agenciaDevolucao);
+        aluguelDTO.setCliente(clienteParaAlugar);
+        aluguelDTO.setDataInicio(dataInicio);
+        aluguelDTO.setDataDevolucao(dataDevolucao);
+        aluguelDTO.setHorarioAgendado(new Time(60804804));
+        aluguelDTO.setValorAluguel(BigDecimal.valueOf(200));
+
+        System.out.println(aluguelDTO);
+
+        controller.salvarAluguel(aluguelDTO);
+
+    }
+
+    public Agencia escolherAgencia(String nomeAgencia){
+        Agencia agencia = new Agencia();
+        agencia.setNome(nomeAgencia);
+        agencia.setLogadouro("Endereço da agencia");
+        return agencia;
     }
 
     public boolean validacaoDatasLocacao(Date dataInicio, Date dataDevolucao){
@@ -428,15 +461,14 @@ public class LocadoraView {
         }
     }
 
-    public Cliente pegarCliente(){
+    public ClienteDTO pegarCliente(){
 
         System.out.println("Digite o documento de quem vai alugar o veículo (apenas números):");
         try {
             Integer documento = Integer.parseInt(scan.nextLine());
             String documentoParaBusca = documento.toString();
-            //controller.consultarClientePorId(documentoParaBusca);
-            Cliente clienteTemporario = new ClienteFisico("123456");
-            return clienteTemporario;
+            ClienteDTO clienteAluguel = retornarCliente(documentoParaBusca);
+            return clienteAluguel;
         }catch (IllegalArgumentException e){
             System.out.println("Informe apenas números");
             return null;
