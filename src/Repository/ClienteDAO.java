@@ -1,7 +1,7 @@
 package Repository;
 
 import database.Conexao;
-import model.ClienteDTO;
+import model.Cliente;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,7 +10,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClienteDAO implements IGenericoRepository<ClienteDTO> {
+public class ClienteDAO implements IGenericoRepository<Cliente> {
 
     Conexao instance = Conexao.getInstance();
 
@@ -19,12 +19,12 @@ public class ClienteDAO implements IGenericoRepository<ClienteDTO> {
     }
 
     @Override
-    public void incluir(ClienteDTO clienteDTO) {
+    public void incluir(Cliente cliente) {
         String query = "INSERT into clientes (nome, telefone, documento, tipo) values('"
-                + clienteDTO.getNome() + "', '"
-                + clienteDTO.getTelefone() + "', '"
-                + clienteDTO.getDocumento() + "', '"
-                + clienteDTO.getTipoCliente()
+                + cliente.getNome() + "', '"
+                + cliente.getTelefone() + "', '"
+                + cliente.getDocumento() + "', '"
+                + cliente.getTipoCliente()
                 + "')";
         try {
             Statement stm = instance.getConnection().createStatement();
@@ -54,25 +54,25 @@ public class ClienteDAO implements IGenericoRepository<ClienteDTO> {
     }
 
     @Override
-    public void deletar(ClienteDTO object) {
+    public void deletar(Cliente object) {
 
     }
 
     @Override
-    public List<ClienteDTO> listarTodos(){
-        List<ClienteDTO> listaClientes = new ArrayList<>();
+    public List<Cliente> listarTodos(){
+        List<Cliente> listaClientes = new ArrayList<>();
         try{
             String sql = "SELECT * FROM clientes";
             PreparedStatement stm = instance.getConnection().prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
 
             while (rs.next()){
-                ClienteDTO clienteDTO = new ClienteDTO();
-                clienteDTO.setNome(rs.getString("nome"));
-                clienteDTO.setTelefone(rs.getString("telefone"));
-                clienteDTO.setDocumento(rs.getString("documento"));
-                clienteDTO.setTipoCliente(rs.getString("tipo"));
-                listaClientes.add(clienteDTO);
+                Cliente cliente = new Cliente();
+                cliente.setNome(rs.getString("nome"));
+                cliente.setTelefone(rs.getString("telefone"));
+                cliente.setDocumento(rs.getString("documento"));
+                cliente.setTipoCliente(rs.getString("tipo"));
+                listaClientes.add(cliente);
 
             }
         } catch (SQLException e) {
@@ -81,37 +81,37 @@ public class ClienteDAO implements IGenericoRepository<ClienteDTO> {
         return listaClientes;
     }
 
-    public ClienteDTO retornarCliente(String documento){
-        ClienteDTO clienteDTO = new ClienteDTO();
+    public Cliente retornarCliente(String documento){
+        Cliente cliente = new Cliente();
         try{
             String sql = "SELECT * FROM clientes WHERE documento like '"+documento+"'";
             PreparedStatement stm = instance.getConnection().prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
 
             while (rs.next()){
-                clienteDTO.setNome(rs.getString("nome"));
-                clienteDTO.setTelefone(rs.getString("telefone"));
-                clienteDTO.setDocumento(rs.getString("documento"));
-                clienteDTO.setTipoCliente(rs.getString("tipo"));
+                cliente.setNome(rs.getString("nome"));
+                cliente.setTelefone(rs.getString("telefone"));
+                cliente.setDocumento(rs.getString("documento"));
+                cliente.setTipoCliente(rs.getString("tipo"));
 
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return clienteDTO;
+        return cliente;
     }
 
-    public void atualizarPorDocumento(ClienteDTO clienteDTO) {
+    public void atualizarPorDocumento(Cliente cliente) {
         try {
             String sql = "UPDATE clientes " +
-                    " SET nome = '"+clienteDTO.getNome()+"', " +
-                    " telefone = "+clienteDTO.getTelefone()+"," +
-                    " tipo = '"+clienteDTO.getTipoCliente()+"' " +
-                    " WHERE documento = '"+clienteDTO.getDocumento()+"' ";
+                    " SET nome = '"+ cliente.getNome()+"', " +
+                    " telefone = "+ cliente.getTelefone()+"," +
+                    " tipo = '"+ cliente.getTipoCliente()+"' " +
+                    " WHERE documento = '"+ cliente.getDocumento()+"' ";
 
             PreparedStatement statement = instance.getConnection().prepareStatement(sql);
             statement.execute();
-            System.out.println("O cliente do documento: " + clienteDTO.getDocumento() + " foi atualizado com sucesso.");
+            System.out.println("O cliente do documento: " + cliente.getDocumento() + " foi atualizado com sucesso.");
         } catch(Exception e) {
             throw new RuntimeException(e);
         }

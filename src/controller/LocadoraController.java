@@ -6,7 +6,6 @@ import Repository.VeiculoDAO;
 import exception.ClienteExisteException;
 import exception.VeiculoExisteException;
 import model.*;
-import util.Constantes;
 import util.TablePrinter;
 
 import java.sql.SQLException;
@@ -95,7 +94,7 @@ public class LocadoraController {
     // Fica faltando só mudar a disponibilidade do veiculo dps que devolver, quase OK
     public double valorDevolucao(String documento, VeiculoDTO veiculoDTO, int dias, String tipoCliente){
         double precoFinal = 0.0;
-        ClienteDTO cliente = clienteDAO.retornarCliente(documento);
+        Cliente cliente = clienteDAO.retornarCliente(documento);
         double desconto = cliente.valorDesconto(dias, cliente.getTipoCliente());
         double valorSemDesconto = (TipoVeiculo.calculaValor(veiculoDTO.getTipo())*dias);
         precoFinal = valorSemDesconto - (valorSemDesconto*desconto);
@@ -109,13 +108,13 @@ public class LocadoraController {
 
 
     /////////////cliente
-    public void adicionarCliente (ClienteDTO clienteDTO){
-        boolean clienteExiste = clienteDAO.listarTodos().stream().anyMatch(cliente -> cliente.equals(clienteDTO));
+    public void adicionarCliente (Cliente cl){
+        boolean clienteExiste = clienteDAO.listarTodos().stream().anyMatch(cliente -> cliente.equals(cl));
 
         if (clienteExiste){
             throw new ClienteExisteException();
         }
-        clienteDAO.incluir(clienteDTO);
+        clienteDAO.incluir(cl);
     }
 
     public void consultarCliente(String documento){
@@ -123,11 +122,11 @@ public class LocadoraController {
     }
 
 
-    public void editarClientePorDocumento(ClienteDTO clienteDTO){
-        clienteDAO.atualizarPorDocumento(clienteDTO);
+    public void editarClientePorDocumento(Cliente cliente){
+        clienteDAO.atualizarPorDocumento(cliente);
     }
 
-    public ClienteDTO retornarCliente(String documento){
+    public Cliente retornarCliente(String documento){
         return clienteDAO.retornarCliente(documento);
     }
 

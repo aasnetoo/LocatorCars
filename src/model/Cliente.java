@@ -2,17 +2,17 @@ package model;
 
 import java.util.Objects;
 
-public class ClienteDTO {
+public class Cliente {
 
     public String nome;
     public String telefone;
     public String documento;
     public String tipoCliente;
     @Override
-    public boolean equals(Object o) {
+    public boolean                                                                              equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ClienteDTO that = (ClienteDTO) o;
+        Cliente that = (Cliente) o;
         return Objects.equals(documento, that.documento) && Objects.equals(tipoCliente, that.tipoCliente);
     }
 
