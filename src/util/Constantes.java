@@ -22,8 +22,15 @@ public class Constantes {
     public static final String EDITAR_CLIENTE = "10";
     public static final String LISTA_VEICULOS_DISPONIVEIS = "11";
     public static final String SAIR_PROGRAMA = "14";
+
     public static final String CLIENTE_FISICO = "PF";
     public static final String CLIENTE_JURIDICO = "PJ";
+
+    public static final String ALTERAR_NOME_CLIENTE = "1";
+    public static final String ALTERAR_TELEFONE_CLIENTE = "2";
+    public static final String ALTERAR_TIPO_CLIENTE = "3";
+
+
     public static final String ALTERAR_NOME_AGENCIA = "1";
     public static final String ALTERAR_LOGRADOURO_AGENCIA = "2";
     public static final String ALTERAR_NOME_E_LOGRADOURO_AGENCIA = "3";
