@@ -1,6 +1,7 @@
 package view;
 
 import controller.LocadoraController;
+import exception.ClienteExisteException;
 import exception.EntradaInvalidaOuInsuficienteException;
 import exception.ListaVaziaException;
 import model.*;
@@ -330,6 +331,47 @@ public class LocadoraView {
         return novoCliente;
     }
 
+    private void editarDadosCliente () {
+
+        String documentoDoClienteParaEditar = obterDocumentoEditar();
+
+        System.out.println("Digite o número da informação deseja editar: ");
+        System.out.println("1. Nome");
+        System.out.println("2. Telefone");
+        System.out.println("3. Tipo Cliente");
+
+        Cliente clienteEditar = controller.retornarCliente(documentoDoClienteParaEditar);
+
+        boolean loop = true;
+        while (loop) {
+            String choice = scan.nextLine();
+            switch (choice) {
+                case Constantes.ALTERAR_NOME_CLIENTE -> {
+                    System.out.println("Digite o nome:");
+                    String novoNome = scan.nextLine().toUpperCase();;
+                    clienteEditar.setNome(novoNome);
+                    loop = false;
+                }
+                case Constantes.ALTERAR_TELEFONE_CLIENTE-> {
+                    System.out.println("Digite o telefone :");
+                    String novoTelefone = scan.nextLine().toUpperCase();
+                    clienteEditar.setTelefone(novoTelefone);
+                    loop = false;
+                }
+                case Constantes.ALTERAR_TIPO_CLIENTE -> {
+                    System.out.println("Digite o tipo (PF/PJ) :");
+                    String novoTipo = TipoCliente.obterTipoCliente(scan.nextLine().toUpperCase());
+                    clienteEditar.setTipoCliente(novoTipo);
+                    loop = false;
+                }
+                default -> System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "Digite opção válida" + ConsoleColors.RESET);
+            }
+
+        }
+        controller.editarClientePorDocumento(clienteEditar);
+        System.out.println("Cliente editado com sucesso.");
+    }
+
     public void consultaCliente(){
         controller.consultarCliente(obterDocumentoEditar());
         confirmacaoEditarCliente();
@@ -359,7 +401,7 @@ public class LocadoraView {
 
     public void verificarEditarCliente (String resposta){
         switch(resposta.toUpperCase()){
-            case Constantes.RESP_SIM -> editarCliente();
+            case Constantes.RESP_SIM -> editarDadosCliente();
             case Constantes.RESP_NAO -> mensagens.voltandoMenu();
             default -> throw new EntradaInvalidaOuInsuficienteException("Entrada inválida!");
         }
@@ -371,12 +413,6 @@ public class LocadoraView {
         verificarEditarCliente(resposta);
     }
 
-    public void editarCliente(){
-        String documentoDoClienteParaEditar = obterDocumentoEditar();
-        controller.editarClientePorDocumento(dadosClienteAdicionarOuEditar(documentoDoClienteParaEditar));
-        System.out.println("Cliente editado com sucesso.");
-
-    }
 
     //////////////Inicio Aluguel
     public void alugarVeiculo(){
