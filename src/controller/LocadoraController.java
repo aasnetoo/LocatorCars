@@ -138,6 +138,10 @@ public class LocadoraController {
         aluguelDAO.salvarAluguel(aluguel);
     }
 
+    public Aluguel buscarAluguelPorId(int id){
+        return aluguelDAO.pegarAluguelPorId(id);
+    }
+
     ///////Fim Aluguel
 
 

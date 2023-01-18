@@ -21,6 +21,7 @@ public class Constantes {
     public static final String CADASTRAR_CLIENTE = "9";
     public static final String EDITAR_CLIENTE = "10";
     public static final String LISTA_VEICULOS_DISPONIVEIS = "11";
+    public static final String EMITIR_COMPROVANTE = "12";
     public static final String SAIR_PROGRAMA = "14";
 
     public static final String CLIENTE_FISICO = "PF";
