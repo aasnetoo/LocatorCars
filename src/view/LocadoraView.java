@@ -1,12 +1,13 @@
 package view;
 
 import controller.LocadoraController;
-import exception.ClienteExisteException;
 import exception.EntradaInvalidaOuInsuficienteException;
 import exception.ListaVaziaException;
 import model.*;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -300,11 +301,13 @@ public class LocadoraView {
         System.out.println(valorTotal);
     }
 
+
     public void listarVeiculosDisponiveisParaAluguel(){
         controller.veiculosDisponiveisParaAluguel().forEach(System.out::println);
+    /////// clientes
     }
 
-    public Cliente retornarCliente() {
+     public Cliente retornarCliente() {
 //        Cliente cliente = controller.retornarCliente(obterDocumentoEditar());
 //        System.out.println(cliente.getNome());
         return controller.retornarCliente(obterDocumentoEditar());
@@ -416,11 +419,18 @@ public class LocadoraView {
 
     //////////////Inicio Aluguel
     public void alugarVeiculo(){
-        Cliente clieteParaAlugar = pegarCliente();
-        if (clieteParaAlugar == null){
+        Aluguel aluguel = new Aluguel();
+        Cliente clienteParaAlugar = new Cliente();
+        clienteParaAlugar.setNome("Matheus");
+        clienteParaAlugar.setDocumento("123456");
+        clienteParaAlugar.setTelefone("61998408789");
+        clienteParaAlugar.setTipoCliente(Constantes.CLIENTE_FISICO);
+        /*ClienteDTO clienteParaAlugar = pegarCliente();
+        if (clienteParaAlugar == null){
             System.out.println("Cliente não encontrado");
             return;
-        }
+        }*/
+        System.out.println(clienteParaAlugar);
 
         VeiculoDTO veiculoParaAluguel = escolherVeiculo();
         if(veiculoParaAluguel == null){
@@ -449,6 +459,29 @@ public class LocadoraView {
             System.out.println("Datas inválidas");
         }
 
+        Agencia agenciaAluguel = escolherAgencia("Agencia A");
+
+        Agencia agenciaDevolucao = escolherAgencia("Agencia B");
+
+        aluguel.setVeiculo(veiculoParaAluguel);
+        aluguel.setAgenciaRetirada(agenciaAluguel);
+        aluguel.setCliente(clienteParaAlugar);
+        aluguel.setDataInicio(dataInicio);
+        aluguel.setDataDevolucao(dataDevolucao);
+        aluguel.setHorarioAgendado(new Time(60804804));
+        aluguel.setValorAluguel(BigDecimal.valueOf(200));
+
+        System.out.println(aluguel);
+
+        controller.salvarAluguel(aluguel);
+
+    }
+
+    public Agencia escolherAgencia(String nomeAgencia){
+        Agencia agencia = new Agencia();
+        agencia.setNome(nomeAgencia);
+        agencia.setLogadouro("Endereço da agencia");
+        return agencia;
     }
 
     public boolean validacaoDatasLocacao(Date dataInicio, Date dataDevolucao){
@@ -498,13 +531,9 @@ public class LocadoraView {
     }
 
     public Cliente pegarCliente(){
-
-        System.out.println("Digite o documento de quem vai alugar o veículo (apenas números):");
         try {
-            Integer documento = Integer.parseInt(scan.nextLine());
-            String documentoParaBusca = documento.toString();
-            Cliente clienteTemporario = new Cliente();
-            return clienteTemporario;
+            Cliente clienteAluguel = retornarCliente();
+            return clienteAluguel;
         }catch (IllegalArgumentException e){
             System.out.println("Informe apenas números");
             return null;
@@ -524,3 +553,5 @@ public class LocadoraView {
 
     //////////////Fim Aluguel
 }
+
+

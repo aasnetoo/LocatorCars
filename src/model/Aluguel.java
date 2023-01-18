@@ -1,25 +1,68 @@
 package model;
 
 import java.math.BigDecimal;
+import java.sql.Time;
 import java.util.Date;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Aluguel {
 
-    Long id;
+    private static final AtomicInteger count = new AtomicInteger(0);
+    int id;
     Cliente cliente;
-    Veiculo veiculo;
+    VeiculoDTO veiculo;
     Date dataInicio;
     Date dataDevolucao;
+    Time horarioAgendado;
     Agencia agenciaRetirada;
     Agencia agenciaDevolucao;
     BigDecimal valorAluguel;
 
-    public Long getId() {
+    public Aluguel(){
+        id = count.incrementAndGet();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Aluguel that = (Aluguel) o;
+        return Objects.equals(id, that.id) && Objects.equals(cliente, that.cliente) && Objects.equals(veiculo, that.veiculo) && Objects.equals(dataInicio, that.dataInicio) && Objects.equals(dataDevolucao, that.dataDevolucao) && Objects.equals(agenciaRetirada, that.agenciaRetirada) && Objects.equals(agenciaDevolucao, that.agenciaDevolucao) && Objects.equals(valorAluguel, that.valorAluguel);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, cliente, veiculo, dataInicio, dataDevolucao, agenciaRetirada, agenciaDevolucao, valorAluguel);
+    }
+
+    @Override
+    public String toString() {
+        return "AluguelDTO{" +
+                "id=" + id +
+                ", cliente=" + cliente +
+                ", veiculo=" + veiculo +
+                ", dataInicio=" + dataInicio +
+                ", dataDevolucao=" + dataDevolucao +
+                ", agenciaRetirada=" + agenciaRetirada +
+                ", agenciaDevolucao=" + agenciaDevolucao +
+                ", valorAluguel=" + valorAluguel +
+                '}';
+    }
+
+    public Time getHorarioAgendado() {
+        return horarioAgendado;
+    }
+
+    public void setHorarioAgendado(Time horarioAgendado) {
+        this.horarioAgendado = horarioAgendado;
+    }
+
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -31,11 +74,11 @@ public class Aluguel {
         this.cliente = cliente;
     }
 
-    public Veiculo getVeiculo() {
+    public VeiculoDTO getVeiculo() {
         return veiculo;
     }
 
-    public void setVeiculo(Veiculo veiculo) {
+    public void setVeiculo(VeiculoDTO veiculo) {
         this.veiculo = veiculo;
     }
 
@@ -77,18 +120,5 @@ public class Aluguel {
 
     public void setValorAluguel(BigDecimal valorAluguel) {
         this.valorAluguel = valorAluguel;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Aluguel aluguel = (Aluguel) o;
-        return Objects.equals(id, aluguel.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
     }
 }

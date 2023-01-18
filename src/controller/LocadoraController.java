@@ -1,6 +1,7 @@
 package controller;
 
 import Repository.AgenciaDAO;
+import Repository.AluguelDAO;
 import Repository.ClienteDAO;
 import Repository.VeiculoDAO;
 import exception.ClienteExisteException;
@@ -17,7 +18,7 @@ public class LocadoraController {
     VeiculoDAO veiculoDAO = new VeiculoDAO();
     AgenciaDAO agenciaDAO = new AgenciaDAO();
     ClienteDAO clienteDAO = new ClienteDAO();
-
+    AluguelDAO aluguelDAO = new AluguelDAO();
 
     public LocadoraController() throws SQLException {
     }
@@ -133,6 +134,9 @@ public class LocadoraController {
     //fim cliente
 
     ///////////Aluguel
+    public void salvarAluguel(Aluguel aluguel){
+        aluguelDAO.salvarAluguel(aluguel);
+    }
 
     ///////Fim Aluguel
 
