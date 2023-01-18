@@ -12,6 +12,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 import util.ConsoleColors;
@@ -105,11 +106,11 @@ public class LocadoraView {
             System.out.println("Digite o endereço da agência: ");
             String enderecoAgencia = scan.nextLine().toUpperCase();
 
-            AgenciaDTO agenciaDTO = new AgenciaDTO(nomeAgencia, enderecoAgencia);
+            Agencia agencia = new Agencia(nomeAgencia, enderecoAgencia);
             boolean checkAgencia = controller.consultarAgencia("SEARCH|nome;logradouro|" + nomeAgencia + ";" + enderecoAgencia, false);
 
             if (!checkAgencia) {
-                controller.adicionarAgencia(agenciaDTO);
+                controller.adicionarAgencia(agencia);
                 loop = false;
             } else {
                 System.out.println("Nome ou Logradouro já cadastrados, favor inserir um novo.");
@@ -461,11 +462,9 @@ public class LocadoraView {
             System.out.println("Datas inválidas");
         }
 
-        //listarAgencias();
+        Agencia agenciaAluguel = escolherAgencia();
 
-        Agencia agenciaAluguel = escolherAgencia("Agencia A");
-
-        Agencia agenciaDevolucao = escolherAgencia("Agencias B");
+        Agencia agenciaDevolucao = escolherAgencia();
 
         aluguel.setVeiculo(veiculoParaAluguel); //pendente validação
         aluguel.setAgenciaRetirada(agenciaAluguel); //pendente
@@ -479,25 +478,25 @@ public class LocadoraView {
         System.out.println(aluguel);
 
         controller.salvarAluguel(aluguel);
-
     }
 
-    /*public void listarAgencias(){
-        //Método para imprimir todas as agências do banco para o usuário escolher uma
-    }
-    public Agencia pegarAgenciaPorNome(String nomeAgencia){
-        //Método para retornar uma agência do banco de dados recebendo o nome como parâmetro
-    }*/
-
-
-    public Agencia escolherAgencia(String nomeAgencia){
-       /* System.out.println("Informe o nome da agência que deseja pegar o carro: ");
-        String agenciaAluguel = scan.nextLine();
-        return pegarAgenciaPorNome(agenciaAluguel);*/
-        Agencia agencia = new Agencia(nomeAgencia);
-        agencia.setLogadouro("Endereço da agencia");
-        return agencia;
-
+    public Agencia escolherAgencia(){
+        // Faz o print das agências disponíveis
+        controller.consultarAgencia("", true);
+        System.out.println("Informe o nome da Agência que deseja pegar o carro: ");
+        String nomeAgencia = scan.nextLine();
+        boolean loop = true;
+        while(loop) {
+            Agencia agencia = controller.consultarAgenciaPorNome(nomeAgencia);
+            if (Objects.equals(agencia.getNome(), "")) {
+                System.out.println("Agência não encontrada, favor digitar outra.");
+                nomeAgencia = scan.nextLine();
+            } else {
+                loop = false;
+                return agencia;
+            }
+        }
+        return new Agencia("");
     }
 
     public boolean validacaoDatasLocacao(Date dataInicio, Date dataDevolucao){

@@ -1,16 +1,14 @@
 package Repository;
 
 import database.Conexao;
-import model.AgenciaDTO;
-import util.ConsoleColors;
+import model.Agencia;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-// implements IGenericoRepository<AgenciaDTO>
+// implements IGenericoRepository<Agencia>
 
 public class AgenciaDAO {
 
@@ -81,11 +79,11 @@ public class AgenciaDAO {
     }
 
     // @Override
-    public List<AgenciaDTO> consulta(String paramsQuery) {
+    public List<Agencia> consulta(String paramsQuery) {
         
         List<String> params = List.of(paramsQuery.split("\\|"));
         String sqlQuery = "SELECT * FROM agencias";
-        List<AgenciaDTO> listAgenciaDTO = new ArrayList<>();
+        List<Agencia> listAgencia = new ArrayList<>();
 
         if (params.size() > 1) {
             List<String> coluna = List.of(params.get(1).split(";"));
@@ -110,14 +108,14 @@ public class AgenciaDAO {
                 String nome = resultado.getString("nome");
                 String logradouro = resultado.getString("logradouro");
 
-                AgenciaDTO agenciaDTO = new AgenciaDTO(idAgencia, nome, logradouro);
-                listAgenciaDTO.add(agenciaDTO);
+                Agencia agencia = new Agencia(idAgencia, nome, logradouro);
+                listAgencia.add(agencia);
 
             }
         }catch(SQLException ex){
             System.out.println("Não conseguiu consultar os dados do Veiculo.");
         }
-        return listAgenciaDTO;
+        return listAgencia;
     }
 
     // @Override
@@ -136,7 +134,7 @@ public class AgenciaDAO {
         }
     }
     // @Override
-    public List<AgenciaDTO> listarTodos() {
+    public List<Agencia> listarTodos() {
         return null;
     }
 }

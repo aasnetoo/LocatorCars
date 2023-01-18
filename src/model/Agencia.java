@@ -4,11 +4,23 @@ import java.util.Objects;
 
 public class Agencia {
 
+    private int id;
     private String nome;
-    private String logadouro;
+    private String logradouro;
 
     public Agencia(String nome) {
         this.nome = nome;
+    }
+
+    public Agencia(String nome, String logradouro) {
+        this.nome = nome;
+        this.logradouro = logradouro;
+    }
+
+    public Agencia(int id, String nome, String logradouro) {
+        this.id = id;
+        this.nome = nome;
+        this.logradouro = logradouro;
     }
 
     public String getNome() {
@@ -19,32 +31,27 @@ public class Agencia {
         this.nome = nome;
     }
 
-    public String getLogadouro() {
-        return logadouro;
+    public String getLogradouro() {
+        return logradouro;
     }
 
-    public void setLogadouro(String logadouro) {
-        this.logadouro = logadouro;
+    public void setLogradouro(String logradouro) {
+        this.logradouro = logradouro;
+    }
+    public int getId() {
+        return id;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Agencia agencia = (Agencia) o;
-        return Objects.equals(nome, agencia.nome) && Objects.equals(logadouro, agencia.logadouro);
+        Agencia that = (Agencia) o;
+        return Objects.equals(nome, that.nome) && Objects.equals(logradouro, that.logradouro);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(nome, logadouro);
-    }
-
-    @Override
-    public String toString() {
-        return "Agencia{" +
-                "nome='" + nome + '\'' +
-                ", logadouro='" + logadouro + '\'' +
-                '}';
+        return Objects.hash(nome, logradouro);
     }
 }

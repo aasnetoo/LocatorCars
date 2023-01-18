@@ -55,11 +55,11 @@ public class LocadoraController {
     }
 
     // Agencia
-    public void adicionarAgencia(AgenciaDTO agenciaDTO) {
+    public void adicionarAgencia(Agencia agencia) {
         String paramsQuery = "INSERT|nome;logradouro|";
-        paramsQuery += agenciaDTO.getNome().toUpperCase();
+        paramsQuery += agencia.getNome().toUpperCase();
         paramsQuery += ";";
-        paramsQuery += agenciaDTO.getLogradouro().toUpperCase();
+        paramsQuery += agencia.getLogradouro().toUpperCase();
         agenciaDAO.incluir(paramsQuery);
     }
 
@@ -67,18 +67,24 @@ public class LocadoraController {
         agenciaDAO.incluir(paramsQuery);
     }
 
-    public boolean consultarAgencia(String paramsQuery, boolean print) {
+    public Agencia consultarAgenciaPorNome(String nomeAgencia) {
+        String paramsQuery = "ILIKE|nome|" + nomeAgencia;
+        List<Agencia> listAgencia = new ArrayList<>();
+        listAgencia = agenciaDAO.consulta(paramsQuery);
+        if (listAgencia.size() == 0) return new Agencia("");
+        return listAgencia.get(0);
+    }
 
+    public boolean consultarAgencia(String paramsQuery, boolean print) {
         // Obtém as agências presentes no Banco de Dados
-        List<AgenciaDTO> listAgenciaDTO = new ArrayList<>();
-        listAgenciaDTO = agenciaDAO.consulta(paramsQuery);
+        List<Agencia> listAgencia = new ArrayList<>();
+        listAgencia = agenciaDAO.consulta(paramsQuery);
         if (print) {
             // Imprime no console as Agências
             TablePrinter tablePrinter = new TablePrinter();
-            tablePrinter.agenciaTablePrinter(listAgenciaDTO);
+            tablePrinter.agenciaTablePrinter(listAgencia);
         }
-
-        return !(listAgenciaDTO.size() == 0);
+        return !(listAgencia.size() == 0);
     }
     public void deletarAgencia(String paramsQuery) {
         agenciaDAO.deletar(paramsQuery);
@@ -86,11 +92,11 @@ public class LocadoraController {
 
     public boolean verificaExistenciaAgenciaPorId(int idAgencia) {
 
-        List<AgenciaDTO> listAgenciaDTO = new ArrayList<>();
+        List<Agencia> listAgencia = new ArrayList<>();
         String query = "id_agencia|" + idAgencia;
-        listAgenciaDTO = agenciaDAO.consulta(query);
+        listAgencia = agenciaDAO.consulta(query);
 
-        return listAgenciaDTO.size() == 1;
+        return listAgencia.size() == 1;
     }
     // Fica faltando só mudar a disponibilidade do veiculo dps que devolver, quase OK
     public double valorDevolucao(String documento, VeiculoDTO veiculoDTO, int dias, String tipoCliente){

@@ -1,6 +1,6 @@
 package util;
 
-import model.AgenciaDTO;
+import model.Agencia;
 
 import java.util.List;
 public class TablePrinter {
@@ -12,24 +12,22 @@ public class TablePrinter {
 //        this.tableColumns = tableColumns;
 //    }
 
-    public void agenciaTablePrinter(List<AgenciaDTO> listAgenciaDTO) {
-        if (listAgenciaDTO.size() == 0) {
+    public void agenciaTablePrinter(List<Agencia> listAgencia) {
+        if (listAgencia.size() == 0) {
             System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "NÃO EXISTE NENHUMA AGÊNCIA CADASTRADA" + ConsoleColors.RESET);
         } else {
-            System.out.println(ConsoleColors.WHITE_BOLD_BRIGHT);
-            System.out.println("===================================================================================");
+            System.out.println(ConsoleColors.WHITE_BOLD_BRIGHT+"===================================================================================");
             System.out.println("|                                    AGÊNCIAS                                     |");
             System.out.println("-----------------------------------------------------------------------------------");
             System.out.println("|   ID   |              NOME             |               LOGRADOURO               |");
             System.out.println("-----------------------------------------------------------------------------------");
-            for (int i = 0; i < listAgenciaDTO.size(); i++) {
-                int idAgencia = listAgenciaDTO.get(i).getId();
-                String nome = listAgenciaDTO.get(i).getNome();
-                String logradouro = listAgenciaDTO.get(i).getLogradouro();
+            for (int i = 0; i < listAgencia.size(); i++) {
+                int idAgencia = listAgencia.get(i).getId();
+                String nome = listAgencia.get(i).getNome();
+                String logradouro = listAgencia.get(i).getLogradouro();
                 System.out.printf("| %-6s | %-29s | %-38s |%n", idAgencia, nome, logradouro);
             }
-            System.out.println("===================================================================================");
-            System.out.println(ConsoleColors.RESET);
+            System.out.println("==================================================================================="+ConsoleColors.RESET);
         }
     }
 }

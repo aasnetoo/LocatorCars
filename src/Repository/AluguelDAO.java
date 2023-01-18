@@ -2,18 +2,11 @@ package Repository;
 
 import controller.LocadoraController;
 import database.Conexao;
-import model.Agencia;
 import model.Aluguel;
-import model.Cliente;
-import model.VeiculoDTO;
-import view.LocadoraView;
 
-import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Time;
-import java.util.Date;
 
 public class AluguelDAO {
 
