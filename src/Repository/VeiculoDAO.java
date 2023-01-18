@@ -15,7 +15,6 @@ public class VeiculoDAO implements IGenericoRepository<VeiculoDTO>{
 
     Conexao instance = Conexao.getInstance();
 
-
     public VeiculoDAO() throws SQLException {
     }
 

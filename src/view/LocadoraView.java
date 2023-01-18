@@ -68,6 +68,7 @@ public class LocadoraView {
                     case Constantes.CADASTRAR_CLIENTE -> adicionarCliente();
                     case Constantes.EDITAR_CLIENTE -> consultaCliente();
                     case Constantes.LISTA_VEICULOS_DISPONIVEIS -> listarVeiculosDisponiveisParaAluguel();
+                    case Constantes.EMITIR_COMPROVANTE -> emitirComprovanteAluguel();
                     case Constantes.SAIR_PROGRAMA -> {
                         continueMenu = false;
 //                        controller.sairPrograma();
@@ -247,7 +248,6 @@ public class LocadoraView {
         confirmacaoEditarVeiculo();
     }
 
-
     public void confirmacaoEditarVeiculo(){
         System.out.println("Deseja editar esse Carro? 'Y' para sim e 'N' para nao. ");
         String resposta = scan.nextLine().toUpperCase();
@@ -421,16 +421,18 @@ public class LocadoraView {
     public void alugarVeiculo(){
         Aluguel aluguel = new Aluguel();
         Cliente clienteParaAlugar = new Cliente();
-        clienteParaAlugar.setNome("Matheus");
-        clienteParaAlugar.setDocumento("123456");
-        clienteParaAlugar.setTelefone("61998408789");
-        clienteParaAlugar.setTipoCliente(Constantes.CLIENTE_FISICO);
+        clienteParaAlugar.setNome("Joao");
+        clienteParaAlugar.setDocumento("058951080");
+        clienteParaAlugar.setTelefone("666980074");
+        clienteParaAlugar.setTipoCliente(Constantes.CLIENTE_JURIDICO);
         /*ClienteDTO clienteParaAlugar = pegarCliente();
         if (clienteParaAlugar == null){
             System.out.println("Cliente não encontrado");
             return;
         }*/
         System.out.println(clienteParaAlugar);
+
+        listarVeiculosDisponiveisParaAluguel();
 
         VeiculoDTO veiculoParaAluguel = escolherVeiculo();
         if(veiculoParaAluguel == null){
@@ -459,17 +461,20 @@ public class LocadoraView {
             System.out.println("Datas inválidas");
         }
 
+        //listarAgencias();
+
         Agencia agenciaAluguel = escolherAgencia("Agencia A");
 
-        Agencia agenciaDevolucao = escolherAgencia("Agencia B");
+        Agencia agenciaDevolucao = escolherAgencia("Agencias B");
 
-        aluguel.setVeiculo(veiculoParaAluguel);
-        aluguel.setAgenciaRetirada(agenciaAluguel);
-        aluguel.setCliente(clienteParaAlugar);
-        aluguel.setDataInicio(dataInicio);
-        aluguel.setDataDevolucao(dataDevolucao);
-        aluguel.setHorarioAgendado(new Time(60804804));
-        aluguel.setValorAluguel(BigDecimal.valueOf(200));
+        aluguel.setVeiculo(veiculoParaAluguel); //pendente validação
+        aluguel.setAgenciaRetirada(agenciaAluguel); //pendente
+        aluguel.setAgenciaDevolucao(agenciaDevolucao); //pendente
+        aluguel.setCliente(clienteParaAlugar); //ok
+        aluguel.setDataInicio(dataInicio); //ok
+        aluguel.setDataDevolucao(dataDevolucao); //ok
+        aluguel.setHorarioAgendado(new Time(60804804)); //pendente
+        aluguel.setValorAluguel(BigDecimal.valueOf(200)); //pendente
 
         System.out.println(aluguel);
 
@@ -477,11 +482,22 @@ public class LocadoraView {
 
     }
 
+    /*public void listarAgencias(){
+        //Método para imprimir todas as agências do banco para o usuário escolher uma
+    }
+    public Agencia pegarAgenciaPorNome(String nomeAgencia){
+        //Método para retornar uma agência do banco de dados recebendo o nome como parâmetro
+    }*/
+
+
     public Agencia escolherAgencia(String nomeAgencia){
-        Agencia agencia = new Agencia();
-        agencia.setNome(nomeAgencia);
+       /* System.out.println("Informe o nome da agência que deseja pegar o carro: ");
+        String agenciaAluguel = scan.nextLine();
+        return pegarAgenciaPorNome(agenciaAluguel);*/
+        Agencia agencia = new Agencia(nomeAgencia);
         agencia.setLogadouro("Endereço da agencia");
         return agencia;
+
     }
 
     public boolean validacaoDatasLocacao(Date dataInicio, Date dataDevolucao){
@@ -548,6 +564,21 @@ public class LocadoraView {
         }catch (ListaVaziaException e){
             System.out.println("Não possuímos esse veículo em nosso estoque.");
             return null;
+        }
+    }
+
+    private void emitirComprovanteAluguel() {
+        System.out.println("Informe o número da sua reserva: ");
+        try {
+            int numeroReserva = Integer.parseInt(scan.nextLine());
+            Aluguel aluguel = controller.buscarAluguelPorId(numeroReserva);
+            if (aluguel == null){
+                System.out.println("Contrato não encontrado.");
+            }else{
+                System.out.println(aluguel);
+            }
+        }catch (Exception e){
+            System.out.println("Entrada inválida");
         }
     }
 
