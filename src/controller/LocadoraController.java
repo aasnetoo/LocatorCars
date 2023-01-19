@@ -50,6 +50,10 @@ public class LocadoraController {
     public void editarCarroPorPlaca(VeiculoDTO veiculoDTO){
         veiculoDAO.atualizarPorPlaca(veiculoDTO);
     }
+
+    public void atualizarDisponibilidadeVeiculo(String placa, String disponibilidade) {
+        veiculoDAO.atualizarDisponibilidadePorPlaca(placa, disponibilidade);
+    }
     public List<Veiculo> veiculosDisponiveisParaAluguel(){
         return veiculoDAO.listaVeiculosDisponiveis();
     }
@@ -98,8 +102,8 @@ public class LocadoraController {
 
         return listAgencia.size() == 1;
     }
-    // Fica faltando só mudar a disponibilidade do veiculo dps que devolver, quase OK
-    public double valorDevolucao(String documento, VeiculoDTO veiculoDTO, int dias, String tipoCliente){
+
+    public double valorDevolucao(String documento, VeiculoDTO veiculoDTO, int dias){
         double precoFinal = 0.0;
         Cliente cliente = clienteDAO.retornarCliente(documento);
         double desconto = cliente.valorDesconto(dias, cliente.getTipoCliente());

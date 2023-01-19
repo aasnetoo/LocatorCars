@@ -7,9 +7,9 @@ Criar uma aplicação que gerencie o aluguel de veículos, onde cada item abaixo
 - [x] Cadastrar os veículos;
 - [x] Alterar um veículo cadastrado;
 - [x] Buscar um veículo por parte do nome;
-- [ ] Cadastrar a agência onde o veículo será alugado/devolvido;
-- [ ] Alterar a agência onde o veículo será alugado/devolvido;
-- [ ] Buscar uma agência por parte do nome ou do logradouro do endereço;
+- [x] Cadastrar a agência onde o veículo será alugado/devolvido;
+- [x] Alterar a agência onde o veículo será alugado/devolvido;
+- [x] Buscar uma agência por parte do nome ou do logradouro do endereço;
 - [x] Cadastrar o cliente (pessoa fisica/juridica)
 - [x] Alterar o cliente (pessoa fisica/juridica)
 - [ ] Alugar um veículo para pessoa fisica;
@@ -21,7 +21,7 @@ Criar uma aplicação que gerencie o aluguel de veículos, onde cada item abaixo
 
 ### Itens bônus
 - [ ] Paginar as listas envolvidas;
-- [ ] Os dados deverão ser gravados em arquivos, simulando uma base de dados;
+- [x] Os dados deverão ser gravados em arquivos, simulando uma base de dados;
 
 ### Regras de negócio
 - RN1: Os veículos não podem ser repetidos;

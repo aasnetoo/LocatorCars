@@ -1,14 +1,13 @@
 package view;
 
+
 import controller.LocadoraController;
 import exception.EntradaInvalidaOuInsuficienteException;
 import exception.ListaVaziaException;
 import model.*;
-
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.sql.Time;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
@@ -16,11 +15,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
-
 import util.ConsoleColors;
 import util.Constantes;
 import util.Mensagens;
-
 import static java.lang.System.exit;
 
 public class LocadoraView {
@@ -36,18 +33,20 @@ public class LocadoraView {
 
     public String opcaoMenu() {
         System.out.println("---------- MENU ----------");
-        System.out.println("1 - Adicionar Veiculo");
-        System.out.println("2 - Editar Veiculo");
-        System.out.println("3 - Listar Veiculo");
-        System.out.println("4 - Cadastrar Agência");
-        System.out.println("5 - Alterar Agência");
-        System.out.println("6 - Buscar Agência");
-        System.out.println("7 - Alugar Veículo");
-        System.out.println("8 - Devolver Veiculo - TESTE");
-        System.out.println("9 - Cadastrar novo cliente");
-        System.out.println("10 - Editar cliente");
-        System.out.println("11 - Listar todos os Veiculos Disponiveis");
-        System.out.println("14 - Sair do Programa");
+        System.out.println("1 - Cadastrar veículo");
+        System.out.println("2 - Editar veículo");
+        System.out.println("3 - Buscar veículo");
+        System.out.println("4 - Cadastrar agência");
+        System.out.println("5 - Alterar agência");
+        System.out.println("6 - Buscar agência");
+        System.out.println("7 - Cadastrar cliente");
+        System.out.println("8 - Editar cliente");
+        System.out.println("9 - Alugar veículo");
+        System.out.println("10 - Devolver veículo");
+        System.out.println("11 - Sair do programa");
+
+        System.out.println("98 - Teste - Listar todos os veiculos disponiveis");
+        System.out.println("99 - Teste - Emitir comprovante");
 
         return scan.nextLine();
     }
@@ -57,23 +56,23 @@ public class LocadoraView {
             String option = opcaoMenu();
             try {
                 switch (option) {
-                    case Constantes.ADICIONAR_CARRO -> adicionarVeiculo(informacoesVeiculo());
-                    case Constantes.EDITAR_CARRO -> consultaVeiculo();
-                    case Constantes.LISTAR_CARRO -> listarPorModelo();
+                    case Constantes.CADASTRAR_VEICULO -> adicionarVeiculo(informacoesVeiculo());
+                    case Constantes.EDITAR_VEICULO -> consultaVeiculo();
+                    case Constantes.LISTAR_VEICULO -> listarPorModelo();
                     case Constantes.CADASTRAR_AGENCIA -> cadastrarAgencia();
                     case Constantes.ALTERAR_AGENCIA -> alterarAgencia();
                     case Constantes.BUSCAR_AGENCIA -> buscarAgencia();
-                    case Constantes.ALUGAR_VEICULO -> alugarVeiculo();
-                    case Constantes.DEVOLVER_VEICULO -> devolverVeiculo();
                     case Constantes.CADASTRAR_CLIENTE -> adicionarCliente();
                     case Constantes.EDITAR_CLIENTE -> consultaCliente();
-                    case Constantes.LISTA_VEICULOS_DISPONIVEIS -> listarVeiculosDisponiveisParaAluguel();
-                    case Constantes.EMITIR_COMPROVANTE -> emitirComprovanteAluguel();
+                    case Constantes.ALUGAR_VEICULO -> alugarVeiculo();
+                    case Constantes.DEVOLVER_VEICULO -> devolverVeiculo();
                     case Constantes.SAIR_PROGRAMA -> {
                         continueMenu = false;
 //                        controller.sairPrograma();
                         exit(0);
                     } // 6
+                    case Constantes.LISTA_VEICULOS_DISPONIVEIS -> listarVeiculosDisponiveisParaAluguel();
+                    case Constantes.EMITIR_COMPROVANTE -> emitirComprovanteAluguel();
                 }
             }catch (Exception e){
                 System.out.println(e.getMessage());
@@ -287,29 +286,25 @@ public class LocadoraView {
     //Método de teste — quando as outras classes foram implementadas irá ter mudança, mas o metodo tá calculando certo
     //e pegando os valores corretos.
     public void devolverVeiculo(){
-        System.out.println("Digite o tipo do Cliente? PF ou PJ ");
-        String tipoCliente = scan.nextLine();
-        System.out.println("Digite o nome do cliente: ");
-        String nomeCliente = scan.nextLine();
-        System.out.println("Quantos dias ficou com o veiculo? ");
-        int diasVeiculo = scan.nextInt();
-        scan.nextLine();
+//        Cliente cliente = retornarCliente();
         System.out.println("Digite a placa do veiculo que você alugou? ");
+
         String placaVeiculo = scan.nextLine();
         VeiculoDTO veiculoADevolver = controller.obterVeiculoPorPlaca(placaVeiculo);
-        double valorTotal = controller.valorDevolucao(nomeCliente,veiculoADevolver,diasVeiculo,tipoCliente);
-        System.out.println(valorTotal);
+
+        //TODO: sout valor da tabela alugueis
+
+        controller.atualizarDisponibilidadeVeiculo(placaVeiculo, "true");
+
+        //TODO: imprimir recibo
     }
 
 
     public void listarVeiculosDisponiveisParaAluguel(){
         controller.veiculosDisponiveisParaAluguel().forEach(System.out::println);
-    /////// clientes
     }
 
      public Cliente retornarCliente() {
-//        Cliente cliente = controller.retornarCliente(obterDocumentoEditar());
-//        System.out.println(cliente.getNome());
         return controller.retornarCliente(obterDocumentoEditar());
     }
 
@@ -351,7 +346,7 @@ public class LocadoraView {
             switch (choice) {
                 case Constantes.ALTERAR_NOME_CLIENTE -> {
                     System.out.println("Digite o nome:");
-                    String novoNome = scan.nextLine().toUpperCase();;
+                    String novoNome = scan.nextLine().toUpperCase();
                     clienteEditar.setNome(novoNome);
                     loop = false;
                 }
@@ -454,12 +449,13 @@ public class LocadoraView {
             System.out.println("Datas inválidas");
         }
 
+        //TODO: listarAgencias();
+
         Agencia agenciaAluguel = escolherAgencia();
 
-        //controller.valorDevolucao();
-        //listarAgencias();
-
         Agencia agenciaDevolucao = escolherAgencia();
+
+        //TODO: controller.valorDevolucao();
 
         aluguel.setVeiculo(veiculoParaAluguel); //pendente validação
         aluguel.setAgenciaRetirada(agenciaAluguel); //pendente
@@ -470,15 +466,15 @@ public class LocadoraView {
         aluguel.setHorarioAgendado(Time.valueOf(horarioLocacao)); //pendente
         aluguel.setValorAluguel(BigDecimal.valueOf(350)); //pendente
 
-        /*void mudarStatusVeiculoIndisponivel(String placa){
-
-        }*/
+        controller.atualizarDisponibilidadeVeiculo(veiculoParaAluguel.getPlaca(), "false");
 
         controller.salvarAluguel(aluguel);
     }
 
+
+
     public Agencia escolherAgencia(){
-        // Faz o print das agências disponíveis
+        // Faz a impressão das agências disponíveis
         controller.consultarAgencia("", true);
         System.out.println("Informe o nome da Agência que deseja pegar o carro: ");
         String nomeAgencia = scan.nextLine();
@@ -525,8 +521,7 @@ public class LocadoraView {
         String data = scan.nextLine();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         try {
-            Date dataLocacao = sdf.parse(data);
-            return dataLocacao;
+            return sdf.parse(data);
         } catch (ParseException e) {
             System.out.println("Digite um formato de data válido.");
             return null;
@@ -535,8 +530,7 @@ public class LocadoraView {
 
     public Cliente pegarCliente(){
         try {
-            Cliente clienteAluguel = retornarCliente();
-            return clienteAluguel;
+            return retornarCliente();
         }catch (IllegalArgumentException e){
             System.out.println("Informe apenas números");
             return null;
