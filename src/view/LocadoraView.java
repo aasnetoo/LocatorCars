@@ -42,12 +42,10 @@ public class LocadoraView {
         System.out.println("5 - Alterar Agência");
         System.out.println("6 - Buscar Agência");
         System.out.println("7 - Alugar Veículo");
-        // System.out.println("7 - Remover um produto");
         System.out.println("8 - Devolver Veiculo - TESTE");
         System.out.println("9 - Cadastrar novo cliente");
         System.out.println("10 - Editar cliente");
         System.out.println("11 - Listar todos os Veiculos Disponiveis");
-        // System.out.println("8 - Devolver Veiculo - TESTE");
         System.out.println("14 - Sair do Programa");
 
         return scan.nextLine();
@@ -65,7 +63,6 @@ public class LocadoraView {
                     case Constantes.ALTERAR_AGENCIA -> alterarAgencia();
                     case Constantes.BUSCAR_AGENCIA -> buscarAgencia();
                     case Constantes.ALUGAR_VEICULO -> alugarVeiculo();
-//                    case Constantes.REMOVER_PRODUTO -> controller.removerProduto();
                     case Constantes.DEVOLVER_VEICULO -> devolverVeiculo();
                     case Constantes.CADASTRAR_CLIENTE -> adicionarCliente();
                     case Constantes.EDITAR_CLIENTE -> consultaCliente();
@@ -456,6 +453,8 @@ public class LocadoraView {
             System.out.println("Datas inválidas");
         }
 
+        //controller.valorDevolucao();
+
         //listarAgencias();
 
         Agencia agenciaAluguel = escolherAgencia("Agencia A");
@@ -470,6 +469,10 @@ public class LocadoraView {
         aluguel.setDataDevolucao(dataDevolucao); //ok
         aluguel.setHorarioAgendado(Time.valueOf(horarioLocacao)); //pendente
         aluguel.setValorAluguel(BigDecimal.valueOf(350)); //pendente
+
+        /*void mudarStatusVeiculoIndisponivel(String placa){
+
+        }*/
 
         controller.salvarAluguel(aluguel);
 
@@ -501,10 +504,6 @@ public class LocadoraView {
         if(dataInicio.before(dataAtual)){
             return false;
         }
-        return true;
-    }
-
-    public boolean verificarVeiculoDisponivel(VeiculoDTO veiculoParaVerificacao){
         return true;
     }
 
