@@ -12,8 +12,8 @@ Criar uma aplicação que gerencie o aluguel de veículos, onde cada item abaixo
 - [x] Buscar uma agência por parte do nome ou do logradouro do endereço;
 - [x] Cadastrar o cliente (pessoa fisica/juridica)
 - [x] Alterar o cliente (pessoa fisica/juridica)
-- [ ] Alugar um veículo para pessoa fisica;
-- [ ] Alugar um veículo para pessoa juridica;
+- [x] Alugar um veículo para pessoa fisica;
+- [x] Alugar um veículo para pessoa juridica;
 - [ ] Devolver um veículo para pessoa fisica;
 - [ ] Devolver um veículo para pessoa juridica;
 - [ ] Gerar um comprovante com todos os dados do aluguel (aberto para o grupo decidir o que vai ser demonstrado);

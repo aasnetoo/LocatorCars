@@ -16,6 +16,7 @@ public class Aluguel {
     Date dataInicio;
     Date dataDevolucao;
     Time horarioAgendado;
+    Time horarioDevolucao;
     Agencia agenciaRetirada;
     Agencia agenciaDevolucao;
     BigDecimal valorAluguel;
@@ -57,6 +58,14 @@ public class Aluguel {
 
     public void setHorarioAgendado(Time horarioAgendado) {
         this.horarioAgendado = horarioAgendado;
+    }
+
+    public Time getHorarioDevolucao() {
+        return horarioDevolucao;
+    }
+
+    public void setHorarioDevolucao(Time horarioDevolucao) {
+        this.horarioDevolucao = horarioDevolucao;
     }
 
     public int getId() {

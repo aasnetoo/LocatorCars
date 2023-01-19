@@ -288,24 +288,20 @@ public class LocadoraView {
     public void devolverVeiculo(){
 //        Cliente cliente = retornarCliente();
         System.out.println("Digite a placa do veiculo que você alugou? ");
-
         String placaVeiculo = scan.nextLine();
+
+
         VeiculoDTO veiculoADevolver = controller.obterVeiculoPorPlaca(placaVeiculo);
 
-        //TODO: sout valor da tabela alugueis
 
         controller.atualizarDisponibilidadeVeiculo(placaVeiculo, "true");
 
-        //TODO: imprimir recibo
+        //TODO: imprimir recibo com dados da tabela de alugueis // talvez pegar por placa e disponivel = false
     }
 
 
     public void listarVeiculosDisponiveisParaAluguel(){
         controller.veiculosDisponiveisParaAluguel().forEach(System.out::println);
-    }
-
-     public Cliente retornarCliente() {
-        return controller.retornarCliente(obterDocumentoEditar());
     }
 
     public void adicionarCliente(){
@@ -379,22 +375,20 @@ public class LocadoraView {
 
         boolean entradaValida = false;
 
-        String documentoParaBuscar = null;
+        Long documentoCliente = 0L;
 
         System.out.println("Digite o documento do cliente (apenas números): ");
 
         while (!entradaValida) {
             try {
-                int documentoCliente = Integer.parseInt(scan.nextLine());
-                documentoParaBuscar = Integer.toString(documentoCliente);
+                documentoCliente = Long.parseLong(scan.nextLine());
                 entradaValida = true;
-            }catch (IllegalArgumentException e){
+            } catch (IllegalArgumentException e){
                 System.out.println("Informe apenas números");
                 entradaValida = false;
-                documentoParaBuscar = "Docuemento invalido";
             }
         }
-        return documentoParaBuscar;
+        return String.valueOf(documentoCliente);
     }
 
     public void verificarEditarCliente (String resposta){
@@ -412,11 +406,11 @@ public class LocadoraView {
     }
 
 
-    //////////////Inicio Aluguel
     public void alugarVeiculo(){
         Aluguel aluguel = new Aluguel();
 
-        Cliente clienteParaAlugar = pegarCliente();
+        Cliente clienteParaAlugar = controller.retornarCliente(obterDocumentoEditar());
+
         if (clienteParaAlugar == null) {
             System.out.println("Cliente não encontrado");
             return;
@@ -433,12 +427,20 @@ public class LocadoraView {
         System.out.println("Para o início da locação.");
         Date dataInicio = escolherData();
 
+        System.out.println("Para o início da locação.");
+        LocalTime horarioLocacao = escolherHorarioLocacao();
+        if(horarioLocacao == null){
+            return;
+        }
+
         System.out.println("Para a devolução do veículo.");
         Date dataDevolucao = escolherData();
 
-        LocalTime horarioLocacao = escolherHorarioLocacao();
-        if(horarioLocacao == null)
+        System.out.println("Para a devolução do veículo.");
+        LocalTime horarioDevolucao = escolherHorarioLocacao();
+        if(horarioLocacao == null){
             return;
+        }
 
         try{
             if(!validacaoDatasLocacao(dataInicio, dataDevolucao)){
@@ -449,22 +451,39 @@ public class LocadoraView {
             System.out.println("Datas inválidas");
         }
 
-        //TODO: listarAgencias();
+        long dataInicioEmMs = dataInicio.getTime();
+        long dataDevolucaoEmMs = dataDevolucao.getTime();
+        long diferencaDatas = dataDevolucaoEmMs - dataInicioEmMs;
 
+        int diariaExtra = 0;
+
+        if (horarioDevolucao.isAfter(horarioLocacao)) {
+            diariaExtra = 1;
+        }
+
+        int diasAlugado = (int) ((diferencaDatas / ( 1000 * 60 * 60 * 24)) + diariaExtra);
+
+        System.out.println("Dias alugado: " + diasAlugado);
+
+        System.out.println("Agencia para retirada");
         Agencia agenciaAluguel = escolherAgencia();
 
+        System.out.println("Agencia para devolução");
         Agencia agenciaDevolucao = escolherAgencia();
 
-        //TODO: controller.valorDevolucao();
+        BigDecimal valorAluguel = controller.valorDevolucao(clienteParaAlugar.getDocumento(), veiculoParaAluguel, diasAlugado);
+
+        System.out.println("Valor aluguel: " + valorAluguel);
 
         aluguel.setVeiculo(veiculoParaAluguel); //pendente validação
-        aluguel.setAgenciaRetirada(agenciaAluguel); //pendente
-        aluguel.setAgenciaDevolucao(agenciaDevolucao); //pendente
+        aluguel.setAgenciaRetirada(agenciaAluguel); //ok
+        aluguel.setAgenciaDevolucao(agenciaDevolucao); //ok
         aluguel.setCliente(clienteParaAlugar); //ok
         aluguel.setDataInicio(dataInicio); //ok
         aluguel.setDataDevolucao(dataDevolucao); //ok
-        aluguel.setHorarioAgendado(Time.valueOf(horarioLocacao)); //pendente
-        aluguel.setValorAluguel(BigDecimal.valueOf(350)); //pendente
+        aluguel.setHorarioAgendado(Time.valueOf(horarioLocacao)); //ok
+        aluguel.setHorarioDevolucao(Time.valueOf(horarioDevolucao)); //ok
+        aluguel.setValorAluguel(valorAluguel); //pendente
 
         controller.atualizarDisponibilidadeVeiculo(veiculoParaAluguel.getPlaca(), "false");
 
@@ -474,16 +493,15 @@ public class LocadoraView {
 
 
     public Agencia escolherAgencia(){
-        // Faz a impressão das agências disponíveis
         controller.consultarAgencia("", true);
-        System.out.println("Informe o nome da Agência que deseja pegar o carro: ");
-        String nomeAgencia = scan.nextLine();
+        System.out.println("Informe o id da Agência que deseja: ");
+        int idAgencia = Integer.parseInt(scan.nextLine());
         boolean loop = true;
         while(loop) {
-            Agencia agencia = controller.consultarAgenciaPorNome(nomeAgencia);
-            if (Objects.equals(agencia.getNome(), "")) {
+            Agencia agencia = controller.consultarAgenciaPorId(idAgencia);
+            if (Objects.equals(agencia.getId(), "")) {
                 System.out.println("Agência não encontrada, favor digitar outra.");
-                nomeAgencia = scan.nextLine();
+                idAgencia = Integer.parseInt(scan.nextLine());
             } else {
                 loop = false;
                 return agencia;
@@ -504,7 +522,7 @@ public class LocadoraView {
     }
 
     public LocalTime escolherHorarioLocacao(){
-        System.out.println("Informe o horário para locação no formato HH:mm:ss");
+        System.out.println("Informe o horário no formato HH:mm:ss");
         String hora = scan.nextLine();
         try {
         LocalTime horarioAluguel = LocalTime.parse(hora);
@@ -524,15 +542,6 @@ public class LocadoraView {
             return sdf.parse(data);
         } catch (ParseException e) {
             System.out.println("Digite um formato de data válido.");
-            return null;
-        }
-    }
-
-    public Cliente pegarCliente(){
-        try {
-            return retornarCliente();
-        }catch (IllegalArgumentException e){
-            System.out.println("Informe apenas números");
             return null;
         }
     }
@@ -562,7 +571,6 @@ public class LocadoraView {
         }
     }
 
-    //////////////Fim Aluguel
 }
 
 

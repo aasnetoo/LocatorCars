@@ -113,7 +113,7 @@ public class AgenciaDAO {
 
             }
         }catch(SQLException ex){
-            System.out.println("Não conseguiu consultar os dados do Veiculo.");
+            System.out.println("Não conseguiu consultar os dados da Agencia.");
         }
         return listAgencia;
     }

@@ -18,7 +18,7 @@ public class AluguelDAO {
     }
 
     public void salvarAluguel(Aluguel aluguel) {
-        String query = "INSERT into alugueis (cliente_nome, cliente_documento, veiculo_modelo, placa_veiculo, data_inicio, data_devolucao, horario_agendado, valor, tipo_cliente, agencia_retirada_nome, agencia_devolucao_nome) values('"
+        String query = "INSERT into alugueis (cliente_nome, cliente_documento, veiculo_modelo, placa_veiculo, data_inicio, data_devolucao, horario_agendado, horario_devolucao, valor, tipo_cliente, agencia_retirada_nome, agencia_devolucao_nome) values('"
                 + aluguel.getCliente().nome + "', '"
                 + aluguel.getCliente().documento + "', '"
                 + aluguel.getVeiculo().getModelo() + "', '"
@@ -26,6 +26,7 @@ public class AluguelDAO {
                 + aluguel.getDataInicio() + "', '"
                 + aluguel.getDataDevolucao() + "', '"
                 + aluguel.getHorarioAgendado() + "', '"
+                + aluguel.getHorarioDevolucao() + "', '"
                 + aluguel.getValorAluguel() + "', '"
                 + aluguel.getCliente().tipoCliente + "', '"
                 + aluguel.getAgenciaRetirada().getNome() + "', '"
@@ -55,8 +56,9 @@ public class AluguelDAO {
                 aluguel.setDataInicio(resultado.getDate("data_inicio"));
                 aluguel.setDataDevolucao(resultado.getDate("data_devolucao"));
                 aluguel.setHorarioAgendado(resultado.getTime("horaio_agendado"));
-                aluguel.setAgenciaRetirada(null);
-                aluguel.setAgenciaDevolucao(null);
+                aluguel.setHorarioDevolucao(resultado.getTime("horario_devolucao"));
+                aluguel.setAgenciaRetirada(locadoraController.consultarAgenciaPorNome(resultado.getString("agencia_retirada_nome")));
+                aluguel.setAgenciaDevolucao(locadoraController.consultarAgenciaPorNome(resultado.getString("agencia_devolucao_nome")));
                 aluguel.setValorAluguel(BigDecimal.valueOf((resultado.getDouble("valor"))));
 
             }
