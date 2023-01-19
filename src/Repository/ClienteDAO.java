@@ -82,7 +82,7 @@ public class ClienteDAO implements IGenericoRepository<Cliente> {
     }
 
     public Cliente retornarCliente(String documento){
-        Cliente cliente = new Cliente();
+        Cliente cliente =  new Cliente();
         try{
             String sql = "SELECT * FROM clientes WHERE documento like '"+documento+"'";
             PreparedStatement stm = instance.getConnection().prepareStatement(sql);

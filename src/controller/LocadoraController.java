@@ -47,8 +47,12 @@ public class LocadoraController {
         return veiculosFiltrados;
     }
 
+    public List<Veiculo> paginacaoVeiculos(int pagina){
+        return veiculoDAO.paginacaoVeiculos(pagina);
+    }
 
-    public void editarCarroPorPlaca(VeiculoDTO veiculoDTO){
+
+    public void editarVeiculoPorPlaca(VeiculoDTO veiculoDTO){
         veiculoDAO.atualizarPorPlaca(veiculoDTO);
     }
 

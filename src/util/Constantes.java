@@ -55,5 +55,8 @@ public class Constantes {
     public static final String RESP_SIM = "Y";
     public static final String RESP_NAO = "N";
 
+    //Constantes do Repository
+    public static final int ITENS_POR_PAGINA = 3;
+
 
 }

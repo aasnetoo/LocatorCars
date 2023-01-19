@@ -3,6 +3,7 @@ package Repository;
 import database.Conexao;
 import model.Veiculo;
 import model.VeiculoDTO;
+import util.Constantes;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -180,5 +181,29 @@ public class VeiculoDAO implements IGenericoRepository<VeiculoDTO>{
         } catch(Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public List<Veiculo> paginacaoVeiculos(int pagina){
+        List<Veiculo> listaVeiculos = new ArrayList<>();
+        try{
+            String sql = "SELECT * FROM veiculos LIMIT "+ Constantes.ITENS_POR_PAGINA+"  OFFSET("+pagina+" - 1) * "+Constantes.ITENS_POR_PAGINA;
+            PreparedStatement stm = instance.getConnection().prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+
+            while (rs.next()){
+                Veiculo veiculo = new Veiculo();
+                veiculo.setPlaca(rs.getString("placa"));
+                veiculo.setModelo(rs.getString("modelo"));
+                veiculo.setPotencia(rs.getDouble("potencia"));
+                veiculo.setTipo(rs.getString("tipo"));
+                veiculo.setDisponivel(rs.getBoolean("disponivel"));
+
+                listaVeiculos.add(veiculo);
+
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return listaVeiculos;
     }
 }

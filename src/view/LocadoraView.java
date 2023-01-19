@@ -4,6 +4,7 @@ package view;
 import controller.LocadoraController;
 import exception.EntradaInvalidaOuInsuficienteException;
 import exception.ListaVaziaException;
+import exception.PaginacaoException;
 import model.*;
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -71,6 +72,7 @@ public class LocadoraView {
 //                        controller.sairPrograma();
                         exit(0);
                     } // 6
+                    case "15" -> paginacaoVeiculos();
                     case Constantes.LISTA_VEICULOS_DISPONIVEIS -> listarVeiculosDisponiveisParaAluguel();
                     case Constantes.EMITIR_COMPROVANTE -> emitirComprovanteAluguel();
                 }
@@ -255,7 +257,7 @@ public class LocadoraView {
 
     public String editarVeiculo(){
         String placaDoCarroParaEditar = obterPlacaEditar();
-        controller.editarCarroPorPlaca(dadosVeiculoEditar(placaDoCarroParaEditar));
+        controller.editarVeiculoPorPlaca(dadosVeiculoEditar(placaDoCarroParaEditar));
         return "Carro editado com sucesso.";
 
     }
@@ -302,6 +304,32 @@ public class LocadoraView {
 
     public void listarVeiculosDisponiveisParaAluguel(){
         controller.veiculosDisponiveisParaAluguel().forEach(System.out::println);
+    }
+
+    public void paginacaoVeiculos(){
+        boolean continueLoop = true;
+        int pagina = 1;
+        while (continueLoop){
+            controller.paginacaoVeiculos(pagina).forEach(System.out::println);
+
+            System.out.println("O que deseja fazer? Digite 1 para ir para próxima página; 2 para voltar de página e 3 para voltar ao menu.");
+            int resposta = Integer.parseInt(scan.next());
+            if (resposta == 1){
+                pagina++;
+            }else if (resposta == 2){
+                if (pagina == 1){
+                    throw new PaginacaoException("Você já está na página 1!");
+                }else{
+                    pagina = pagina - 1;
+                }
+            }else if (resposta == 3){
+                System.out.println("Voltando ao menu...");
+                continueLoop = false;
+            }
+            else{
+                System.out.println("Opção incorreta, digite uma opção válida.");
+            }
+        }
     }
 
     public void adicionarCliente(){
