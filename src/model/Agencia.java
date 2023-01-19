@@ -12,6 +12,10 @@ public class Agencia {
         this.nome = nome;
     }
 
+    public Agencia(int id) {
+        this.id = id;
+    }
+
     public Agencia(String nome, String logradouro) {
         this.nome = nome;
         this.logradouro = logradouro;

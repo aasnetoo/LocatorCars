@@ -9,6 +9,7 @@ import exception.VeiculoExisteException;
 import model.*;
 import util.TablePrinter;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -79,6 +80,14 @@ public class LocadoraController {
         return listAgencia.get(0);
     }
 
+    public Agencia consultarAgenciaPorId(int idAgencia) {
+        String paramsQuery = "SEARCH|id_agencia|" + idAgencia;
+        List<Agencia> listAgencia = new ArrayList<>();
+        listAgencia = agenciaDAO.consulta(paramsQuery);
+        if (listAgencia.size() == 0) return new Agencia("");
+        return listAgencia.get(0);
+    }
+
     public boolean consultarAgencia(String paramsQuery, boolean print) {
         // Obtém as agências presentes no Banco de Dados
         List<Agencia> listAgencia = new ArrayList<>();
@@ -103,14 +112,15 @@ public class LocadoraController {
         return listAgencia.size() == 1;
     }
 
-    public double valorDevolucao(String documento, VeiculoDTO veiculoDTO, int dias){
+    public BigDecimal valorDevolucao(String documento, VeiculoDTO veiculoDTO, int dias){
         double precoFinal = 0.0;
         Cliente cliente = clienteDAO.retornarCliente(documento);
-        double desconto = cliente.valorDesconto(dias, cliente.getTipoCliente());
+        String tipoCliente = cliente.getTipoCliente();
+        double desconto = cliente.percentualDesconto(dias, tipoCliente);
         double valorSemDesconto = (TipoVeiculo.calculaValor(veiculoDTO.getTipo())*dias);
         precoFinal = valorSemDesconto - (valorSemDesconto*desconto);
 
-        return precoFinal;
+        return BigDecimal.valueOf(precoFinal);
     }
 
     public VeiculoDTO obterVeiculoPorPlaca(String placa){

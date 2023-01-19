@@ -18,19 +18,19 @@ public class Cliente {
         return Objects.equals(documento, that.documento) && Objects.equals(tipoCliente, that.tipoCliente);
     }
 
-    public Double valorDesconto(int dias, String tipoCliente) {
+    public Double percentualDesconto(int dias, String tipoCliente) {
 
-        if(tipoCliente == Constantes.CLIENTE_FISICO) {
-            if (dias>5){
+        if(tipoCliente.equals(Constantes.CLIENTE_FISICO)) {
+            if (dias > 5){
                 return 0.05;
-            }else{
+            } else {
                 return 0.0;
             }
 
-        } else if (tipoCliente == Constantes.CLIENTE_JURIDICO) {
-            if (dias>3){
+        } else if (tipoCliente.equals(Constantes.CLIENTE_JURIDICO)) {
+            if (dias > 3){
                 return 0.10;
-            }else{
+            } else {
                 return 0.0;
             }
 
