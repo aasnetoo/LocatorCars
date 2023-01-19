@@ -4,6 +4,8 @@ import controller.LocadoraController;
 import database.Conexao;
 import model.Aluguel;
 
+
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -16,8 +18,7 @@ public class AluguelDAO {
     }
 
     public void salvarAluguel(Aluguel aluguel) {
-        String query = "INSERT into alugueis (id, cliente_nome, cliente_documento, veiculo_modelo, placa_veiculo, data_inicio, data_devolucao, horario_agendado, valor, tipo_cliente, agencia_retirada_nome, agencia_devolucao_nome) values('"
-                + aluguel.getId() + "', '"
+        String query = "INSERT into alugueis (cliente_nome, cliente_documento, veiculo_modelo, placa_veiculo, data_inicio, data_devolucao, horario_agendado, valor, tipo_cliente, agencia_retirada_nome, agencia_devolucao_nome) values('"
                 + aluguel.getCliente().nome + "', '"
                 + aluguel.getCliente().documento + "', '"
                 + aluguel.getVeiculo().getModelo() + "', '"
@@ -40,7 +41,7 @@ public class AluguelDAO {
     }
 
     public Aluguel pegarAluguelPorId(int id){
-        String consulta = "SELECT * FROM alugueis WHERE id like '"+id+"'";
+        String consulta = "SELECT * FROM alugueis WHERE id = "+id;
         Aluguel aluguel = new Aluguel();
         try {
             LocadoraController locadoraController = new LocadoraController();
@@ -49,14 +50,14 @@ public class AluguelDAO {
             while(resultado.next()) {
 
                 aluguel.setId(resultado.getInt("id"));
-                aluguel.setCliente(locadoraController.retornarCliente(resultado.getString("cliente_nome")));
+                aluguel.setCliente(locadoraController.retornarCliente(resultado.getString("cliente_documento")));
                 aluguel.setVeiculo(locadoraController.obterVeiculoPorPlaca(resultado.getString("placa_veiculo")));
                 aluguel.setDataInicio(resultado.getDate("data_inicio"));
                 aluguel.setDataDevolucao(resultado.getDate("data_devolucao"));
                 aluguel.setHorarioAgendado(resultado.getTime("horaio_agendado"));
                 aluguel.setAgenciaRetirada(null);
                 aluguel.setAgenciaDevolucao(null);
-                aluguel.setValorAluguel(resultado.getBigDecimal("valor"));
+                aluguel.setValorAluguel(BigDecimal.valueOf((resultado.getDouble("valor"))));
 
             }
 

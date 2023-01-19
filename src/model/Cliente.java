@@ -39,6 +39,16 @@ public class Cliente {
     }
 
     @Override
+    public String toString() {
+        return "Cliente{" +
+                "nome='" + nome + '\'' +
+                ", telefone='" + telefone + '\'' +
+                ", documento='" + documento + '\'' +
+                ", tipoCliente='" + tipoCliente + '\'' +
+                '}';
+    }
+
+    @Override
     public int hashCode() {
         return Objects.hash(nome, telefone, documento, tipoCliente);
     }

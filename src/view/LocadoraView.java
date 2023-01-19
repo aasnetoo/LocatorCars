@@ -8,8 +8,10 @@ import model.*;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -41,12 +43,10 @@ public class LocadoraView {
         System.out.println("5 - Alterar Agência");
         System.out.println("6 - Buscar Agência");
         System.out.println("7 - Alugar Veículo");
-        // System.out.println("7 - Remover um produto");
         System.out.println("8 - Devolver Veiculo - TESTE");
         System.out.println("9 - Cadastrar novo cliente");
         System.out.println("10 - Editar cliente");
         System.out.println("11 - Listar todos os Veiculos Disponiveis");
-        // System.out.println("8 - Devolver Veiculo - TESTE");
         System.out.println("14 - Sair do Programa");
 
         return scan.nextLine();
@@ -64,7 +64,6 @@ public class LocadoraView {
                     case Constantes.ALTERAR_AGENCIA -> alterarAgencia();
                     case Constantes.BUSCAR_AGENCIA -> buscarAgencia();
                     case Constantes.ALUGAR_VEICULO -> alugarVeiculo();
-//                    case Constantes.REMOVER_PRODUTO -> controller.removerProduto();
                     case Constantes.DEVOLVER_VEICULO -> devolverVeiculo();
                     case Constantes.CADASTRAR_CLIENTE -> adicionarCliente();
                     case Constantes.EDITAR_CLIENTE -> consultaCliente();
@@ -421,17 +420,12 @@ public class LocadoraView {
     //////////////Inicio Aluguel
     public void alugarVeiculo(){
         Aluguel aluguel = new Aluguel();
-        Cliente clienteParaAlugar = new Cliente();
-        clienteParaAlugar.setNome("Joao");
-        clienteParaAlugar.setDocumento("058951080");
-        clienteParaAlugar.setTelefone("666980074");
-        clienteParaAlugar.setTipoCliente(Constantes.CLIENTE_JURIDICO);
-        /*ClienteDTO clienteParaAlugar = pegarCliente();
-        if (clienteParaAlugar == null){
+
+        Cliente clienteParaAlugar = pegarCliente();
+        if (clienteParaAlugar == null) {
             System.out.println("Cliente não encontrado");
             return;
-        }*/
-        System.out.println(clienteParaAlugar);
+        }
 
         listarVeiculosDisponiveisParaAluguel();
 
@@ -441,28 +435,29 @@ public class LocadoraView {
             return;
         }
 
-        if(!verificarVeiculoDisponivel(veiculoParaAluguel)){
-            System.out.println("Veículo alugado no momento. Tente com outro veículo.");
-            return;
-        }
-
-        //Mon Jan 16 00:00:00 BRT 2023
         System.out.println("Para o início da locação.");
         Date dataInicio = escolherData();
 
         System.out.println("Para a devolução do veículo.");
         Date dataDevolucao = escolherData();
+
+        LocalTime horarioLocacao = escolherHorarioLocacao();
+        if(horarioLocacao == null)
+            return;
+
         try{
             if(!validacaoDatasLocacao(dataInicio, dataDevolucao)){
                 System.out.println("Informe datas válidas");
                 return;
             }
-            //escolherHorarioLocacao(dataInicio);
         }catch (Exception e){
             System.out.println("Datas inválidas");
         }
 
         Agencia agenciaAluguel = escolherAgencia();
+
+        //controller.valorDevolucao();
+        //listarAgencias();
 
         Agencia agenciaDevolucao = escolherAgencia();
 
@@ -472,10 +467,12 @@ public class LocadoraView {
         aluguel.setCliente(clienteParaAlugar); //ok
         aluguel.setDataInicio(dataInicio); //ok
         aluguel.setDataDevolucao(dataDevolucao); //ok
-        aluguel.setHorarioAgendado(new Time(60804804)); //pendente
-        aluguel.setValorAluguel(BigDecimal.valueOf(200)); //pendente
+        aluguel.setHorarioAgendado(Time.valueOf(horarioLocacao)); //pendente
+        aluguel.setValorAluguel(BigDecimal.valueOf(350)); //pendente
 
-        System.out.println(aluguel);
+        /*void mudarStatusVeiculoIndisponivel(String placa){
+
+        }*/
 
         controller.salvarAluguel(aluguel);
     }
@@ -510,25 +507,16 @@ public class LocadoraView {
         return true;
     }
 
-    public boolean verificarVeiculoDisponivel(VeiculoDTO veiculoParaVerificacao){
-        return true;
-    }
-
-    public void escolherHorarioLocacao(Date dataInicioLocacao){
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-        String dataLocacao = dataInicioLocacao.toString();
+    public LocalTime escolherHorarioLocacao(){
         System.out.println("Informe o horário para locação no formato HH:mm:ss");
-        String horarioUsuario = scan.nextLine();
+        String hora = scan.nextLine();
         try {
-            Date horarioLocacao;
-            horarioLocacao = (Date) dataInicioLocacao.clone();
-            //horarioLocacao = Calendar.getInstance().getTime();
-            //horarioLocacao.setTime(sdf.parse(horarioUsuario));
-            horarioLocacao = sdf.parse(horarioUsuario);
-            System.out.println(horarioLocacao);
-        } catch (ParseException e) {
-            System.out.println("Informe um horário válido");
-            return;
+        LocalTime horarioAluguel = LocalTime.parse(hora);
+        System.out.println(horarioAluguel);
+            return horarioAluguel;
+        } catch (Exception e) {
+            System.out.println("Formato de hora inválido");
+            return null;
         }
     }
 
@@ -557,7 +545,6 @@ public class LocadoraView {
 
     public VeiculoDTO escolherVeiculo(){
         try{
-            listarPorModelo();
             System.out.println("Informe a placa do veículo que deseja alugar.");
             return controller.obterVeiculoPorPlaca(scan.nextLine().toUpperCase());
         }catch (ListaVaziaException e){
