@@ -1,5 +1,7 @@
 package model;
 
+import util.Constantes;
+
 import java.util.Objects;
 
 public class Cliente {
@@ -18,14 +20,14 @@ public class Cliente {
 
     public Double valorDesconto(int dias, String tipoCliente) {
 
-        if(tipoCliente == "PF") {
+        if(tipoCliente == Constantes.CLIENTE_FISICO) {
             if (dias>5){
                 return 0.05;
             }else{
                 return 0.0;
             }
 
-        } else if (tipoCliente == "PJ") {
+        } else if (tipoCliente == Constantes.CLIENTE_JURIDICO) {
             if (dias>3){
                 return 0.10;
             }else{

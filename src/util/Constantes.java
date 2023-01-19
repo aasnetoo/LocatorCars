@@ -10,19 +10,19 @@ public class Constantes {
 
     //Constantes do model
 
-    public static final String ADICIONAR_CARRO = "1";
-    public static final String EDITAR_CARRO = "2";
-    public static final String LISTAR_CARRO = "3";
+    public static final String CADASTRAR_VEICULO = "1";
+    public static final String EDITAR_VEICULO = "2";
+    public static final String LISTAR_VEICULO = "3";
     public static final String CADASTRAR_AGENCIA = "4";
     public static final String ALTERAR_AGENCIA = "5";
     public static final String BUSCAR_AGENCIA = "6";
-    public static final String ALUGAR_VEICULO = "7";
-    public static final String DEVOLVER_VEICULO = "8";
-    public static final String CADASTRAR_CLIENTE = "9";
-    public static final String EDITAR_CLIENTE = "10";
-    public static final String LISTA_VEICULOS_DISPONIVEIS = "11";
-    public static final String EMITIR_COMPROVANTE = "12";
-    public static final String SAIR_PROGRAMA = "14";
+    public static final String CADASTRAR_CLIENTE = "7";
+    public static final String EDITAR_CLIENTE = "8";
+    public static final String ALUGAR_VEICULO = "9";
+    public static final String DEVOLVER_VEICULO = "10";
+    public static final String SAIR_PROGRAMA = "11";
+    public static final String LISTA_VEICULOS_DISPONIVEIS = "98";
+    public static final String EMITIR_COMPROVANTE = "99";
 
     public static final String CLIENTE_FISICO = "PF";
     public static final String CLIENTE_JURIDICO = "PJ";

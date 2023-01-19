@@ -168,4 +168,17 @@ public class VeiculoDAO implements IGenericoRepository<VeiculoDTO>{
             throw new RuntimeException(e);
         }
     }
+
+    public void atualizarDisponibilidadePorPlaca(String placa, String disponibilidade) {
+        try {
+            String sql = "UPDATE veiculos " +
+                    " SET disponivel = "+disponibilidade +
+                    " WHERE placa = '"+placa+"' ";
+
+            PreparedStatement statement = instance.getConnection().prepareStatement(sql);
+            statement.execute();
+        } catch(Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
