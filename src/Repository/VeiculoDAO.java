@@ -105,6 +105,28 @@ public class VeiculoDAO implements IGenericoRepository<VeiculoDTO>{
 
     }
 
+    public Veiculo retornarVeiculoPlaca(String placa){
+        String consulta = "SELECT * FROM veiculos WHERE placa like '"+placa+"'";
+        Veiculo veiculo = new Veiculo();
+        try {
+            Statement stm = instance.getConnection().createStatement();
+            ResultSet resultado = stm.executeQuery(consulta);
+            while(resultado.next()) {
+
+                veiculo.setPlaca(resultado.getString("placa"));
+                veiculo.setModelo(resultado.getString("modelo"));
+                veiculo.setPotencia(resultado.getDouble("potencia"));
+                veiculo.setTipo(resultado.getString("tipo"));
+                veiculo.setDisponivel(resultado.getBoolean("disponivel"));
+
+            }
+
+        }catch(SQLException ex){
+            System.out.println("Não conseguiu consultar os dados do Veiculo.");
+        }
+        return veiculo;
+    }
+
     @Override
     public List<VeiculoDTO> listarTodos(){
         List<VeiculoDTO> listaCarros = new ArrayList<>();

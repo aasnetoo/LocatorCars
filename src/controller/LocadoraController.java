@@ -33,8 +33,8 @@ public class LocadoraController {
         veiculoDAO.incluir(veiculoDTO);
     }
 
-    public void consultaVeiculo(String placa){
-        veiculoDAO.consulta(placa);
+    public Veiculo consultaVeiculo(String placa){
+        return veiculoDAO.retornarVeiculoPlaca(placa);
     }
 
     public List<Veiculo> ConsultaPorModelo(String modelo){
@@ -174,6 +174,8 @@ public class LocadoraController {
     }
 
     ///////Fim Aluguel
+
+
 
 
 }

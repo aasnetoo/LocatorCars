@@ -2,13 +2,12 @@ package view;
 
 
 import controller.LocadoraController;
+import database.Conexao;
 import exception.EntradaInvalidaOuInsuficienteException;
 import exception.ListaVaziaException;
-import exception.PaginacaoException;
 import model.*;
 import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.sql.SQLOutput;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -27,6 +26,7 @@ import static java.lang.System.exit;
 public class LocadoraView {
 
     Scanner scan = new Scanner(System.in);
+    Conexao instance = new Conexao();
 
     LocadoraController controller = new LocadoraController();
     Mensagens mensagens = new Mensagens();
@@ -75,13 +75,15 @@ public class LocadoraView {
                     case Constantes.ALUGAR_VEICULO -> alugarVeiculo();
                     case Constantes.DEVOLVER_VEICULO -> devolverVeiculo();
                     case Constantes.SAIR_PROGRAMA -> {
+                        instance.desconectar();
+                        scan.close();
                         continueMenu = false;
-//                        controller.sairPrograma();
                         exit(0);
                     } // 6
                     case Constantes.PAGINACAO_AGENCIAS -> paginacaoAgencia();
                     case Constantes.PAGINACAO_VEICULOS -> paginacaoVeiculos();
                     case Constantes.PAGINACAO_CLIENTES -> paginacaoClientes();
+                    case Constantes.PAGINACAO_AGENCIAS -> paginacaoAgencia();
                     case Constantes.LISTA_VEICULOS_DISPONIVEIS -> listarVeiculosDisponiveisParaAluguel();
                     case Constantes.EMITIR_COMPROVANTE -> emitirComprovanteAluguel();
                 }
@@ -126,7 +128,6 @@ public class LocadoraView {
             }
 
         }
-        System.out.println("Agencia cadastrada com sucesso!");
     }
 
     private void alterarAgencia() {
@@ -254,7 +255,7 @@ public class LocadoraView {
 
 
     public void consultaVeiculo(){
-        controller.consultaVeiculo(obterPlacaEditar());
+        System.out.println(controller.consultaVeiculo(obterPlacaEditar()));
         confirmacaoEditarVeiculo();
     }
 
@@ -264,11 +265,9 @@ public class LocadoraView {
         verificarEditarVeiculo(resposta);
     }
 
-    public String editarVeiculo(){
+    public void editarVeiculo(){
         String placaDoCarroParaEditar = obterPlacaEditar();
         controller.editarVeiculoPorPlaca(dadosVeiculoEditar(placaDoCarroParaEditar));
-        return "Carro editado com sucesso.";
-
     }
 
     private VeiculoDTO dadosVeiculoEditar(String placaDoCarroParaEditar) {
@@ -294,8 +293,7 @@ public class LocadoraView {
 
     }
 
-    //Método de teste — quando as outras classes foram implementadas irá ter mudança, mas o metodo tá calculando certo
-    //e pegando os valores corretos.
+
     public void devolverVeiculo(){
 //        Cliente cliente = retornarCliente();
         System.out.println("Digite a placa do veiculo que você alugou? ");
@@ -330,7 +328,7 @@ public class LocadoraView {
                         +controller.paginacaoVeiculos(pagina).get(i).getTipo()+"", ""
                         +controller.paginacaoVeiculos(pagina).get(i).verificaDisponibilidade()+"\n");
             }
-            System.out.println("O que deseja fazer? Digite 1 para ir para próxima página; 2 para voltar de página e 3 para voltar ao menu.");
+            mensagens.paginacaoMensagem();
 
             switch(scan.nextLine()){
                 case Constantes.RESP_PROXIMA_PAGINA -> pagina++;
@@ -553,16 +551,16 @@ public class LocadoraView {
 
         System.out.println("Valor aluguel: " + valorAluguel);
 
-        aluguel.setVeiculo(veiculoParaAluguel); //pendente validação
-        aluguel.setAgenciaRetirada(agenciaAluguel); //ok
-        aluguel.setAgenciaDevolucao(agenciaDevolucao); //ok
-        aluguel.setCliente(clienteParaAlugar); //ok
-        aluguel.setDataInicio(dataInicio); //ok
-        aluguel.setDataDevolucao(dataDevolucao); //ok
-        aluguel.setHorarioAgendado(Time.valueOf(horarioLocacao)); //ok
-        aluguel.setHorarioDevolucao(Time.valueOf(horarioDevolucao)); //ok
-        aluguel.setValorAluguel(valorAluguel); //pendente
-        aluguel.setDiasAlugados(diasAlugado);
+
+        aluguel.setVeiculo(veiculoParaAluguel);
+        aluguel.setAgenciaRetirada(agenciaAluguel);
+        aluguel.setAgenciaDevolucao(agenciaDevolucao);
+        aluguel.setCliente(clienteParaAlugar);
+        aluguel.setDataInicio(dataInicio);
+        aluguel.setDataDevolucao(dataDevolucao);
+        aluguel.setHorarioAgendado(Time.valueOf(horarioLocacao));
+        aluguel.setHorarioDevolucao(Time.valueOf(horarioDevolucao));
+        aluguel.setValorAluguel(valorAluguel);
         controller.atualizarDisponibilidadeVeiculo(veiculoParaAluguel.getPlaca(), "false");
 
         controller.salvarAluguel(aluguel);
@@ -640,7 +638,7 @@ public class LocadoraView {
         boolean continueLoop = true;
         int pagina = Constantes.PAGINA_INICIAL;
         while (continueLoop){
-            if (controller.paginacaoClientes(pagina).isEmpty()){
+            if (controller.paginacaoAgencia(pagina).isEmpty()){
                 throw new ListaVaziaException("Não há mais Agencias a serem exibidos. Voltando ao menu...");
             }
             System.out.println("------------------------------------PAGINA "+pagina+"--------------------------------");
@@ -651,7 +649,7 @@ public class LocadoraView {
                         +controller.paginacaoAgencia(pagina).get(i).getLogradouro()+"\n");
             }
 
-            System.out.println("O que deseja fazer? Digite 1 para ir para próxima página; 2 para voltar de página e 3 para voltar ao menu.");
+           mensagens.paginacaoMensagem();
 
             switch(scan.nextLine()){
                 case Constantes.RESP_PROXIMA_PAGINA -> pagina++;

@@ -143,7 +143,7 @@ public class AgenciaDAO {
     public List<Agencia> paginacaoAgencia(int pagina){
         List<Agencia> listaAgencias = new ArrayList<>();
         try{
-            String sql = "SELECT * FROM veiculos LIMIT "+ Constantes.ITENS_POR_PAGINA+"  OFFSET("+pagina+" - 1) * "+Constantes.ITENS_POR_PAGINA;
+            String sql = "SELECT * FROM agencias LIMIT "+ Constantes.ITENS_POR_PAGINA+"  OFFSET("+pagina+" - 1) * "+Constantes.ITENS_POR_PAGINA;
             PreparedStatement stm = instance.getConnection().prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
 
