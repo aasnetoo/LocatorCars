@@ -1,5 +1,7 @@
 # Projeto final BE-JV-003 - POO II
 
+# Grupo 2: [Ana Beatriz Trindade, Antonio Neto, Gabriel Faglioni, Lucas Gribel Dos Reis, Matheus Neris Romeiro]
+
 ## LocateCar - Locadora de veículos
 Criar uma aplicação que gerencie o aluguel de veículos, onde cada item abaixo seja considerado:
 
