@@ -63,14 +63,23 @@ public class Veiculo {
         return Objects.hash(placa, modelo, potencia, tipo);
     }
 
+    public String verificaDisponibilidade(){
+        if (disponivel){
+            return "Sim";
+        }else{
+            return "Nao";
+        }
+    }
+
     @Override
     public String toString() {
-        return "Veiculo{" +
-                "placa='" + placa + '\'' +
-                ", modelo='" + modelo + '\'' +
-                ", potencia=" + potencia +
-                ", tipo='" + tipo + '\'' +
-                ", disponivel=" + disponivel +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append("Tipo de Veiculo: "+tipo);
+        sb.append("\n Placa do Veiculo: "+placa);
+        sb.append("\n Modelo:  "+modelo);
+        sb.append("\n Potencia: "+potencia);
+        sb.append("\n Disponibilidade: "+verificaDisponibilidade());
+        return sb.toString();
     }
+
 }

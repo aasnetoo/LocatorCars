@@ -20,7 +20,10 @@ public class Constantes {
     public static final String EDITAR_CLIENTE = "8";
     public static final String ALUGAR_VEICULO = "9";
     public static final String DEVOLVER_VEICULO = "10";
-    public static final String SAIR_PROGRAMA = "11";
+    public static final String PAGINACAO_VEICULOS = "11";
+    public static final String PAGINACAO_CLIENTES = "12";
+    public static final String SAIR_PROGRAMA = "15";
+
     public static final String LISTA_VEICULOS_DISPONIVEIS = "98";
     public static final String EMITIR_COMPROVANTE = "99";
 
@@ -41,6 +44,12 @@ public class Constantes {
     public static final String CONSULTAR_AGENCIA_POR_LOGRADOURO= "2";
     public static final String LISTAR_TODAS_AGENCIAS= "3";
 
+    public static final String RESP_PROXIMA_PAGINA = "1";
+    public static final String RESP_PAGINA_ANTERIOR = "2";
+    public static final String RESP_VOLTAR_MENU = "3";
+    public static final int PAGINA_INICIAL = 1;
+
+
 
 
 
@@ -54,6 +63,9 @@ public class Constantes {
 
     public static final String RESP_SIM = "Y";
     public static final String RESP_NAO = "N";
+
+    //Constantes do Repository
+    public static final int ITENS_POR_PAGINA = 3;
 
 
 }
