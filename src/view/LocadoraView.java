@@ -19,6 +19,8 @@ import java.util.Scanner;
 import util.ConsoleColors;
 import util.Constantes;
 import util.Mensagens;
+import util.TablePrinter;
+
 import static java.lang.System.exit;
 
 public class LocadoraView {
@@ -78,6 +80,7 @@ public class LocadoraView {
                         continueMenu = false;
                         exit(0);
                     } // 6
+                    case Constantes.PAGINACAO_AGENCIAS -> paginacaoAgencia();
                     case Constantes.PAGINACAO_VEICULOS -> paginacaoVeiculos();
                     case Constantes.PAGINACAO_CLIENTES -> paginacaoClientes();
                     case Constantes.PAGINACAO_AGENCIAS -> paginacaoAgencia();
@@ -548,6 +551,7 @@ public class LocadoraView {
 
         System.out.println("Valor aluguel: " + valorAluguel);
 
+
         aluguel.setVeiculo(veiculoParaAluguel);
         aluguel.setAgenciaRetirada(agenciaAluguel);
         aluguel.setAgenciaDevolucao(agenciaDevolucao);
@@ -557,7 +561,6 @@ public class LocadoraView {
         aluguel.setHorarioAgendado(Time.valueOf(horarioLocacao));
         aluguel.setHorarioDevolucao(Time.valueOf(horarioDevolucao));
         aluguel.setValorAluguel(valorAluguel);
-
         controller.atualizarDisponibilidadeVeiculo(veiculoParaAluguel.getPlaca(), "false");
 
         controller.salvarAluguel(aluguel);
@@ -672,7 +675,8 @@ public class LocadoraView {
             if (aluguel == null){
                 System.out.println("Contrato não encontrado.");
             }else{
-                System.out.println(aluguel);
+                TablePrinter tablePrinter = new TablePrinter();
+                tablePrinter.printReceipt(aluguel);
             }
         }catch (Exception e){
             System.out.println("Entrada inválida");

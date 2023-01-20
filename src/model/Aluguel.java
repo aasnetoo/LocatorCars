@@ -20,6 +20,7 @@ public class Aluguel {
     Agencia agenciaRetirada;
     Agencia agenciaDevolucao;
     BigDecimal valorAluguel;
+    int diasAlugados;
 
     public Aluguel(){
         id = count.incrementAndGet();
@@ -36,6 +37,14 @@ public class Aluguel {
     @Override
     public int hashCode() {
         return Objects.hash(id, cliente, veiculo, dataInicio, dataDevolucao, agenciaRetirada, agenciaDevolucao, valorAluguel);
+    }
+
+    public void setDiasAlugados(int diasAlugados) {
+        this.diasAlugados = diasAlugados;
+    }
+
+    public int getDiasAlugados() {
+        return diasAlugados;
     }
 
     @Override
