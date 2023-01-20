@@ -49,7 +49,7 @@ public class Aluguel {
 
     @Override
     public String toString() {
-        return "AluguelDTO{" +
+        return "AluguelDAO{" +
                 "id=" + id +
                 ", cliente=" + cliente +
                 ", veiculo=" + veiculo +
