@@ -12,6 +12,10 @@ public class Agencia {
         this.nome = nome;
     }
 
+    public Agencia(){
+
+    }
+
     public Agencia(int id) {
         this.id = id;
     }

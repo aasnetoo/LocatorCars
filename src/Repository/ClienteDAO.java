@@ -2,6 +2,8 @@ package Repository;
 
 import database.Conexao;
 import model.Cliente;
+import model.Veiculo;
+import util.Constantes;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -116,4 +118,28 @@ public class ClienteDAO implements IGenericoRepository<Cliente> {
             throw new RuntimeException(e);
         }
     }
+    public List<Cliente> paginacaoClientes(int pagina){
+
+        List<Cliente> listaClientes = new ArrayList<>();
+        try{
+            String sql = "SELECT * FROM clientes LIMIT "+ Constantes.ITENS_POR_PAGINA+"  OFFSET("+pagina+" - 1) * "+Constantes.ITENS_POR_PAGINA;
+            PreparedStatement stm = instance.getConnection().prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+
+            while (rs.next()){
+                Cliente cliente = new Cliente();
+                cliente.setNome(rs.getString("nome"));
+                cliente.setTelefone(rs.getString("telefone"));
+                cliente.setDocumento(rs.getString("documento"));
+                cliente.setTipoCliente(rs.getString("tipo"));
+                listaClientes.add(cliente);
+
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return listaClientes;
+    }
+
+
 }

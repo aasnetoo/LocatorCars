@@ -50,6 +50,9 @@ public class LocadoraController {
     public List<Veiculo> paginacaoVeiculos(int pagina){
         return veiculoDAO.paginacaoVeiculos(pagina);
     }
+    public List<Cliente> paginacaoClientes(int pagina){
+        return clienteDAO.paginacaoClientes(pagina);
+    }
 
 
     public void editarVeiculoPorPlaca(VeiculoDTO veiculoDTO){
@@ -105,6 +108,10 @@ public class LocadoraController {
     }
     public void deletarAgencia(String paramsQuery) {
         agenciaDAO.deletar(paramsQuery);
+    }
+
+    public List<Agencia> paginacaoAgencia (int pagina){
+        return agenciaDAO.paginacaoAgencia(pagina);
     }
 
     public boolean verificaExistenciaAgenciaPorId(int idAgencia) {

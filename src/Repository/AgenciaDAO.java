@@ -2,7 +2,10 @@ package Repository;
 
 import database.Conexao;
 import model.Agencia;
+import model.Veiculo;
+import util.Constantes;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -136,5 +139,28 @@ public class AgenciaDAO {
     // @Override
     public List<Agencia> listarTodos() {
         return null;
+    }
+    public List<Agencia> paginacaoAgencia(int pagina){
+        List<Agencia> listaAgencias = new ArrayList<>();
+        try{
+            String sql = "SELECT * FROM veiculos LIMIT "+ Constantes.ITENS_POR_PAGINA+"  OFFSET("+pagina+" - 1) * "+Constantes.ITENS_POR_PAGINA;
+            PreparedStatement stm = instance.getConnection().prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+
+            while (rs.next()){
+                int idAgencia = rs.getInt("id_agencia");
+                String nome = rs.getString("nome");
+                String logradouro = rs.getString("logradouro");
+
+                Agencia agencia = new Agencia(idAgencia, nome, logradouro);
+
+
+                listaAgencias.add(agencia);
+
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return listaAgencias;
     }
 }

@@ -8,6 +8,7 @@ import exception.PaginacaoException;
 import model.*;
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.sql.SQLOutput;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -44,7 +45,11 @@ public class LocadoraView {
         System.out.println("8 - Editar cliente");
         System.out.println("9 - Alugar veículo");
         System.out.println("10 - Devolver veículo");
-        System.out.println("11 - Sair do programa");
+        System.out.println("11 - Paginacao Veiculos");
+        System.out.println("12 - Paginacao Clientes");
+        System.out.println("13 - Paginacao Agencias");
+        System.out.println("15 - Sair do programa");
+
 
         System.out.println("98 - Teste - Listar todos os veiculos disponiveis");
         System.out.println("99 - Teste - Emitir comprovante");
@@ -72,7 +77,8 @@ public class LocadoraView {
 //                        controller.sairPrograma();
                         exit(0);
                     } // 6
-                    case "15" -> paginacaoVeiculos();
+                    case Constantes.PAGINACAO_VEICULOS -> paginacaoVeiculos();
+                    case Constantes.PAGINACAO_CLIENTES -> paginacaoClientes();
                     case Constantes.LISTA_VEICULOS_DISPONIVEIS -> listarVeiculosDisponiveisParaAluguel();
                     case Constantes.EMITIR_COMPROVANTE -> emitirComprovanteAluguel();
                 }
@@ -250,7 +256,7 @@ public class LocadoraView {
     }
 
     public void confirmacaoEditarVeiculo(){
-        System.out.println("Deseja editar esse Carro? 'Y' para sim e 'N' para nao. ");
+        System.out.println("Deseja editar esse Veiculo? 'Y' para sim e 'N' para nao. ");
         String resposta = scan.nextLine().toUpperCase();
         verificarEditarVeiculo(resposta);
     }
@@ -305,29 +311,36 @@ public class LocadoraView {
     public void listarVeiculosDisponiveisParaAluguel(){
         controller.veiculosDisponiveisParaAluguel().forEach(System.out::println);
     }
-
     public void paginacaoVeiculos(){
         boolean continueLoop = true;
-        int pagina = 1;
+        int pagina = Constantes.PAGINA_INICIAL;
         while (continueLoop){
-            controller.paginacaoVeiculos(pagina).forEach(System.out::println);
-
-            System.out.println("O que deseja fazer? Digite 1 para ir para próxima página; 2 para voltar de página e 3 para voltar ao menu.");
-            int resposta = Integer.parseInt(scan.next());
-            if (resposta == 1){
-                pagina++;
-            }else if (resposta == 2){
-                if (pagina == 1){
-                    throw new PaginacaoException("Você já está na página 1!");
-                }else{
-                    pagina = pagina - 1;
-                }
-            }else if (resposta == 3){
-                System.out.println("Voltando ao menu...");
-                continueLoop = false;
+            if (controller.paginacaoVeiculos(pagina).isEmpty()){
+                throw new ListaVaziaException("Não há mais veiculos a serem exibidos. Voltando ao menu...");
             }
-            else{
-                System.out.println("Opção incorreta, digite uma opção válida.");
+            System.out.println("------------------------------------PAGINA "+pagina+"--------------------------------");
+            System.out.format("%12s %10s %10s %10s %10s", "PLACA", "MODELO", "POTENCIA", "TIPO", "DISPONIBILIDADE\n");
+            for (int i = 0; i < controller.paginacaoVeiculos(pagina).size(); i++) {
+                System.out.format("%12s %10s %10s %10s %10s", ""+controller.paginacaoVeiculos(pagina).get(i).getPlaca()+"", ""
+                        +controller.paginacaoVeiculos(pagina).get(i).getModelo()+"", ""
+                        +controller.paginacaoVeiculos(pagina).get(i).getPotencia()+"", ""
+                        +controller.paginacaoVeiculos(pagina).get(i).getTipo()+"", ""
+                        +controller.paginacaoVeiculos(pagina).get(i).verificaDisponibilidade()+"\n");
+            }
+            System.out.println("O que deseja fazer? Digite 1 para ir para próxima página; 2 para voltar de página e 3 para voltar ao menu.");
+
+            switch(scan.nextLine()){
+                case Constantes.RESP_PROXIMA_PAGINA -> pagina++;
+                case Constantes.RESP_PAGINA_ANTERIOR -> {
+                    if (pagina == Constantes.PAGINA_INICIAL) {
+                        System.out.println("Você já está na página 1!");
+                    }
+                    else{
+                        pagina = pagina - Constantes.PAGINA_INICIAL;
+                    }
+                }
+                case Constantes.RESP_VOLTAR_MENU -> continueLoop = false;
+                default -> System.out.println("Opção incorreta, digite uma opção válida.");
             }
         }
     }
@@ -433,6 +446,40 @@ public class LocadoraView {
         verificarEditarCliente(resposta);
     }
 
+    public void paginacaoClientes(){
+        boolean continueLoop = true;
+        int pagina = Constantes.PAGINA_INICIAL;
+        while (continueLoop){
+            if (controller.paginacaoClientes(pagina).isEmpty()){
+                throw new ListaVaziaException("Não há mais Clientes a serem exibidos. Voltando ao menu...");
+            }
+            System.out.println("------------------------------------PAGINA "+pagina+"--------------------------------");
+            System.out.format("%14s %12s %12s %10s", "NOME", "TELEFONE", "DOCUMENTO", "TIPO DO CLIENTE\n");
+            for (int i = 0; i < controller.paginacaoClientes(pagina).size(); i++) {
+                System.out.format("%14s %12s %12s %12s", ""+controller.paginacaoClientes(pagina).get(i).getNome()+"", ""
+                        +controller.paginacaoClientes(pagina).get(i).getTelefone()+"", ""
+                        +controller.paginacaoClientes(pagina).get(i).getDocumento()+"", ""
+                        +controller.paginacaoClientes(pagina).get(i).getTipoCliente()+"\n");
+            }
+
+            System.out.println("O que deseja fazer? Digite 1 para ir para próxima página; 2 para voltar de página e 3 para voltar ao menu.");
+
+            switch(scan.nextLine()){
+                case Constantes.RESP_PROXIMA_PAGINA -> pagina++;
+                case Constantes.RESP_PAGINA_ANTERIOR -> {
+                    if (pagina == Constantes.PAGINA_INICIAL) {
+                        System.out.println("Você já está na página 1!");
+                    }
+                    else{
+                        pagina = pagina - Constantes.PAGINA_INICIAL;
+                    }
+                }
+                case Constantes.RESP_VOLTAR_MENU -> continueLoop = false;
+                default -> System.out.println("Opção incorreta, digite uma opção válida.");
+            }
+        }
+    }
+
 
     public void alugarVeiculo(){
         Aluguel aluguel = new Aluguel();
@@ -520,6 +567,8 @@ public class LocadoraView {
 
 
 
+
+
     public Agencia escolherAgencia(){
         controller.consultarAgencia("", true);
         System.out.println("Informe o id da Agência que deseja: ");
@@ -584,6 +633,39 @@ public class LocadoraView {
         }
     }
 
+    public void paginacaoAgencia(){
+        boolean continueLoop = true;
+        int pagina = Constantes.PAGINA_INICIAL;
+        while (continueLoop){
+            if (controller.paginacaoClientes(pagina).isEmpty()){
+                throw new ListaVaziaException("Não há mais Agencias a serem exibidos. Voltando ao menu...");
+            }
+            System.out.println("------------------------------------PAGINA "+pagina+"--------------------------------");
+            System.out.format("%12s %10s %10s", "ID", "NOME", "LOGRADOURO\n");
+            for (int i = 0; i < controller.paginacaoAgencia(pagina).size(); i++) {
+                System.out.format("%12s %10s %10s", ""+controller.paginacaoAgencia(pagina).get(i).getId()+"", ""
+                        +controller.paginacaoAgencia(pagina).get(i).getNome()+"", ""
+                        +controller.paginacaoAgencia(pagina).get(i).getLogradouro()+"\n");
+            }
+
+            System.out.println("O que deseja fazer? Digite 1 para ir para próxima página; 2 para voltar de página e 3 para voltar ao menu.");
+
+            switch(scan.nextLine()){
+                case Constantes.RESP_PROXIMA_PAGINA -> pagina++;
+                case Constantes.RESP_PAGINA_ANTERIOR -> {
+                    if (pagina == Constantes.PAGINA_INICIAL) {
+                        System.out.println("Você já está na página 1!");
+                    }
+                    else{
+                        pagina = pagina - Constantes.PAGINA_INICIAL;
+                    }
+                }
+                case Constantes.RESP_VOLTAR_MENU -> continueLoop = false;
+                default -> System.out.println("Opção incorreta, digite uma opção válida.");
+            }
+        }
+    }
+
     private void emitirComprovanteAluguel() {
         System.out.println("Informe o número da sua reserva: ");
         try {
@@ -598,6 +680,8 @@ public class LocadoraView {
             System.out.println("Entrada inválida");
         }
     }
+
+
 
 }
 
