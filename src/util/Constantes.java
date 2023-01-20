@@ -22,6 +22,7 @@ public class Constantes {
     public static final String DEVOLVER_VEICULO = "10";
     public static final String PAGINACAO_VEICULOS = "11";
     public static final String PAGINACAO_CLIENTES = "12";
+    public static final String PAGINACAO_AGENCIAS = "13";
     public static final String SAIR_PROGRAMA = "15";
 
     public static final String LISTA_VEICULOS_DISPONIVEIS = "98";
