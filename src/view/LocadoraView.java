@@ -80,7 +80,6 @@ public class LocadoraView {
                         continueMenu = false;
                         exit(0);
                     } // 6
-                    case Constantes.PAGINACAO_AGENCIAS -> paginacaoAgencia();
                     case Constantes.PAGINACAO_VEICULOS -> paginacaoVeiculos();
                     case Constantes.PAGINACAO_CLIENTES -> paginacaoClientes();
                     case Constantes.PAGINACAO_AGENCIAS -> paginacaoAgencia();
@@ -356,7 +355,7 @@ public class LocadoraView {
         String nomeCliente = scan.nextLine().toUpperCase();
         System.out.println("Qual o telefone do cliente: ");
         String telefoneCliente = scan.nextLine();
-        System.out.println("Qual o tipo de cliente? PF ou PJ");
+        System.out.println("Qual o tipo de cliente? Digite PF para pessoa física ou PJ para pessoa jurídica");
         String tipoCliente = TipoCliente.obterTipoCliente(scan.nextLine().toUpperCase());
 
         Cliente novoCliente = new Cliente();
