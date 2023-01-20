@@ -50,10 +50,10 @@ public class LocadoraController {
     public List<Veiculo> paginacaoVeiculos(int pagina){
         return veiculoDAO.paginacaoVeiculos(pagina);
     }
+
     public List<Cliente> paginacaoClientes(int pagina){
         return clienteDAO.paginacaoClientes(pagina);
     }
-
 
     public void editarVeiculoPorPlaca(VeiculoDTO veiculoDTO){
         veiculoDAO.atualizarPorPlaca(veiculoDTO);
@@ -66,7 +66,6 @@ public class LocadoraController {
         return veiculoDAO.listaVeiculosDisponiveis();
     }
 
-    // Agencia
     public void adicionarAgencia(Agencia agencia) {
         String paramsQuery = "INSERT|nome;logradouro|";
         paramsQuery += agencia.getNome().toUpperCase();
@@ -96,31 +95,21 @@ public class LocadoraController {
     }
 
     public boolean consultarAgencia(String paramsQuery, boolean print) {
-        // Obtém as agências presentes no Banco de Dados
         List<Agencia> listAgencia = new ArrayList<>();
         listAgencia = agenciaDAO.consulta(paramsQuery);
         if (print) {
-            // Imprime no console as Agências
             TablePrinter tablePrinter = new TablePrinter();
             tablePrinter.agenciaTablePrinter(listAgencia);
         }
         return !(listAgencia.size() == 0);
     }
+
     public void deletarAgencia(String paramsQuery) {
         agenciaDAO.deletar(paramsQuery);
     }
 
     public List<Agencia> paginacaoAgencia (int pagina){
         return agenciaDAO.paginacaoAgencia(pagina);
-    }
-
-    public boolean verificaExistenciaAgenciaPorId(int idAgencia) {
-
-        List<Agencia> listAgencia = new ArrayList<>();
-        String query = "id_agencia|" + idAgencia;
-        listAgencia = agenciaDAO.consulta(query);
-
-        return listAgencia.size() == 1;
     }
 
     public BigDecimal valorDevolucao(String documento, VeiculoDTO veiculoDTO, int dias){
@@ -138,8 +127,6 @@ public class LocadoraController {
         return veiculoDAO.pegarVeiculoPorPlaca(placa);
     }
 
-
-    /////////////cliente
     public void adicionarCliente (Cliente cl){
         boolean clienteExiste = clienteDAO.listarTodos().stream().anyMatch(cliente -> cliente.equals(cl));
 
@@ -153,7 +140,6 @@ public class LocadoraController {
         clienteDAO.consulta(documento);
     }
 
-
     public void editarClientePorDocumento(Cliente cliente){
         clienteDAO.atualizarPorDocumento(cliente);
     }
@@ -162,9 +148,6 @@ public class LocadoraController {
         return clienteDAO.retornarCliente(documento);
     }
 
-    //fim cliente
-
-    ///////////Aluguel
     public void salvarAluguel(Aluguel aluguel){
         aluguelDAO.salvarAluguel(aluguel);
     }
@@ -172,10 +155,5 @@ public class LocadoraController {
     public Aluguel buscarAluguelPorId(int id){
         return aluguelDAO.pegarAluguelPorId(id);
     }
-
-    ///////Fim Aluguel
-
-
-
 
 }

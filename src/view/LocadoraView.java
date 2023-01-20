@@ -1,6 +1,5 @@
 package view;
 
-
 import controller.LocadoraController;
 import database.Conexao;
 import exception.EntradaInvalidaOuInsuficienteException;
@@ -27,10 +26,8 @@ public class LocadoraView {
 
     Scanner scan = new Scanner(System.in);
     Conexao instance = new Conexao();
-
     LocadoraController controller = new LocadoraController();
     Mensagens mensagens = new Mensagens();
-
 
     public LocadoraView() throws SQLException {
     }
@@ -51,10 +48,6 @@ public class LocadoraView {
         System.out.println("12 - Paginacao Clientes");
         System.out.println("13 - Paginacao Agencias");
         System.out.println("15 - Sair do programa");
-
-
-        System.out.println("98 - Teste - Listar todos os veiculos disponiveis");
-        System.out.println("99 - Teste - Emitir comprovante");
 
         return scan.nextLine();
     }
@@ -79,7 +72,7 @@ public class LocadoraView {
                         scan.close();
                         continueMenu = false;
                         exit(0);
-                    } // 6
+                    }
                     case Constantes.PAGINACAO_VEICULOS -> paginacaoVeiculos();
                     case Constantes.PAGINACAO_CLIENTES -> paginacaoClientes();
                     case Constantes.PAGINACAO_AGENCIAS -> paginacaoAgencia();
@@ -131,24 +124,12 @@ public class LocadoraView {
 
     private void alterarAgencia() {
 
-        // Verifica se existe alguma agência cadastrada no banco de dados
         boolean existeAgencia = controller.consultarAgencia("", true);
 
         if (existeAgencia) {
             int idAgencia;
-            boolean idExiste = false;
-            do {
-                System.out.println("Por favor digite o ID da Agência que gostaria de alterar: ");
-                while (!scan.hasNextDouble()) {
-                    System.out.print("Por favor digite um ID válido ");
-                    scan.next();
-                }
-                idAgencia = scan.nextInt();
-                if(idAgencia < 0) System.out.println("Por Favor digite um ID válido");
-                idExiste = controller.verificaExistenciaAgenciaPorId(idAgencia);
-                if (idAgencia > 0 && !idExiste) System.out.println("Não foi encontrado o ID inserido, tente novamente.");
-            } while (idAgencia < 0 || !idExiste);
-
+            System.out.println("Por favor digite o ID da Agência que gostaria de alterar: ");
+            idAgencia = scan.nextInt();
             scan.nextLine();
 
             System.out.println("Deseja alterar ou deletar a agência selecionada?");
@@ -292,17 +273,33 @@ public class LocadoraView {
 
     }
 
-
     public void devolverVeiculo(){
-//        Cliente cliente = retornarCliente();
         System.out.println("Digite a placa do veiculo que você alugou? ");
         String placaVeiculo = scan.nextLine();
-
-
-        VeiculoDTO veiculoADevolver = controller.obterVeiculoPorPlaca(placaVeiculo);
-
-
         controller.atualizarDisponibilidadeVeiculo(placaVeiculo, "true");
+
+
+        System.out.println("======================================================");
+        System.out.println ("===================== LOCATE CAR =====================");
+        System.out.println("======================================================");
+        System.out.printf ("O veículo de placa %s foi devolvido com sucesso!\n", placaVeiculo);
+        System.out.println("------------------------------------------------------");
+        System.out.println ("                    Volte sempre!                     ");
+        System.out.println("======================================================");
+
+//        VeiculoDTO veiculoADevolver = controller.obterVeiculoPorPlaca(placaVeiculo);
+
+//        System.out.println("Digite o id do aluguel: ");
+//        int idAluguel = scan.nextInt();
+//        scan.nextLine();
+//
+//        Aluguel aluguel = new Aluguel();
+//
+//        aluguel = controller.buscarAluguelPorId(idAluguel);
+//
+//        System.out.println(aluguel.getAgenciaRetirada());
+//        TablePrinter printer = new TablePrinter();
+//        printer.printReceipt(aluguel);
 
         //TODO: imprimir recibo com dados da tabela de alugueis // talvez pegar por placa e disponivel = false
     }
@@ -480,7 +477,6 @@ public class LocadoraView {
         }
     }
 
-
     public void alugarVeiculo(){
         Aluguel aluguel = new Aluguel();
 
@@ -560,14 +556,14 @@ public class LocadoraView {
         aluguel.setHorarioAgendado(Time.valueOf(horarioLocacao));
         aluguel.setHorarioDevolucao(Time.valueOf(horarioDevolucao));
         aluguel.setValorAluguel(valorAluguel);
+        aluguel.setDiasAlugados(diasAlugado);
         controller.atualizarDisponibilidadeVeiculo(veiculoParaAluguel.getPlaca(), "false");
 
         controller.salvarAluguel(aluguel);
+
+        TablePrinter printer = new TablePrinter();
+        printer.printReceipt(aluguel);
     }
-
-
-
-
 
     public Agencia escolherAgencia(){
         controller.consultarAgencia("", true);
@@ -681,9 +677,4 @@ public class LocadoraView {
             System.out.println("Entrada inválida");
         }
     }
-
-
-
 }
-
-

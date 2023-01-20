@@ -2,16 +2,13 @@ package Repository;
 
 import database.Conexao;
 import model.Agencia;
-import model.Veiculo;
 import util.Constantes;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-// implements IGenericoRepository<Agencia>
 
 public class AgenciaDAO {
 
@@ -20,7 +17,6 @@ public class AgenciaDAO {
     public AgenciaDAO() throws SQLException {
     }
 
-    // @Override
     public void incluir(String paramsQuery) {
         /**
             @param paramsQuery
@@ -81,7 +77,6 @@ public class AgenciaDAO {
 
     }
 
-    // @Override
     public List<Agencia> consulta(String paramsQuery) {
         
         List<String> params = List.of(paramsQuery.split("\\|"));
@@ -121,7 +116,6 @@ public class AgenciaDAO {
         return listAgencia;
     }
 
-    // @Override
     public void deletar(String paramsQuery) {
 
         String sqlQuery = "DELETE FROM agencias WHERE id_agencia=" + paramsQuery;
@@ -136,7 +130,6 @@ public class AgenciaDAO {
             System.out.println("Não foi possível deletar a agencia.");
         }
     }
-    // @Override
     public List<Agencia> listarTodos() {
         return null;
     }

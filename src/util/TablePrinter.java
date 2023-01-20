@@ -38,6 +38,7 @@ public class TablePrinter {
         String logradouroAgencia = "LOGRADOURO:  " + aluguel.getAgenciaRetirada().getLogradouro();
         String nomeCliente = "CLIENTE:     " + aluguel.getCliente().getNome();
         Date date = aluguel.getDataInicio();
+        Date dateDevolucao = aluguel.getDataDevolucao();
         BigDecimal valorAluguel;
 
         String topLine = generateLineSeparator("-", true).concat("\n");
@@ -46,10 +47,9 @@ public class TablePrinter {
 
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
         String dataAluguel = "DATA DO ALUGUEL  : ".concat(dateFormatter.format(date)).concat(" / ").concat(aluguel.getHorarioAgendado().toString());
-        String dataDevolucao = "DATA DE DEVOLUÇÃO: ".concat(dateFormatter.format(date)).concat(" / ").concat(aluguel.getHorarioDevolucao().toString());
+        String dataDevolucao = "DATA DE DEVOLUÇÃO: ".concat(dateFormatter.format(dateDevolucao)).concat(" / ").concat(aluguel.getHorarioDevolucao().toString());
 
         StringBuilder receipt = new StringBuilder();
-        // HEADER
         receipt.append(topLine);
         receipt.append("| ").append(nomeAgencia).append(getRemainingBlankSpace(nomeAgencia));
         receipt.append("| ").append(logradouroAgencia).append(getRemainingBlankSpace(logradouroAgencia));
@@ -58,15 +58,12 @@ public class TablePrinter {
         receipt.append("| ").append(dataDevolucao).append(getRemainingBlankSpace(dataDevolucao));
         receipt.append(sectionSeparator);
 
-        // BODY
         receipt.append(generateBodyColumns());
         receipt.append(bodySeparator);
         receipt.append(generateBodyData(aluguel));
         receipt.append(bodySeparator);
         receipt.append(generateBodyDiscount(aluguel));
-        receipt.append(generateBodyTotalPrice(aluguel));
 
-        //FOOTER
         receipt.append(generateFooter());
         System.out.println(receipt);
     }
