@@ -23,7 +23,6 @@ public class Conexao {
             String stringDeConexao = "jdbc:postgresql://" + ipDoBanco + "/" + nomeDoBanco;
             Class.forName("org.postgresql.Driver");
             conn = DriverManager.getConnection(stringDeConexao, usuario, senha);
-            System.out.println("Conectou no banco de dados.");
         } catch (SQLException | ClassNotFoundException ex) {
             System.out.println(ex);
             mensagens.MsgErroBancoDeDados();
@@ -31,52 +30,6 @@ public class Conexao {
     }
 
 
-
-    public ResultSet executarConsulta(String consulta) throws SQLException {
-
-        try {
-            stm = conn.createStatement();
-            rs = stm.executeQuery(consulta);
-        } catch (SQLException ex) {
-            System.out.println("Não conseguiu executar a consulta\n" + consulta);
-            //Caso ocorra algum erro desconecta do banco de dados.
-        }finally{
-            desconectar();
-        }
-
-        return rs;
-    }
-
-    public ResultSet executarQuery (String query){
-        try {
-            stm = conn.createStatement();
-            rs = stm.executeQuery(query);
-        } catch (SQLException ex) {
-            System.out.println("Não conseguiu executar a listagem\n" + query);
-            //Caso ocorra algum erro desconecta do banco de dados.
-            desconectar();
-        }
-
-        return rs;
-    }
-
-
-
-    public boolean executeQuery(String query) {
-        boolean ok = false;
-        try {
-            stm = conn.createStatement();
-            stm.executeUpdate(query);
-            ok = true;
-            System.out.println("O produto foi adicionado com sucesso. ");
-        } catch (SQLException ex) {
-            System.out.println("Nao conseguiu executar o DML\n" + query);
-        }finally{
-            desconectar();
-        }
-
-        return ok;
-    }
 
     public void desconectar() {
         fecharResultSet(this.rs);
