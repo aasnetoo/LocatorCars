@@ -55,7 +55,7 @@ public class AluguelDAO {
                 aluguel.setVeiculo(locadoraController.obterVeiculoPorPlaca(resultado.getString("placa_veiculo")));
                 aluguel.setDataInicio(resultado.getDate("data_inicio"));
                 aluguel.setDataDevolucao(resultado.getDate("data_devolucao"));
-                aluguel.setHorarioAgendado(resultado.getTime("horaio_agendado"));
+                aluguel.setHorarioAgendado(resultado.getTime("horario_agendado"));
                 aluguel.setHorarioDevolucao(resultado.getTime("horario_devolucao"));
                 aluguel.setAgenciaRetirada(locadoraController.consultarAgenciaPorNome(resultado.getString("agencia_retirada_nome")));
                 aluguel.setAgenciaDevolucao(locadoraController.consultarAgenciaPorNome(resultado.getString("agencia_devolucao_nome")));

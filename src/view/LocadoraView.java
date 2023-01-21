@@ -274,19 +274,17 @@ public class LocadoraView {
     }
 
     public void devolverVeiculo(){
-        System.out.println("Digite a placa do veiculo que você alugou? ");
-        String placaVeiculo = scan.nextLine();
+
+        System.out.println("Digite o id do aluguel: ");
+        int idAluguel = scan.nextInt();
+        scan.nextLine();
+        Aluguel aluguel = controller.buscarAluguelPorId(idAluguel);
+
+        String placaVeiculo = aluguel.getVeiculo().getPlaca();
         controller.atualizarDisponibilidadeVeiculo(placaVeiculo, "true");
 
-
-        System.out.println("======================================================");
-        System.out.println ("===================== LOCATE CAR =====================");
-        System.out.println("======================================================");
-        System.out.printf ("O veículo de placa %s foi devolvido com sucesso!\n", placaVeiculo);
-        System.out.println("------------------------------------------------------");
-        System.out.println ("                    Volte sempre!                     ");
-        System.out.println("======================================================");
-
+        TablePrinter printer = new TablePrinter();
+        printer.printReceipt(aluguel);
     }
 
 
