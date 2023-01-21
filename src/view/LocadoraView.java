@@ -287,21 +287,6 @@ public class LocadoraView {
         System.out.println ("                    Volte sempre!                     ");
         System.out.println("======================================================");
 
-//        VeiculoDTO veiculoADevolver = controller.obterVeiculoPorPlaca(placaVeiculo);
-
-//        System.out.println("Digite o id do aluguel: ");
-//        int idAluguel = scan.nextInt();
-//        scan.nextLine();
-//
-//        Aluguel aluguel = new Aluguel();
-//
-//        aluguel = controller.buscarAluguelPorId(idAluguel);
-//
-//        System.out.println(aluguel.getAgenciaRetirada());
-//        TablePrinter printer = new TablePrinter();
-//        printer.printReceipt(aluguel);
-
-        //TODO: imprimir recibo com dados da tabela de alugueis // talvez pegar por placa e disponivel = false
     }
 
 

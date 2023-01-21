@@ -19,7 +19,7 @@ Criar uma aplicação que gerencie o aluguel de veículos, onde cada item abaixo
 - [x] Devolver um veículo para pessoa fisica;
 - [x] Devolver um veículo para pessoa juridica;
 - [x] Gerar um comprovante com todos os dados do aluguel (aberto para o grupo decidir o que vai ser demonstrado);
-- [x] Gerar um comprovante com todos os dados da devolução (aberto para o grupo decidir o que vai ser demonstrado);
+- [ ] Gerar um comprovante com todos os dados da devolução (aberto para o grupo decidir o que vai ser demonstrado);
 
 ### Itens bônus
 - [x] Paginar as listas envolvidas;
